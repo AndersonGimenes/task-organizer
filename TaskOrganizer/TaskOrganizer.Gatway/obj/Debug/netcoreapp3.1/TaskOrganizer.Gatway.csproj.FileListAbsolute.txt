@@ -1,7 +1,6 @@
 C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.Gatway\bin\Debug\netcoreapp3.1\TaskOrganizer.Gatway.deps.json
 C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.Gatway\bin\Debug\netcoreapp3.1\TaskOrganizer.Gatway.dll
 C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.Gatway\bin\Debug\netcoreapp3.1\TaskOrganizer.Gatway.pdb
-C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.Gatway\obj\Debug\netcoreapp3.1\TaskOrganizer.Gatway.csprojAssemblyReference.cache
 C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.Gatway\obj\Debug\netcoreapp3.1\TaskOrganizer.Gatway.AssemblyInfoInputs.cache
 C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.Gatway\obj\Debug\netcoreapp3.1\TaskOrganizer.Gatway.AssemblyInfo.cs
 C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.Gatway\obj\Debug\netcoreapp3.1\TaskOrganizer.Gatway.dll

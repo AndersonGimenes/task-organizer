@@ -1,7 +1,6 @@
 C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.Domain\bin\Debug\netcoreapp3.1\TaskOrganizer.Domain.deps.json
 C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.Domain\bin\Debug\netcoreapp3.1\TaskOrganizer.Domain.dll
 C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.Domain\bin\Debug\netcoreapp3.1\TaskOrganizer.Domain.pdb
-C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.Domain\obj\Debug\netcoreapp3.1\TaskOrganizer.Domain.csprojAssemblyReference.cache
 C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.Domain\obj\Debug\netcoreapp3.1\TaskOrganizer.Domain.AssemblyInfoInputs.cache
 C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.Domain\obj\Debug\netcoreapp3.1\TaskOrganizer.Domain.AssemblyInfo.cs
 C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.Domain\obj\Debug\netcoreapp3.1\TaskOrganizer.Domain.dll

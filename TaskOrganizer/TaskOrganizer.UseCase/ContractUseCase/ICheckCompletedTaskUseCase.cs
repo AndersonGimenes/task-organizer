@@ -2,7 +2,7 @@
 
 namespace TaskOrganizer.UseCase.ContractUseCase
 {
-    interface ICheckCompletedTask
+    interface ICheckCompletedTaskUseCase
     {
         bool CheckCompletedTask(DomainTask domainTask);
     }

@@ -2,7 +2,7 @@
 
 namespace TaskOrganizer.UseCase.ContractUseCase
 {
-    interface IRegisterTask
+    interface IRegisterTaskUseCase
     {
         // create a new task or update a existing task
         void Register(DomainTask domainTask);

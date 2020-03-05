@@ -2,7 +2,7 @@
 
 namespace TaskOrganizer.UseCase.ContractUseCase
 {
-    interface IUpdateProgress
+    interface IUpdateProgressUseCase
     {
         // update stage task progress
         void UpdateStage(DomainTask domainTask);

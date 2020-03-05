@@ -1,0 +1,11 @@
+C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.UseCase\bin\Debug\netcoreapp3.1\TaskOrganizer.UseCase.deps.json
+C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.UseCase\bin\Debug\netcoreapp3.1\TaskOrganizer.UseCase.dll
+C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.UseCase\bin\Debug\netcoreapp3.1\TaskOrganizer.UseCase.pdb
+C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.UseCase\bin\Debug\netcoreapp3.1\TaskOrganizer.Domain.dll
+C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.UseCase\bin\Debug\netcoreapp3.1\TaskOrganizer.Domain.pdb
+C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.UseCase\obj\Debug\netcoreapp3.1\TaskOrganizer.UseCase.csprojAssemblyReference.cache
+C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.UseCase\obj\Debug\netcoreapp3.1\TaskOrganizer.UseCase.AssemblyInfoInputs.cache
+C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.UseCase\obj\Debug\netcoreapp3.1\TaskOrganizer.UseCase.AssemblyInfo.cs
+C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.UseCase\obj\Debug\netcoreapp3.1\TaskOrganizer.UseCase.csproj.CopyComplete
+C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.UseCase\obj\Debug\netcoreapp3.1\TaskOrganizer.UseCase.dll
+C:\Projetos\task-organizer\TaskOrganizer\TaskOrganizer.UseCase\obj\Debug\netcoreapp3.1\TaskOrganizer.UseCase.pdb

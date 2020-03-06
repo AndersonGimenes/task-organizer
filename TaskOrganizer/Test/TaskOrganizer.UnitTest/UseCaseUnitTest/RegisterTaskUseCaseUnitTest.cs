@@ -1,6 +1,8 @@
 using System;
+using Moq;
 using TaskOrganizer.Domain.Entities;
 using TaskOrganizer.UseCase;
+using TaskOrganizer.UseCase.ContractRepository;
 using TaskOrganizer.UseCase.ContractUseCase;
 using Xunit;
 
@@ -8,10 +10,13 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
 {
     public class RegisterTaskUseCaseUnitTest
     {
-        private readonly IRegisterTaskUseCase _registerTaskUseCase;
+        private IRegisterTaskUseCase _registerTaskUseCase;
+        private readonly Mock<ITaskReadWriteOnlyRepository> _mockTaskReadWriteOnlyRepository;
+        
         public RegisterTaskUseCaseUnitTest()
         {
-            _registerTaskUseCase = new RegisterTaskUseCase();
+            _mockTaskReadWriteOnlyRepository = new Mock<ITaskReadWriteOnlyRepository>();
+            _registerTaskUseCase = new RegisterTaskUseCase(_mockTaskReadWriteOnlyRepository.Object);
         }
 
         [Fact]
@@ -38,19 +43,79 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
         }
         
         [Fact]
+        public void IfThereIsEstimetedDateFilledThenKeepTheDateFilled()
+        {
+            var domainTask = new DomainTask{EstimetedDate = DateTime.Now.Date.AddDays(10)};
+            _registerTaskUseCase.Register(domainTask);
+
+            Assert.True(domainTask.EstimetedDate.Equals(DateTime.Now.Date.AddDays(10)));
+        }
+
+        [Fact]
         public void WhenCreatingNewRegisterTheSystemWillPutAutomaticallyTheProgressWithToDo()
         {
             var domainTask = new DomainTask
             {
-                IsNew = true,
+                IsNew = true
             };
             
             _registerTaskUseCase.Register(domainTask);  
 
             Assert.True(domainTask.Progress.Equals(Progress.ToDo));
         }
-        // if IsNew(new task) is equal to true,call method to add a new register 
-        // if IsNew(New task) is equal to false, call method to update a existing register
+        
+        [Fact]
+        public void IfIsNewTaskThenCallInsertMethod()
+        {
+            var domainTask = new DomainTask
+            {
+                EstimetedDate = DateTime.Now.Date.AddDays(25),
+                IsNew = true
+            };
+            domainTask.SetTitle("Title test");
+            domainTask.SetDescription("Description test");
+            
+            _mockTaskReadWriteOnlyRepository.Setup(x => x.Add(It.IsAny<DomainTask>()));
+            _registerTaskUseCase = new RegisterTaskUseCase(_mockTaskReadWriteOnlyRepository.Object);
 
+            _registerTaskUseCase.Register(domainTask);
+
+            var testOk = 
+                domainTask.CreateDate.Equals(DateTime.Now.Date) &&
+                domainTask.EstimetedDate.Equals(DateTime.Now.Date.AddDays(25)) &&
+                domainTask.Progress.Equals(Progress.ToDo) &&
+                domainTask.Title.Equals("Title test") &&
+                domainTask.Description.Equals("Description test");
+
+            Assert.True(testOk);
+        }
+
+        [Fact]
+        public void IfIsNotNewTaskThenCallUpdateMethod()
+        {
+            var domainTask = new DomainTask
+            {
+                CreateDate = DateTime.Now.Date.AddDays(-10),
+                EstimetedDate = DateTime.Now.Date.AddDays(10),
+                Progress = Progress.ToDo,
+                IsNew = false
+            };
+            domainTask.SetTitle("Title test update");
+            domainTask.SetDescription("Description test update");
+            
+            _mockTaskReadWriteOnlyRepository.Setup(x => x.Update(It.IsAny<DomainTask>()));
+            _registerTaskUseCase = new RegisterTaskUseCase(_mockTaskReadWriteOnlyRepository.Object);
+
+            _registerTaskUseCase.Register(domainTask);
+
+            var testOk = 
+                domainTask.CreateDate.Equals(DateTime.Now.Date.AddDays(-10)) &&
+                domainTask.EstimetedDate.Equals(DateTime.Now.Date.AddDays(10)) &&
+                domainTask.Progress.Equals(Progress.ToDo) &&
+                domainTask.Title.Equals("Title test update") &&
+                domainTask.Description.Equals("Description test update");
+
+            Assert.True(testOk);
+        }
     }
 }

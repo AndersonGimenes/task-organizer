@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TaskOrganizer.Domain\TaskOrganizer.Domain.csproj" />
+    <ProjectReference Include="..\TaskOrganizer.UseCase\TaskOrganizer.UseCase.csproj" />
   </ItemGroup>
 
 </Project>

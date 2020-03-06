@@ -10,16 +10,17 @@ namespace TaskOrganizer.Domain.Entities
         public DateTime CreateDate { get; set; }
         public DateTime EstimetedDate { get; set; }
         public Progress Progress { get; set; }
+        public bool IsNew { get; set; }
 
         public void SetTitle(string title)
         {
-            title.IsValid("Please type some Title!");
+            title.IsValid($"Please type some {nameof(Title)}!");
             this.Title = title;
         }
 
         public void SetDescription(string description)
         {
-            description.IsValid("Please type some Description!");
+            description.IsValid($"Please type some {nameof(Description)}!");
             this.Description = description;
         }
     }

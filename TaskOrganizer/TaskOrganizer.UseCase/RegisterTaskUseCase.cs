@@ -1,17 +1,34 @@
-﻿using TaskOrganizer.Domain.Entities;
+﻿using System;
+using TaskOrganizer.Domain.Entities;
 using TaskOrganizer.UseCase.ContractUseCase;
 
 namespace TaskOrganizer.UseCase
 {
-    class RegisterTaskUseCase : IRegisterTaskUseCase
+    public class RegisterTaskUseCase : IRegisterTaskUseCase
     {
-        // rules***
-        // there must be a estimeted date - case don't exists this, the system will put 30 days automatically
-        // there must be a create date -the system will put automatically when the task is registered
-        // when creating a new register the system will put automatically the progress with ToDo
         public void Register(DomainTask domainTask)
         {
-            throw new System.NotImplementedException();
+            if(domainTask.EstimetedDate.Date.Equals(new DateTime().Date))
+            {
+                domainTask.EstimetedDate = DateTime.Now.Date.AddDays(30);
+            }
+
+            DecideFlow(domainTask);
+            
+        }
+
+        private void DecideFlow(DomainTask domainTask)
+        {
+            if(domainTask.IsNew)
+            {
+                domainTask.CreateDate = DateTime.Now.Date;
+                domainTask.Progress = Progress.ToDo;
+                // call method to add a new task
+            }
+            else
+            {
+                // call method to updade a existing task
+            }
         }
     }
 }

@@ -7,11 +7,11 @@ namespace TaskOrganizer.UseCase
 {
     public class RegisterTaskUseCase : IRegisterTaskUseCase
     {
-        private readonly ITaskReadWriteOnlyRepository _taskReadWriteOnlyRepository;
+        private readonly ITaskWriteDeleteOnlyRepository _taskWriteDeleteOnlyRepository;
 
-        public RegisterTaskUseCase(ITaskReadWriteOnlyRepository taskReadWriteOnlyRepository)
+        public RegisterTaskUseCase(ITaskWriteDeleteOnlyRepository taskReadWriteOnlyRepository)
         {
-            _taskReadWriteOnlyRepository = taskReadWriteOnlyRepository; 
+            _taskWriteDeleteOnlyRepository = taskReadWriteOnlyRepository; 
         }
 
         public void Register(DomainTask domainTask)
@@ -31,13 +31,11 @@ namespace TaskOrganizer.UseCase
             {
                 domainTask.CreateDate = DateTime.Now.Date;
                 domainTask.Progress = Progress.ToDo;
-                // call method to add a new task
-                _taskReadWriteOnlyRepository.Add(domainTask);
+                _taskWriteDeleteOnlyRepository.Add(domainTask);
             }
             else
             {
-                // call method to updade a existing task
-                _taskReadWriteOnlyRepository.Update(domainTask);
+                _taskWriteDeleteOnlyRepository.Update(domainTask);
             }
         }
     }

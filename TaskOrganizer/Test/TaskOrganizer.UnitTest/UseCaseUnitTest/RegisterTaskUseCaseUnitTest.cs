@@ -11,12 +11,12 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
     public class RegisterTaskUseCaseUnitTest
     {
         private IRegisterTaskUseCase _registerTaskUseCase;
-        private readonly Mock<ITaskReadWriteOnlyRepository> _mockTaskReadWriteOnlyRepository;
+        private readonly Mock<ITaskWriteDeleteOnlyRepository> _mockTaskWriteDeleteOnlyRepository;
         
         public RegisterTaskUseCaseUnitTest()
         {
-            _mockTaskReadWriteOnlyRepository = new Mock<ITaskReadWriteOnlyRepository>();
-            _registerTaskUseCase = new RegisterTaskUseCase(_mockTaskReadWriteOnlyRepository.Object);
+            _mockTaskWriteDeleteOnlyRepository = new Mock<ITaskWriteDeleteOnlyRepository>();
+            _registerTaskUseCase = new RegisterTaskUseCase(_mockTaskWriteDeleteOnlyRepository.Object);
         }
 
         [Fact]
@@ -75,8 +75,8 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
             domainTask.SetTitle("Title test");
             domainTask.SetDescription("Description test");
             
-            _mockTaskReadWriteOnlyRepository.Setup(x => x.Add(It.IsAny<DomainTask>()));
-            _registerTaskUseCase = new RegisterTaskUseCase(_mockTaskReadWriteOnlyRepository.Object);
+            _mockTaskWriteDeleteOnlyRepository.Setup(x => x.Add(It.IsAny<DomainTask>()));
+            _registerTaskUseCase = new RegisterTaskUseCase(_mockTaskWriteDeleteOnlyRepository.Object);
 
             _registerTaskUseCase.Register(domainTask);
 
@@ -103,8 +103,8 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
             domainTask.SetTitle("Title test update");
             domainTask.SetDescription("Description test update");
             
-            _mockTaskReadWriteOnlyRepository.Setup(x => x.Update(It.IsAny<DomainTask>()));
-            _registerTaskUseCase = new RegisterTaskUseCase(_mockTaskReadWriteOnlyRepository.Object);
+            _mockTaskWriteDeleteOnlyRepository.Setup(x => x.Update(It.IsAny<DomainTask>()));
+            _registerTaskUseCase = new RegisterTaskUseCase(_mockTaskWriteDeleteOnlyRepository.Object);
 
             _registerTaskUseCase.Register(domainTask);
 

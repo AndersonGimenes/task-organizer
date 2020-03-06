@@ -2,7 +2,7 @@
 
 namespace TaskOrganizer.UseCase.ContractRepository
 {
-    public interface ITaskReadWriteOnlyRepository
+    public interface ITaskWriteDeleteOnlyRepository
     {
         void Add(DomainTask domainTask);
         void Update(DomainTask domainTask);

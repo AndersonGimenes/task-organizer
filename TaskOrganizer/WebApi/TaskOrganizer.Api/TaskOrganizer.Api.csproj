@@ -4,5 +4,8 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
+<ItemGroup>
+    <ProjectReference Include="..\..\Gatway\TaskOrganizer.Repository\TaskOrganizer.Repository.csproj" />
+</ItemGroup>
 
 </Project>

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TaskOrganizer.Domain.Entities;
 using TaskOrganizer.UseCase.ContractRepository;
-using TaskOrganizer.UseCase.ContractUseCase;
+using TaskOrganizer.Domain.ContractUseCase;
 
 namespace TaskOrganizer.UseCase
 {

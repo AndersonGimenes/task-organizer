@@ -1,6 +1,6 @@
 ﻿using TaskOrganizer.Domain.Entities;
 
-namespace TaskOrganizer.UseCase.ContractUseCase
+namespace TaskOrganizer.Domain.ContractUseCase
 {
     public interface IRegisterTaskUseCase
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using TaskOrganizer.Domain.Entities;
 using TaskOrganizer.UseCase.ContractRepository;
-using TaskOrganizer.UseCase.ContractUseCase;
+using TaskOrganizer.Domain.ContractUseCase;
 
 namespace TaskOrganizer.UseCase
 {

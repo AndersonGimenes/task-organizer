@@ -1,11 +1,10 @@
 ﻿using Moq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using TaskOrganizer.Domain.Entities;
 using TaskOrganizer.UseCase;
 using TaskOrganizer.UseCase.ContractRepository;
-using TaskOrganizer.UseCase.ContractUseCase;
+using TaskOrganizer.Domain.ContractUseCase;
 using Xunit;
 
 namespace TaskOrganizer.UnitTest.UseCaseUnitTest

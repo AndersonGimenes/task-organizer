@@ -3,7 +3,7 @@ using Moq;
 using TaskOrganizer.Domain.Entities;
 using TaskOrganizer.UseCase;
 using TaskOrganizer.UseCase.ContractRepository;
-using TaskOrganizer.UseCase.ContractUseCase;
+using TaskOrganizer.Domain.ContractUseCase;
 using Xunit;
 
 namespace TaskOrganizer.UnitTest.UseCaseUnitTest

@@ -1,13 +1,16 @@
+using System.Collections.Generic;
+using System.IO;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Npgsql;
 using TaskOrganizer.Repository.Entities;
 
 namespace TaskOrganizer.Repository.Context
 {
     public class TaskOrganizerContext : DbContext
     {
-        public TaskOrganizerContext(DbContextOptions options) : base(options)
-        {
-        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+            => optionsBuilder.UseNpgsql(ReturnConnectionString());
 
         public virtual DbSet<RepositoryTask> RepositoryTasks { get; set; }
         public virtual DbSet<ProgressType> ProgressTypes { get; set; }
@@ -26,7 +29,7 @@ namespace TaskOrganizer.Repository.Context
 
             repositoyTask
                 .Property(x => x.Description)
-                .HasColumnType("varchar(MAX)")
+                .HasColumnType("text")
                 .IsRequired();
 
             repositoyTask
@@ -48,6 +51,15 @@ namespace TaskOrganizer.Repository.Context
                 .HasForeignKey<RepositoryTask>(b => b.ProgressId);
          
             base.OnModelCreating(modelBuilder);
+        }
+
+        private string ReturnConnectionString()
+        {
+            var file = Path.Combine(Directory.GetCurrentDirectory(), "config.json");  
+            var JSON = System.IO.File.ReadAllText(file);
+            dynamic returned = Newtonsoft.Json.JsonConvert.DeserializeObject(JSON);
+
+            return (string)returned["connectionString"];
         }
     }
 }

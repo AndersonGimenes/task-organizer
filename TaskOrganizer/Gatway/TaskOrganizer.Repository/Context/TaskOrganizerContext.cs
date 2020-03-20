@@ -9,6 +9,9 @@ namespace TaskOrganizer.Repository.Context
         {
         }
 
+        public virtual DbSet<RepositoryTask> RepositoryTasks { get; set; }
+        public virtual DbSet<ProgressType> ProgressTypes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             var repositoyTask = modelBuilder.Entity<RepositoryTask>();

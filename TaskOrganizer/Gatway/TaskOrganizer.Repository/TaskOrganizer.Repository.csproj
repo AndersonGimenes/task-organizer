@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.1">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -12,6 +13,11 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.0.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.2" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Application\TaskOrganizer.Domain\TaskOrganizer.Domain.csproj" />
+    <ProjectReference Include="..\..\Application\TaskOrganizer.UseCase\TaskOrganizer.UseCase.csproj" />
   </ItemGroup>
 
 </Project>

@@ -17,23 +17,23 @@ namespace TaskOrganizer.IntegrationTest.RepositoryTest
             
         }  
 
-        // [Fact(Skip="need implemented")]
-        // public void MustInsertTheTask()
-        // {
-        //     // need to implement 
-        //     var option = new DbContextOptionsBuilder<TaskOrganizerContext>()
-        //         .UseInMemoryDatabase("DbTaskOrganizer")
-        //         .Options;
-        //     var context = new TaskOrganizerContext(option); 
-        //     var repository = new TaskWriteDeleteOnlyRepository(context);
+        [Fact(Skip="need implemented")]
+        public void MustInsertTheTask()
+        {
+            // need to implement 
+            var option = new DbContextOptionsBuilder<TaskOrganizerContext>()
+                .UseInMemoryDatabase("DbTaskOrganizer")
+                .Options;
+            var context = new TaskOrganizerContext(option); 
+            var repository = new TaskWriteDeleteOnlyRepository(context);
 
             
-        //     _registerTaskUseCase = new RegisterTaskUseCase(repository);
+            _registerTaskUseCase = new RegisterTaskUseCase(repository);
 
-        //     _registerTaskUseCase.Register(MockDataTest());
+            _registerTaskUseCase.Register(MockDataTest());
 
 
-        // }
+        }
 
         #region AuxiliaryMethods
         private DomainTask MockDataTest()

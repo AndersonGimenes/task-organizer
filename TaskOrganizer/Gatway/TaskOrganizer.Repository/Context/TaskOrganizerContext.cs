@@ -9,8 +9,21 @@ namespace TaskOrganizer.Repository.Context
 {
     public class TaskOrganizerContext : DbContext
     {
+        public TaskOrganizerContext(DbContextOptions option) : base(option)
+        {
+            
+        }
+        public TaskOrganizerContext()
+        {
+
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseNpgsql(ReturnConnectionString());
+        {
+            if(optionsBuilder.IsConfigured) return;
+            optionsBuilder.UseNpgsql(ReturnConnectionString());
+        }
+            
 
         public virtual DbSet<RepositoryTask> RepositoryTasks { get; set; }
         public virtual DbSet<ProgressType> ProgressTypes { get; set; }
@@ -24,7 +37,7 @@ namespace TaskOrganizer.Repository.Context
             
             repositoyTask
                 .Property(x => x.Title)
-                .HasColumnType("varchar(40)")
+                .HasColumnType("varchar(200)")
                 .IsRequired();
 
             repositoyTask
@@ -33,7 +46,16 @@ namespace TaskOrganizer.Repository.Context
                 .IsRequired();
 
             repositoyTask
-                .Property(x => x.ProgressId).IsRequired();
+                .Property(x => x.ProgressId)
+                .IsRequired();
+
+            repositoyTask
+                .Property(x => x.CreateDate)
+                .IsRequired();
+
+            repositoyTask
+                .Property(x => x.EstimetedDate)
+                .IsRequired();
 
             var progressType = modelBuilder.Entity<ProgressType>();
             progressType
@@ -45,11 +67,6 @@ namespace TaskOrganizer.Repository.Context
                 .HasColumnType("varchar(20)")
                 .IsRequired();
 
-            progressType
-                .HasOne(x => x.RepositoryTask)
-                .WithOne(x => x.ProgressType)
-                .HasForeignKey<RepositoryTask>(b => b.ProgressId);
-         
             base.OnModelCreating(modelBuilder);
         }
 

@@ -10,13 +10,13 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
 {
     public class RegisterTaskUseCaseUnitTest
     {
-        private IRegisterTaskUseCase _registerTaskUseCase;
+        private readonly IRegisterTaskUseCase _registerTaskUseCase;
         private readonly Mock<ITaskWriteDeleteOnlyRepository> _mockTaskWriteDeleteOnlyRepository;
         
         public RegisterTaskUseCaseUnitTest()
         {
-            _mockTaskWriteDeleteOnlyRepository = new Mock<ITaskWriteDeleteOnlyRepository>();
-            _registerTaskUseCase = new RegisterTaskUseCase(_mockTaskWriteDeleteOnlyRepository.Object);
+            //_mockTaskWriteDeleteOnlyRepository = new Mock<ITaskWriteDeleteOnlyRepository>();
+            //_registerTaskUseCase = new RegisterTaskUseCase(_mockTaskWriteDeleteOnlyRepository.Object);
         }
 
         [Fact]
@@ -62,60 +62,6 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
             _registerTaskUseCase.Register(domainTask);  
 
             Assert.True(domainTask.Progress.Equals(Progress.ToDo));
-        }
-        
-        [Fact]
-        public void IfIsNewTaskThenCallInsertMethod()
-        {
-            var domainTask = new DomainTask
-            {
-                EstimetedDate = DateTime.Now.Date.AddDays(25),
-                IsNew = true
-            };
-            domainTask.SetTitle("Title test");
-            domainTask.SetDescription("Description test");
-            
-            _mockTaskWriteDeleteOnlyRepository.Setup(x => x.Add(It.IsAny<DomainTask>()));
-            _registerTaskUseCase = new RegisterTaskUseCase(_mockTaskWriteDeleteOnlyRepository.Object);
-
-            _registerTaskUseCase.Register(domainTask);
-
-            var testOk = 
-                domainTask.CreateDate.Equals(DateTime.Now.Date) &&
-                domainTask.EstimetedDate.Equals(DateTime.Now.Date.AddDays(25)) &&
-                domainTask.Progress.Equals(Progress.ToDo) &&
-                domainTask.Title.Equals("Title test") &&
-                domainTask.Description.Equals("Description test");
-
-            Assert.True(testOk);
-        }
-
-        [Fact]
-        public void IfIsNotNewTaskThenCallUpdateMethod()
-        {
-            var domainTask = new DomainTask
-            {
-                CreateDate = DateTime.Now.Date.AddDays(-10),
-                EstimetedDate = DateTime.Now.Date.AddDays(10),
-                Progress = Progress.ToDo,
-                IsNew = false
-            };
-            domainTask.SetTitle("Title test update");
-            domainTask.SetDescription("Description test update");
-            
-            _mockTaskWriteDeleteOnlyRepository.Setup(x => x.Update(It.IsAny<DomainTask>()));
-            _registerTaskUseCase = new RegisterTaskUseCase(_mockTaskWriteDeleteOnlyRepository.Object);
-
-            _registerTaskUseCase.Register(domainTask);
-
-            var testOk = 
-                domainTask.CreateDate.Equals(DateTime.Now.Date.AddDays(-10)) &&
-                domainTask.EstimetedDate.Equals(DateTime.Now.Date.AddDays(10)) &&
-                domainTask.Progress.Equals(Progress.ToDo) &&
-                domainTask.Title.Equals("Title test update") &&
-                domainTask.Description.Equals("Description test update");
-
-            Assert.True(testOk);
         }
     }
 }

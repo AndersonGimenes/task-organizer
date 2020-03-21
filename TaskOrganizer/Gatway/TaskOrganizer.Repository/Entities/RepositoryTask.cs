@@ -12,7 +12,6 @@ namespace TaskOrganizer.Repository.Entities
         public DateTime EstimetedDate { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public virtual ProgressType ProgressType { get; set; }
- 
+         
     }
 }

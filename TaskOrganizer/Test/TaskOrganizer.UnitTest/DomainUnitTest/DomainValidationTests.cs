@@ -40,17 +40,6 @@ namespace TaskOrganizer.UnitTest.DomainUnitTest
 
             Assert.True(ex.Message.Equals(result));
         }
-
-        [Theory]
-        [InlineData("Description test", "Description test")]
-        public void DomainExceptionMustNotBeReturnedWhenTheDescriptionIsPassed(string result, string input)
-        {
-            var domainTask = new DomainTask();
-
-            domainTask.SetDescription(input);
-
-            Assert.True(input.Equals(result));
-        }
-
+        
     }
 }

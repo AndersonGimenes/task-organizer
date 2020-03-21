@@ -3,8 +3,9 @@ using TaskOrganizer.Domain.Entities;
 
 namespace TaskOrganizer.UseCase.ContractRepository
 {
-    public interface ITaskReadOnlyRepositoy
+    public interface ITaskReadOnlyRepository
     {
         IList<DomainTask> GetAll(); 
+        DomainTask Get(int id);
     }
 }

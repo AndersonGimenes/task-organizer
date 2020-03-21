@@ -15,8 +15,8 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
         
         public RegisterTaskUseCaseUnitTest()
         {
-            //_mockTaskWriteDeleteOnlyRepository = new Mock<ITaskWriteDeleteOnlyRepository>();
-            //_registerTaskUseCase = new RegisterTaskUseCase(_mockTaskWriteDeleteOnlyRepository.Object);
+            _mockTaskWriteDeleteOnlyRepository = new Mock<ITaskWriteDeleteOnlyRepository>();
+            _registerTaskUseCase = new RegisterTaskUseCase(_mockTaskWriteDeleteOnlyRepository.Object);
         }
 
         [Fact]

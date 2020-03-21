@@ -12,27 +12,26 @@ namespace TaskOrganizer.IntegrationTest.RepositoryTest
     public class TaskWriteDeleteOnlyRepositoryIntegrationTest
     {
         private IRegisterTaskUseCase _registerTaskUseCase;
-        public TaskWriteDeleteOnlyRepositoryIntegrationTest()
-        {
-            
-        }  
-
-        [Fact(Skip="need implemented")]
+        
+        [Fact]
         public void MustInsertTheTask()
         {
-            // need to implement 
-            var option = new DbContextOptionsBuilder<TaskOrganizerContext>()
-                .UseInMemoryDatabase("DbTaskOrganizer")
-                .Options;
-            var context = new TaskOrganizerContext(option); 
-            var repository = new TaskWriteDeleteOnlyRepository(context);
+            var taskWriteDeleteOnlyRepository = new TaskWriteDeleteOnlyRepository(ReturnContext());
+            var taskReadOnlyRepositoy = new TaskReadOnlyRepositoy(ReturnContext());
+            _registerTaskUseCase = new RegisterTaskUseCase(taskWriteDeleteOnlyRepository);
 
-            
-            _registerTaskUseCase = new RegisterTaskUseCase(repository);
+            var mock = MockDataTest();
+            _registerTaskUseCase.Register(mock);
 
-            _registerTaskUseCase.Register(MockDataTest());
+            var returned = taskReadOnlyRepositoy.Get(1);
 
-
+            var returnTest = returned.TaskNumeber.Equals(1) &&
+                             returned.Title.Equals(mock.Title) &&
+                             returned.Description.Equals(mock.Description) &&
+                             returned.CreateDate.Equals(mock.CreateDate) &&
+                             returned.EstimetedDate.Equals(mock.EstimetedDate);
+                             
+            Assert.True(returnTest);
         }
 
         #region AuxiliaryMethods
@@ -43,12 +42,19 @@ namespace TaskOrganizer.IntegrationTest.RepositoryTest
                 EstimetedDate = DateTime.Now.Date.AddDays(25),
                 IsNew = true
             };
-            domainTask.SetTitle("Tarefa ligar para o medico as 14 horas do dia 17 do mes de março");
+            domainTask.SetTitle("Title test");
             domainTask.SetDescription("Description test");
 
             return domainTask;
         }
         
+        private TaskOrganizerContext ReturnContext()
+        {
+            var option = new DbContextOptionsBuilder<TaskOrganizerContext>()
+                .UseInMemoryDatabase("DbTaskOrganizer")
+                .Options;
+            return new TaskOrganizerContext(option); 
+        }
 
         #endregion
     }

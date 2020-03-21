@@ -8,20 +8,20 @@ namespace TaskOrganizer.Repository
 {
     public class TaskWriteDeleteOnlyRepository : ITaskWriteDeleteOnlyRepository
     {
-        private readonly TaskOrganizerContext _taskOrganizerContext;
+        private readonly TaskOrganizerContext _context;
 
-        public TaskWriteDeleteOnlyRepository(TaskOrganizerContext taskOrganizerContext)
+        public TaskWriteDeleteOnlyRepository(TaskOrganizerContext context)
         {
-            _taskOrganizerContext = taskOrganizerContext;
+            _context = context;
         }
 
         public void Add(DomainTask domainTask)
         {
             var returned = MapperDomainTaskToRepositoryTask(domainTask); 
 
-            _taskOrganizerContext.Add(returned);
+            _context.Add(returned);
 
-            _taskOrganizerContext.SaveChanges();
+            _context.SaveChanges();
         }
 
         public void Delete(DomainTask domainTask)

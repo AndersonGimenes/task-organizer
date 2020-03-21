@@ -12,11 +12,11 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
     public class GetTasksUseCaseUnitTest
     {
         private IGetTasksUseCase _getTasksUseCase;
-        private readonly Mock<ITaskReadOnlyRepositoy> _mockTaskReadOnlyRepository;
+        private readonly Mock<ITaskReadOnlyRepository> _mockTaskReadOnlyRepository;
 
         public GetTasksUseCaseUnitTest()
         {
-            _mockTaskReadOnlyRepository = new Mock<ITaskReadOnlyRepositoy>();
+            _mockTaskReadOnlyRepository = new Mock<ITaskReadOnlyRepository>();
         }
 
        [Fact]
@@ -25,7 +25,7 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
             _mockTaskReadOnlyRepository.Setup(x => x.GetAll()).Returns(MockListTask());
             _getTasksUseCase = new GetTasksUseCase(_mockTaskReadOnlyRepository.Object);
 
-            var resultReturn = _getTasksUseCase.Get();
+            var resultReturn = _getTasksUseCase.GetAll();
 
             Assert.Collection(resultReturn, task => Assert.Contains("Title one", task.Title),
                                             task => Assert.Contains("Title two", task.Title),

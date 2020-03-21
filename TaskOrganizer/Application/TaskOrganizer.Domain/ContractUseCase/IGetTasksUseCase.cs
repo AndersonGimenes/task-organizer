@@ -5,6 +5,7 @@ namespace TaskOrganizer.Domain.ContractUseCase
 {
     public interface IGetTasksUseCase
     {
-        IList<DomainTask> Get();
+        IList<DomainTask> GetAll();
+        DomainTask Get();
     }
 }

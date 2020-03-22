@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Security.Cryptography.X509Certificates;
 using System.Collections.Generic;
 using TaskOrganizer.Domain.Entities;
 using TaskOrganizer.Repository.Context;
@@ -10,11 +8,11 @@ using TaskOrganizer.Repository.Entities;
 
 namespace TaskOrganizer.Repository
 {
-    public class TaskReadOnlyRepositoy : ITaskReadOnlyRepository
+    public class TaskReadOnlyRepository : ITaskReadOnlyRepository
     {
         private readonly TaskOrganizerContext _context;
 
-        public TaskReadOnlyRepositoy(TaskOrganizerContext context)
+        public TaskReadOnlyRepository(TaskOrganizerContext context)
         {
             _context = context;
         }

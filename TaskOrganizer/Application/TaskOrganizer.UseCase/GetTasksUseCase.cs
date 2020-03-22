@@ -13,15 +13,15 @@ namespace TaskOrganizer.UseCase
         {
             _taskReadOnlyRepositoy = taskReadOnlyRepositoy;
         }
+        public DomainTask Get(int id)
+        {
+            return _taskReadOnlyRepositoy.Get(id);
+        }
 
         public IList<DomainTask> GetAll()
         {
             return _taskReadOnlyRepositoy.GetAll();
         }
 
-        public DomainTask Get()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

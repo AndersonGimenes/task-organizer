@@ -18,10 +18,10 @@ namespace TaskOrganizer.Repository
         public void Add(DomainTask domainTask)
         {
             var returned = MapperDomainTaskToRepositoryTask(domainTask); 
-
+                        
             _context.Add(returned);
-
             _context.SaveChanges();
+            
         }
 
         public void Delete(DomainTask domainTask)

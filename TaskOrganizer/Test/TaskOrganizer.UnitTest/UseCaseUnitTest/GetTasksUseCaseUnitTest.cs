@@ -47,7 +47,13 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
 
         private DomainTask DomainTaskGenerator(string title)
         {
-            var data = new DomainTask { CreateDate = DateTime.Now, EstimetedDate = DateTime.Now.AddDays(30), Progress = Progress.ToDo, IsNew = true };
+            var data = new DomainTask 
+            { 
+                CreateDate = DateTime.Now,
+                EstimetedDate = DateTime.Now.AddDays(30),
+                Progress = Progress.ToDo,
+                IsNew = true 
+            };
             data.SetTitle(title);
             data.SetDescription("Description test");
 

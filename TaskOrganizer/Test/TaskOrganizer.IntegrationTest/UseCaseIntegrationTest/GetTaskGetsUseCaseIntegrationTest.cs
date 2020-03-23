@@ -1,3 +1,4 @@
+using System.Linq;
 using TaskOrganizer.IntegrationTest.UseCaseIntegrationTest.Common;
 using TaskOrganizer.Repository;
 using TaskOrganizer.UseCase;
@@ -20,11 +21,12 @@ namespace TaskOrganizer.IntegrationTest.UseCaseIntegrationTest
 
             var mock = MockDataTask.MockDataTest();
             taskWriteDeleteOnlyRepository.Add(mock);
-                
 
-            var returned = _getTasksUseCase.Get(1);
+            var id = _getTasksUseCase.GetAll().Last().TaskNumeber;
 
-             var returnTest = returned.TaskNumeber.Equals(1) &&
+            var returned = _getTasksUseCase.Get(id);
+
+             var returnTest = returned.TaskNumeber.Equals(id) &&
                               returned.Title.Equals(mock.Title) &&
                               returned.Description.Equals(mock.Description) &&
                               returned.CreateDate.Equals(mock.CreateDate) &&

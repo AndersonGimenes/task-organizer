@@ -26,7 +26,7 @@ namespace TaskOrganizer.IntegrationTest.UseCaseIntegrationTest
 
             var returned = _getTasksUseCase.GetAll();
 
-            Assert.True(returned.Count.Equals(4));
+            Assert.True(returned.Count > 0);
           
         }
 

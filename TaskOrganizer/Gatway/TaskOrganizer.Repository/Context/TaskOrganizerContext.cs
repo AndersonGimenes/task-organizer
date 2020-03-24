@@ -20,11 +20,13 @@ namespace TaskOrganizer.Repository.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if(optionsBuilder.IsConfigured) return;
+            if(optionsBuilder.IsConfigured)
+                return;
+                
             optionsBuilder.UseNpgsql(ReturnConnectionString());
+            
         }
             
-
         public virtual DbSet<RepositoryTask> RepositoryTasks { get; set; }
         public virtual DbSet<ProgressType> ProgressTypes { get; set; }
 
@@ -72,8 +74,8 @@ namespace TaskOrganizer.Repository.Context
 
         private string ReturnConnectionString()
         {
-            var file = Path.Combine(Directory.GetCurrentDirectory(), "config.json");  
-            var JSON = System.IO.File.ReadAllText(file);
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "config.json");  
+            var JSON = System.IO.File.ReadAllText(filePath);
             dynamic returned = Newtonsoft.Json.JsonConvert.DeserializeObject(JSON);
 
             return (string)returned["connectionString"];

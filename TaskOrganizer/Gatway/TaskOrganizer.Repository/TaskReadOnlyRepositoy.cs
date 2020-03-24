@@ -19,17 +19,17 @@ namespace TaskOrganizer.Repository
 
         public DomainTask Get(int id)
         {
-            var returned = _context.RepositoryTasks.Single(x => x.TaskId.Equals(id));
-            return RepositoryTaskToMapperDomainTask(returned);
+            var domainTask = _context.RepositoryTasks.Single(x => x.TaskId.Equals(id));
+            return RepositoryTaskToMapperDomainTask(domainTask);
         }
 
         public IList<DomainTask> GetAll()
         {
-            var returned = _context.RepositoryTasks.Select(x => x).ToList();
-            return ReturnDomainTaskList(returned);
+            var domainTask = _context.RepositoryTasks.Select(x => x).ToList();
+            return ReturnDomainTaskList(domainTask);
         }
 
-        #region AuxilaryMethods
+        #region AuxiliaryMethods
 
         private IList<DomainTask> ReturnDomainTaskList(List<RepositoryTask> list)
         {

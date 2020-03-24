@@ -17,21 +17,26 @@ namespace TaskOrganizer.Repository
 
         public void Add(DomainTask domainTask)
         {
-            var returned = MapperDomainTaskToRepositoryTask(domainTask); 
+            var repositoryTask = MapperDomainTaskToRepositoryTask(domainTask); 
                         
-            _context.Add(returned);
+            _context.Add(repositoryTask);
             _context.SaveChanges();
-            
         }
 
         public void Delete(DomainTask domainTask)
         {
-            throw new System.NotImplementedException();
+            var repositoryTask = MapperDomainTaskToRepositoryTask(domainTask);
+
+            _context.Remove(repositoryTask);
+            _context.SaveChanges();
         }
 
         public void Update(DomainTask domainTask)
         {
-            throw new System.NotImplementedException();
+            var repositoryTask = MapperDomainTaskToRepositoryTask(domainTask);
+            
+            _context.Update(repositoryTask);
+            _context.SaveChanges();
         }
 
         #region AuxiliaryMethods

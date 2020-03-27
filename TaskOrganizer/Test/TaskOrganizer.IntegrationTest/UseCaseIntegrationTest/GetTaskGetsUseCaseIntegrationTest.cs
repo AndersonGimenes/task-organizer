@@ -27,18 +27,14 @@ namespace TaskOrganizer.IntegrationTest.UseCaseIntegrationTest
         {
             var mock = MockDataTask.MockDataTest();
             _taskWriteDeleteOnlyRepository.Add(mock);
+            Helper.IncrementId();
 
-            var id = _getTasksUseCase.GetAll().Last().TaskNumeber;
+            var returnTask = _getTasksUseCase.Get(Helper.IdBase);
 
-            var returnTask = _getTasksUseCase.Get(id);
-
-             var returnTest = returnTask.TaskNumeber.Equals(id) &&
-                              returnTask.Title.Equals(mock.Title) &&
-                              returnTask.Description.Equals(mock.Description) &&
-                              returnTask.CreateDate.Equals(mock.CreateDate) &&
-                              returnTask.EstimetedDate.Equals(mock.EstimetedDate);
-                             
-            Assert.True(returnTest);
+            Assert.Equal(returnTask.Title, mock.Title);
+            Assert.Equal(returnTask.Description, mock.Description);
+            Assert.Equal(returnTask.CreateDate, mock.CreateDate);
+            Assert.Equal(returnTask.EstimetedDate, mock.EstimetedDate);
 
         }
 

@@ -8,15 +8,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskOrganizer.Domain", "App
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskOrganizer.UseCase", "Application\TaskOrganizer.UseCase\TaskOrganizer.UseCase.csproj", "{FEC69B45-387C-4E43-BF67-4EFDD02851D1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gatway", "Gatway", "{CFDD24E7-96CE-4DB3-9227-C20C5473EBA8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{CFDD24E7-96CE-4DB3-9227-C20C5473EBA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskOrganizer.Repository", "Gatway\TaskOrganizer.Repository\TaskOrganizer.Repository.csproj", "{A503CC64-DA7F-4061-89D6-152C8B0C42D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskOrganizer.Repository", "Gateway\TaskOrganizer.Repository\TaskOrganizer.Repository.csproj", "{A503CC64-DA7F-4061-89D6-152C8B0C42D8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{1AC3CBB1-FE45-4C19-81A2-DED672BDE1D8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskOrganizer.UnitTest", "Test\TaskOrganizer.UnitTest\TaskOrganizer.UnitTest.csproj", "{7B2EC0F3-B805-42A5-BA5F-DECA036A7FEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskOrganizer.Api", "Gatway\TaskOrganizer.Api\TaskOrganizer.Api.csproj", "{4474903B-18F4-4DD2-BCE7-C98C56F066C4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskOrganizer.Api", "Gateway\TaskOrganizer.Api\TaskOrganizer.Api.csproj", "{4474903B-18F4-4DD2-BCE7-C98C56F066C4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskOrganizer.IntegrationTest", "Test\TaskOrganizer.IntegrationTest\TaskOrganizer.IntegrationTest.csproj", "{CF3EBDFE-CD82-4D5F-8193-E0462DCDEE37}"
 EndProject

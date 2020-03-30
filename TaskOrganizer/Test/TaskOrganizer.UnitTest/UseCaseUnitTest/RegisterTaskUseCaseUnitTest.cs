@@ -22,10 +22,7 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
         [Fact]
         public void ThereMustBeACreateDateEqualToTheCurrentDate()
         {
-            var domainTask = new DomainTask
-            {
-                IsNew = true
-            };
+            var domainTask = new DomainTask();
 
             _registerTaskUseCase.Register(domainTask);  
 
@@ -33,31 +30,28 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
         }
         
         [Fact]
-        public void IfThereIsNotEstimetedDateFilledAssumeTheCurrentDatePlusThirty()
+        public void IfThereIsNotEstimatedDateFilledAssumeTheCurrentDatePlusThirty()
         {
             var domainTask = new DomainTask();
 
             _registerTaskUseCase.Register(domainTask);
 
-            Assert.True(domainTask.EstimetedDate.Equals(DateTime.Now.Date.AddDays(30)));
+            Assert.True(domainTask.EstimatedDate.Equals(DateTime.Now.Date.AddDays(30)));
         }
         
         [Fact]
-        public void IfThereIsEstimetedDateFilledThenKeepTheDateFilled()
+        public void IfThereIsEstimatedDateFilledThenKeepTheDateFilled()
         {
-            var domainTask = new DomainTask{EstimetedDate = DateTime.Now.Date.AddDays(10)};
+            var domainTask = new DomainTask{EstimatedDate = DateTime.Now.Date.AddDays(10)};
             _registerTaskUseCase.Register(domainTask);
 
-            Assert.True(domainTask.EstimetedDate.Equals(DateTime.Now.Date.AddDays(10)));
+            Assert.True(domainTask.EstimatedDate.Equals(DateTime.Now.Date.AddDays(10)));
         }
 
         [Fact]
         public void WhenCreatingNewRegisterTheSystemWillPutAutomaticallyTheProgressWithToDo()
         {
-            var domainTask = new DomainTask
-            {
-                IsNew = true
-            };
+            var domainTask = new DomainTask();
             
             _registerTaskUseCase.Register(domainTask);  
 

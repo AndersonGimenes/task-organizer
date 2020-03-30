@@ -16,9 +16,9 @@ namespace TaskOrganizer.UseCase
 
         public void Register(DomainTask domainTask)
         {
-            if(domainTask.EstimetedDate.Date.Equals(new DateTime().Date))
+            if(domainTask.EstimatedDate.Date.Equals(new DateTime().Date))
             {
-                domainTask.EstimetedDate = DateTime.Now.Date.AddDays(30);
+                domainTask.EstimatedDate = DateTime.Now.Date.AddDays(30);
             }
 
             DecideFlow(domainTask);
@@ -27,7 +27,7 @@ namespace TaskOrganizer.UseCase
 
         private void DecideFlow(DomainTask domainTask)
         {
-            if(domainTask.IsNew)
+            if(domainTask.TaskNumeber.Equals(0))
             {
                 domainTask.CreateDate = DateTime.Now.Date;
                 domainTask.Progress = Progress.ToDo;

@@ -56,7 +56,7 @@ namespace TaskOrganizer.Repository.Context
                 .IsRequired();
 
             repositoyTask
-                .Property(x => x.EstimetedDate)
+                .Property(x => x.EstimatedDate)
                 .IsRequired();
 
             var progressType = modelBuilder.Entity<ProgressType>();
@@ -74,7 +74,7 @@ namespace TaskOrganizer.Repository.Context
 
         private string ReturnConnectionString()
         {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "config.json");  
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "../TaskOrganizer.Api/appsettings.json");  
             var JSON = System.IO.File.ReadAllText(filePath);
             dynamic returned = Newtonsoft.Json.JsonConvert.DeserializeObject(JSON);
 

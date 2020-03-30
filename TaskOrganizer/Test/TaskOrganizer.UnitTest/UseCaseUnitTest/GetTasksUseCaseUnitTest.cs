@@ -50,9 +50,8 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
             var data = new DomainTask 
             { 
                 CreateDate = DateTime.Now,
-                EstimetedDate = DateTime.Now.AddDays(30),
-                Progress = Progress.ToDo,
-                IsNew = true 
+                EstimatedDate = DateTime.Now.AddDays(30),
+                Progress = Progress.ToDo
             };
             data.SetTitle(title);
             data.SetDescription("Description test");

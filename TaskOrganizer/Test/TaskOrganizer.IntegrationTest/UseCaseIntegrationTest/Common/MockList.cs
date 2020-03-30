@@ -9,9 +9,9 @@ namespace TaskOrganizer.IntegrationTest.UseCaseIntegrationTest.Common
         {
             var domainTask = new DomainTask
             {
-                EstimetedDate = DateTime.Now.Date.AddDays(25),
-                IsNew = true
+                EstimatedDate = DateTime.Now.Date.AddDays(25)
             };
+            
             domainTask.SetTitle("Title test");
             domainTask.SetDescription("Description test");
 

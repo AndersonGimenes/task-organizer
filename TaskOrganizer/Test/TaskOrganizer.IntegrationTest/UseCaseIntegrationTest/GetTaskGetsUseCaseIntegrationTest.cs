@@ -34,7 +34,7 @@ namespace TaskOrganizer.IntegrationTest.UseCaseIntegrationTest
             Assert.Equal(returnTask.Title, mock.Title);
             Assert.Equal(returnTask.Description, mock.Description);
             Assert.Equal(returnTask.CreateDate, mock.CreateDate);
-            Assert.Equal(returnTask.EstimetedDate, mock.EstimetedDate);
+            Assert.Equal(returnTask.EstimatedDate, mock.EstimatedDate);
 
         }
 

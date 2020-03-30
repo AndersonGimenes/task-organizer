@@ -48,8 +48,7 @@ namespace TaskOrganizer.Repository
                 .ForMember(dest => dest.ProgressId, opt => opt.MapFrom(x => (int)x.Progress));
             }); 
 
-            IMapper mapper = config.CreateMapper();
-            return mapper.Map<DomainTask, RepositoryTask>(domainTask);            
+            return config.CreateMapper().Map<DomainTask, RepositoryTask>(domainTask);            
         }
 
         #endregion

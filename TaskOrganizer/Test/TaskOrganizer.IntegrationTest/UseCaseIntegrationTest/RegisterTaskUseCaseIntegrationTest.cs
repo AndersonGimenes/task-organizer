@@ -41,7 +41,7 @@ namespace TaskOrganizer.IntegrationTest.RepositoryTest
             Assert.Equal(returnTask.Title, mock.Title);
             Assert.Equal(returnTask.Description, mock.Description);
             Assert.Equal(returnTask.CreateDate, mock.CreateDate);
-            Assert.Equal(returnTask.EstimetedDate, mock.EstimetedDate);
+            Assert.Equal(returnTask.EstimatedDate, mock.EstimatedDate);
    
         }
 
@@ -52,8 +52,7 @@ namespace TaskOrganizer.IntegrationTest.RepositoryTest
             // Change the task
             repsitoryTaskUpdate.SetDescription("Update Description");
             repsitoryTaskUpdate.SetTitle("Update Title");
-            repsitoryTaskUpdate.IsNew = false;
-
+            
             // Update task
             _registerTaskUseCase.Register(repsitoryTaskUpdate);
             
@@ -62,7 +61,7 @@ namespace TaskOrganizer.IntegrationTest.RepositoryTest
             Assert.Equal(returnTask.Title, repsitoryTaskUpdate.Title);
             Assert.Equal(returnTask.Description, repsitoryTaskUpdate.Description);
             Assert.Equal(returnTask.CreateDate, repsitoryTaskUpdate.CreateDate);
-            Assert.Equal(returnTask.EstimetedDate, repsitoryTaskUpdate.EstimetedDate);
+            Assert.Equal(returnTask.EstimatedDate, repsitoryTaskUpdate.EstimatedDate);
         }
         
     }

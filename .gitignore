@@ -357,5 +357,4 @@ MigrationBackup/
 .vscode
 
 #Configuration
-config.json
-./TaskOrganizer/Gateway/TaskOraganizer.Api/appsettings.json
+appsettings.json

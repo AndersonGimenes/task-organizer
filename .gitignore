@@ -358,4 +358,4 @@ MigrationBackup/
 
 #Configuration
 config.json
-appsettings.json
+./TaskOrganizer/Gateway/TaskOraganizer.Api/appsettings.json

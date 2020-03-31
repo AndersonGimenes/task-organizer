@@ -52,12 +52,15 @@ namespace TaskOrganizer.Api.Controllers
         }   
 
         [HttpPost]
-        public IActionResult Insert([FromBody] TaskIn taskIn)
+        public IActionResult Insert([FromBody] TaskRequest taskRequest)
         {
             try
             {
-                _registerTaskUseCase.Register(MapperTaskInToDomainTask(taskIn));
-                return Ok();
+                var taskResponse = taskRequest;
+                var id = _registerTaskUseCase.Register(MapperTaskInToDomainTask(taskRequest));
+                var uri = Url.Action("Get", new {taskNumber = id});
+
+                return Created(uri, taskResponse);
             }
             catch
             {
@@ -66,11 +69,11 @@ namespace TaskOrganizer.Api.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update([FromBody] TaskIn taskIn)
+        public IActionResult Update([FromBody] TaskRequest taskRequest)
         {
             try
             {
-                _registerTaskUseCase.Register(MapperTaskInToDomainTask(taskIn));
+                _registerTaskUseCase.Register(MapperTaskInToDomainTask(taskRequest));
                 return Ok();
             }
             catch
@@ -81,11 +84,11 @@ namespace TaskOrganizer.Api.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete([FromBody] TaskIn taskIn)
+        public IActionResult Delete([FromBody] TaskRequest taskRequest)
         {
             try
             {
-                _deleteTaskUseCase.Delete(MapperTaskInToDomainTask(taskIn));
+                _deleteTaskUseCase.Delete(MapperTaskInToDomainTask(taskRequest));
                 return NoContent();
             }
             catch
@@ -97,9 +100,9 @@ namespace TaskOrganizer.Api.Controllers
 
         #region AuxiliaryMethods
 
-        private IList<TaskOut> ReturnApiOutList(IList<DomainTask> list)
+        private IList<TaskResponse> ReturnApiOutList(IList<DomainTask> list)
         {
-            var listReturn = new List<TaskOut>();
+            var listReturn = new List<TaskResponse>();
             foreach(var item in list)
             {
                 listReturn.Add(MapperDomainTaskToTaskOut(item));
@@ -108,22 +111,22 @@ namespace TaskOrganizer.Api.Controllers
             return listReturn;
         }
 
-        private TaskOut MapperDomainTaskToTaskOut(DomainTask domainTask)
+        private TaskResponse MapperDomainTaskToTaskOut(DomainTask domainTask)
         {
             var config = new MapperConfiguration(
-                cfg => {cfg.CreateMap<DomainTask, TaskOut>();}
+                cfg => {cfg.CreateMap<DomainTask, TaskResponse>();}
             );  
 
-            return config.CreateMapper().Map<DomainTask, TaskOut>(domainTask);      
+            return config.CreateMapper().Map<DomainTask, TaskResponse>(domainTask);      
         }
 
-        private DomainTask MapperTaskInToDomainTask(TaskIn taskIn)
+        private DomainTask MapperTaskInToDomainTask(TaskRequest taskRequest)
         {
             var config = new MapperConfiguration(
-                cfg => {cfg.CreateMap<TaskIn, DomainTask>();}
+                cfg => {cfg.CreateMap<TaskRequest, DomainTask>();}
             );  
 
-            return config.CreateMapper().Map<TaskIn, DomainTask>(taskIn);      
+            return config.CreateMapper().Map<TaskRequest, DomainTask>(taskRequest);      
         }
 
         #endregion

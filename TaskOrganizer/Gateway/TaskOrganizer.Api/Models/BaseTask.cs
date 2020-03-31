@@ -2,8 +2,9 @@ using System;
 
 namespace TaskOrganizer.Api.Models
 {
-    public class TaskIn
+    public abstract class BaseTask
     {
+        
         public int TaskNumeber { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

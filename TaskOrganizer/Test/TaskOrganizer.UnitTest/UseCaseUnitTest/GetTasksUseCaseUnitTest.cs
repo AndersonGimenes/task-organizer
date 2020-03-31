@@ -33,6 +33,21 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
                                             task => Assert.Contains("Title four", task.Title));
         }
 
+        [Fact]
+        public void MustReturnOnlyTask()
+        {
+            var mockTask = DomainTaskGenerator("Test Get");
+            mockTask.TaskNumeber = 1;
+
+            _mockTaskReadOnlyRepository.Setup(x => x.Get(It.IsAny<int>())).Returns(mockTask);
+            _getTasksUseCase = new GetTasksUseCase(_mockTaskReadOnlyRepository.Object);
+
+            var resultReturn = _getTasksUseCase.Get(1);
+
+            Assert.Equal(resultReturn.TaskNumeber, 1);
+            Assert.Equal(resultReturn.Title, "Test Get");
+        }
+
         #region AuxiliaryMethods
         private IList<DomainTask> MockListTask()
         {

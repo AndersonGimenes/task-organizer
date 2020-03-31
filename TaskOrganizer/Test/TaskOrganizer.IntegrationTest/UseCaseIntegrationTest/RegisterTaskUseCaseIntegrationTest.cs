@@ -26,17 +26,15 @@ namespace TaskOrganizer.IntegrationTest.RepositoryTest
         }
 
 
-        [Fact(Skip = "Fix this")]
+        [Fact]
         public void MustInsertTheNewTask()
         {
             var mock = MockDataTask.MockDataTest();
             mock.SetDescription("Changed description test");
 
-            _registerTaskUseCase.Register(mock);
+            var id = _registerTaskUseCase.Register(mock);
 
-            Helper.IncrementId();
-
-            var returnTask = _taskReadOnlyRepository.Get(Helper.IdBase);
+            var returnTask = _taskReadOnlyRepository.Get(id);
             
             Assert.Equal(returnTask.Title, mock.Title);
             Assert.Equal(returnTask.Description, mock.Description);
@@ -51,11 +49,10 @@ namespace TaskOrganizer.IntegrationTest.RepositoryTest
             var repsitoryTaskUpdate = InsertTaskToTest.InsertAndReturTask();
             // Change the task
             repsitoryTaskUpdate.SetDescription("Update Description");
-            repsitoryTaskUpdate.SetTitle("Update Title");
-            
+            repsitoryTaskUpdate.SetTitle("Update Title");            
             // Update task
             _registerTaskUseCase.Register(repsitoryTaskUpdate);
-            
+                        
             var returnTask = _taskReadOnlyRepository.Get(repsitoryTaskUpdate.TaskNumeber);
 
             Assert.Equal(returnTask.Title, repsitoryTaskUpdate.Title);

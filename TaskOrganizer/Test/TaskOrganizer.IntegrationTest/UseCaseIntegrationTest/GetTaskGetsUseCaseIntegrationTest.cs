@@ -26,10 +26,9 @@ namespace TaskOrganizer.IntegrationTest.UseCaseIntegrationTest
         public void MustReturnJustOnlyTask()
         {
             var mock = MockDataTask.MockDataTest();
-            _taskWriteDeleteOnlyRepository.Add(mock);
-            Helper.IncrementId();
-
-            var returnTask = _getTasksUseCase.Get(Helper.IdBase);
+            var id = _taskWriteDeleteOnlyRepository.Add(mock);
+            
+            var returnTask = _getTasksUseCase.Get(id);
 
             Assert.Equal(returnTask.Title, mock.Title);
             Assert.Equal(returnTask.Description, mock.Description);

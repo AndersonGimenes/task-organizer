@@ -25,7 +25,7 @@ namespace TaskOrganizer.Repository
 
         public IList<DomainTask> GetAll()
         {
-            var domainTask = _context.RepositoryTasks.Select(x => x).ToList();
+            var domainTask = _context.RepositoryTasks.ToList();
             return ReturnDomainTaskList(domainTask);
         }
 

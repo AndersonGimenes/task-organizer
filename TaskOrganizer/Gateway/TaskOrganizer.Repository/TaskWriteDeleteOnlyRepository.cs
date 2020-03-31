@@ -15,12 +15,14 @@ namespace TaskOrganizer.Repository
             _context = context;
         }
 
-        public void Add(DomainTask domainTask)
+        public int Add(DomainTask domainTask)
         {
             var repositoryTask = MapperDomainTaskToRepositoryTask(domainTask); 
                         
             _context.Add(repositoryTask);
             _context.SaveChanges();
+
+            return repositoryTask.TaskId;
         }
 
         public void Delete(DomainTask domainTask)

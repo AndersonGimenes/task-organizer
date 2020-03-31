@@ -16,10 +16,9 @@ namespace TaskOrganizer.IntegrationTest.UseCaseIntegrationTest.Common
                 var taskReadOnlyRepositoy = new TaskReadOnlyRepository(context);
 
                 var mock = MockDataTask.MockDataTest();
-                taskWriteDeleteOnlyRepository.Add(mock);
-                Helper.IncrementId();
-
-                task = taskReadOnlyRepositoy.Get(Helper.IdBase);
+                var id = taskWriteDeleteOnlyRepository.Add(mock);
+                
+                task = taskReadOnlyRepositoy.Get(id);
             } 
             
             return task;

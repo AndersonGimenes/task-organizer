@@ -28,12 +28,11 @@ namespace TaskOrganizer.IntegrationTest.UseCaseIntegrationTest
             for(var x = 0; x < 4; x++)
             {                       
                 _taskWriteDeleteOnlyRepository.Add(MockDataTask.MockDataTest());
-                Helper.IncrementId();
             }  
 
-            var returnTask = _getTasksUseCase.Get(Helper.IdBase);
+            var returnTask = _getTasksUseCase.GetAll();
 
-            Assert.Equal(returnTask.TaskNumeber, Helper.IdBase);
+            Assert.True(returnTask.Count > 0);
           
         }
 

@@ -44,8 +44,11 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
 
             var resultReturn = _getTasksUseCase.Get(1);
 
-            Assert.Equal(resultReturn.TaskNumeber, 1);
-            Assert.Equal(resultReturn.Title, "Test Get");
+            var id = 1;
+            var title = "Test Get";
+
+            Assert.Equal(resultReturn.TaskNumeber, id);
+            Assert.Equal(resultReturn.Title, title);
         }
 
         #region AuxiliaryMethods

@@ -11,6 +11,8 @@ namespace TaskOrganizer.Domain.Entities
         public DateTime CreateDate { get; set; }
         public DateTime EstimatedDate { get; set; }
         public Progress Progress { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         
         public void SetTitle(string title)
         {

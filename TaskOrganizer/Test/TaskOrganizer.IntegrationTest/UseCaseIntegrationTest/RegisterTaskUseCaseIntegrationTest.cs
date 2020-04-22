@@ -22,7 +22,7 @@ namespace TaskOrganizer.IntegrationTest.RepositoryTest
             _context = DataBaseInMemory.ReturnContext();
             _taskReadOnlyRepository = new TaskReadOnlyRepository(_context);
             _taskWriteDeleteOnlyRepository = new TaskWriteDeleteOnlyRepository(_context);            
-            _registerTaskUseCase = new RegisterTaskUseCase(_taskWriteDeleteOnlyRepository);
+            _registerTaskUseCase = new RegisterTaskUseCase(_taskWriteDeleteOnlyRepository, null);
         }
 
 

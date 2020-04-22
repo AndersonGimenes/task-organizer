@@ -16,19 +16,9 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
         public RegisterTaskUseCaseUnitTest()
         {
             _mockTaskWriteDeleteOnlyRepository = new Mock<ITaskWriteDeleteOnlyRepository>();
-            _registerTaskUseCase = new RegisterTaskUseCase(_mockTaskWriteDeleteOnlyRepository.Object);
+            _registerTaskUseCase = new RegisterTaskUseCase(_mockTaskWriteDeleteOnlyRepository.Object, null);
         }
 
-        [Fact]
-        public void ThereMustBeACreateDateEqualToTheCurrentDate()
-        {
-            var domainTask = new DomainTask();
-
-            _registerTaskUseCase.Register(domainTask);  
-
-            Assert.True(domainTask.CreateDate.Equals(DateTime.Now.Date));
-        }
-        
         [Fact]
         public void IfThereIsNotEstimatedDateFilledAssumeTheCurrentDatePlusThirty()
         {

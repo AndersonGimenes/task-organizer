@@ -1,12 +1,8 @@
-﻿using System.Linq;
-using System;
-using System.Collections.Generic;
-using AutoMapper;
+﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using TaskOrganizer.Api.Models;
-using TaskOrganizer.Domain.Entities;
-using TaskOrganizer.UseCase.ContractRepository;
 using TaskOrganizer.Domain.ContractUseCase;
+using TaskOrganizer.Api.Controllers.Commom;
 
 namespace TaskOrganizer.Api.Controllers
 {
@@ -15,7 +11,7 @@ namespace TaskOrganizer.Api.Controllers
     public class ToDoController : ControllerBase
     {
         private readonly IGetTasksUseCase _getTasksUseCase;
-        private IRegisterTaskUseCase _registerTaskUseCase;
+        private readonly IRegisterTaskUseCase _registerTaskUseCase;
         private readonly IDeleteTaskUseCase _deleteTaskUseCase;
 
         public ToDoController(IGetTasksUseCase getTasksUseCase, IRegisterTaskUseCase registerTaskUseCase, IDeleteTaskUseCase deleteTaskUseCase)
@@ -25,12 +21,12 @@ namespace TaskOrganizer.Api.Controllers
             _deleteTaskUseCase = deleteTaskUseCase;
         }
 
-        [HttpGet]
+         [HttpGet]
         public IActionResult GetAll()
         {
             try
             {
-                return Ok(ReturnApiOutList(_getTasksUseCase.GetAll()));
+                return Ok(Helper.ReturnApiOutList(_getTasksUseCase.GetAll()));
             }
             catch
             {
@@ -43,24 +39,24 @@ namespace TaskOrganizer.Api.Controllers
         {
             try
             {
-                return Ok(MapperDomainTaskToTaskOut(_getTasksUseCase.Get(taskNumber)));
+                return Ok(Helper.MapperDomainTaskToTaskOut(_getTasksUseCase.Get(taskNumber)));
             }
             catch
             {
                 return NotFound();
             }
         }   
-
+    
         [HttpPost]
         public IActionResult Insert([FromBody] TaskRequest taskRequest)
         {
             try
             {
-                var taskResponse = taskRequest;
-                var id = _registerTaskUseCase.Register(MapperTaskInToDomainTask(taskRequest));
+                taskRequest.CreateDate = DateTime.Now.Date;
+                var id = _registerTaskUseCase.Register(Helper.MapperTaskInToDomainTask(taskRequest));
                 var uri = Url.Action("Get", new {taskNumber = id});
 
-                return Created(uri, taskResponse);
+                return Created(uri, taskRequest);
             }
             catch
             {
@@ -73,7 +69,7 @@ namespace TaskOrganizer.Api.Controllers
         {
             try
             {
-                _registerTaskUseCase.Register(MapperTaskInToDomainTask(taskRequest));
+                _registerTaskUseCase.Register(Helper.MapperTaskInToDomainTask(taskRequest));
                 return Ok();
             }
             catch
@@ -82,13 +78,13 @@ namespace TaskOrganizer.Api.Controllers
             }
            
         }
-
+    
         [HttpDelete]
         public IActionResult Delete([FromBody] TaskRequest taskRequest)
         {
             try
             {
-                _deleteTaskUseCase.Delete(MapperTaskInToDomainTask(taskRequest));
+                _deleteTaskUseCase.Delete(Helper.MapperTaskInToDomainTask(taskRequest));
                 return NoContent();
             }
             catch
@@ -96,39 +92,5 @@ namespace TaskOrganizer.Api.Controllers
                 return NotFound();
             }
         }
-        
-
-        #region AuxiliaryMethods
-
-        private IList<TaskResponse> ReturnApiOutList(IList<DomainTask> list)
-        {
-            var listReturn = new List<TaskResponse>();
-            foreach(var item in list)
-            {
-                listReturn.Add(MapperDomainTaskToTaskOut(item));
-            }
-            
-            return listReturn;
-        }
-
-        private TaskResponse MapperDomainTaskToTaskOut(DomainTask domainTask)
-        {
-            var config = new MapperConfiguration(
-                cfg => {cfg.CreateMap<DomainTask, TaskResponse>();}
-            );  
-
-            return config.CreateMapper().Map<DomainTask, TaskResponse>(domainTask);      
-        }
-
-        private DomainTask MapperTaskInToDomainTask(TaskRequest taskRequest)
-        {
-            var config = new MapperConfiguration(
-                cfg => {cfg.CreateMap<TaskRequest, DomainTask>();}
-            );  
-
-            return config.CreateMapper().Map<TaskRequest, DomainTask>(taskRequest);      
-        }
-
-        #endregion
     }
 }

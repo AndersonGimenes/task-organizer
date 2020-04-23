@@ -1,5 +1,7 @@
+using System;
 using System.Linq;
 using TaskOrganizer.Domain.ContractUseCase;
+using TaskOrganizer.Domain.Entities;
 using TaskOrganizer.IntegrationTest.UseCaseIntegrationTest;
 using TaskOrganizer.IntegrationTest.UseCaseIntegrationTest.Common;
 using TaskOrganizer.Repository;
@@ -22,7 +24,7 @@ namespace TaskOrganizer.IntegrationTest.RepositoryTest
             _context = DataBaseInMemory.ReturnContext();
             _taskReadOnlyRepository = new TaskReadOnlyRepository(_context);
             _taskWriteDeleteOnlyRepository = new TaskWriteDeleteOnlyRepository(_context);            
-            _registerTaskUseCase = new RegisterTaskUseCase(_taskWriteDeleteOnlyRepository, null);
+            _registerTaskUseCase = new RegisterTaskUseCase(_taskWriteDeleteOnlyRepository, _taskReadOnlyRepository);
         }
 
 
@@ -31,7 +33,8 @@ namespace TaskOrganizer.IntegrationTest.RepositoryTest
         {
             var mock = MockDataTask.MockDataTest();
             mock.SetDescription("Changed description test");
-
+            mock.CreateDate = DateTime.Now.Date;
+            
             var id = _registerTaskUseCase.Register(mock);
 
             var returnTask = _taskReadOnlyRepository.Get(id);
@@ -40,7 +43,8 @@ namespace TaskOrganizer.IntegrationTest.RepositoryTest
             Assert.Equal(returnTask.Description, mock.Description);
             Assert.Equal(returnTask.CreateDate, mock.CreateDate);
             Assert.Equal(returnTask.EstimatedDate, mock.EstimatedDate);
-   
+            Assert.Equal(returnTask.CreateDate, DateTime.Now.Date);
+            
         }
 
         [Fact]

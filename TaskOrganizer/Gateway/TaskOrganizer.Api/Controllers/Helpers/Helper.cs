@@ -7,9 +7,9 @@ namespace TaskOrganizer.Api.Controllers.Commom
 {
     public static class Helper
     {
-        public static IList<TaskResponse> ReturnApiOutList(IList<DomainTask> list)
+        public static IList<TaskModel> ReturnApiOutList(IList<DomainTask> list)
         {
-            var listReturn = new List<TaskResponse>();
+            var listReturn = new List<TaskModel>();
             foreach(var item in list)
             {
                 listReturn.Add(MapperDomainTaskToTaskOut(item));
@@ -18,22 +18,22 @@ namespace TaskOrganizer.Api.Controllers.Commom
             return listReturn;
         }
 
-        public static TaskResponse MapperDomainTaskToTaskOut(DomainTask domainTask)
+        public static TaskModel MapperDomainTaskToTaskOut(DomainTask domainTask)
         {
             var config = new MapperConfiguration(
-                cfg => {cfg.CreateMap<DomainTask, TaskResponse>();}
+                cfg => {cfg.CreateMap<DomainTask, TaskModel>();}
             );  
 
-            return config.CreateMapper().Map<DomainTask, TaskResponse>(domainTask);      
+            return config.CreateMapper().Map<DomainTask, TaskModel>(domainTask);      
         }
 
-        public static DomainTask MapperTaskInToDomainTask(TaskRequest taskRequest)
+        public static DomainTask MapperTaskInToDomainTask(TaskModel taskModel)
         {
             var config = new MapperConfiguration(
-                cfg => {cfg.CreateMap<TaskRequest, DomainTask>();}
+                cfg => {cfg.CreateMap<TaskModel, DomainTask>();}
             );  
 
-            return config.CreateMapper().Map<TaskRequest, DomainTask>(taskRequest);      
+            return config.CreateMapper().Map<TaskModel, DomainTask>(taskModel);      
         }
 
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using AutoMapper;
 using TaskOrganizer.Api.Models;
@@ -7,18 +8,18 @@ namespace TaskOrganizer.Api.Controllers.Commom
 {
     public static class Helper
     {
-        public static IList<TaskModel> ReturnApiOutList(IList<DomainTask> list)
+        public static IList<TaskModel> ReturnTaskModelList(IList<DomainTask> list)
         {
             var listReturn = new List<TaskModel>();
             foreach(var item in list)
             {
-                listReturn.Add(MapperDomainTaskToTaskOut(item));
+                listReturn.Add(MapperDomainTaskToTaskModel(item));
             }
             
             return listReturn;
         }
 
-        public static TaskModel MapperDomainTaskToTaskOut(DomainTask domainTask)
+        public static TaskModel MapperDomainTaskToTaskModel(DomainTask domainTask)
         {
             var config = new MapperConfiguration(
                 cfg => {cfg.CreateMap<DomainTask, TaskModel>();}
@@ -27,14 +28,22 @@ namespace TaskOrganizer.Api.Controllers.Commom
             return config.CreateMapper().Map<DomainTask, TaskModel>(domainTask);      
         }
 
-        public static DomainTask MapperTaskInToDomainTask(TaskModel taskModel)
+        public static DomainTask MapperTaskModelToDomainTask(TaskModel taskModel)
         {
-            var config = new MapperConfiguration(
-                cfg => {cfg.CreateMap<TaskModel, DomainTask>();}
-            );  
+            var domainTask = new DomainTask
+            {
+                TaskNumeber = taskModel.TaskNumeber,
+                EstimatedDate = taskModel.EstimatedDate,
+                CreateDate = taskModel.CreateDate
+            };
+            domainTask.SetTitle(taskModel.Title);
+            domainTask.SetDescription(taskModel.Description);
+            domainTask.SetProgress(taskModel.Progress);
 
-            return config.CreateMapper().Map<TaskModel, DomainTask>(taskModel);      
+            return domainTask;
+
         }
 
+        
     }
 }

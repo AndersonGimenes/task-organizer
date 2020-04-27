@@ -35,7 +35,7 @@ namespace TaskOrganizer.IntegrationTest.RepositoryTest
             mock.SetDescription("Changed description test");
             mock.CreateDate = DateTime.Now.Date;
             
-            var id = _registerTaskUseCase.Register(mock);
+            var id = _registerTaskUseCase.Register(mock).TaskNumeber;
 
             var returnTask = _taskReadOnlyRepository.Get(id);
             

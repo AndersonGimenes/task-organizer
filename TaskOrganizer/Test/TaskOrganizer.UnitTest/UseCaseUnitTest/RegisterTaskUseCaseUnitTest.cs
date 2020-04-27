@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using System;
 using Moq;
 using TaskOrganizer.Domain.Entities;
@@ -43,16 +42,30 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
         }
 
         [Fact]
-        public void WhenCreatingNewRegisterTheSystemWillPutAutomaticallyTheProgressWithToDo()
+        public void WhenTaskNumberIsZeroNewTaskWillBeAddedAndTheReturnedIdWillNotBeZero()
         {
             var domainTask = new DomainTask();
-            
-            _registerTaskUseCase.Register(domainTask);  
+            domainTask.TaskNumeber = 0;
 
-            Assert.Equal(domainTask.Progress,Progress.ToDo);
+            _mockTaskWriteDeleteOnlyRepository.Setup(x => x.Add(It.IsAny<DomainTask>())).Returns(new DomainTask{TaskNumeber = 1});
+            
+            domainTask.TaskNumeber = _registerTaskUseCase.Register(domainTask).TaskNumeber;  
+
+            Assert.NotEqual(domainTask.TaskNumeber, 0);
         }
 
         [Fact]
+        public void WhenTaskNumberIsZeroNewTaskWillBeAddedAndTheCreatedDateWillBeEqualDateTimeNow()
+        {
+            var domainTask = new DomainTask();
+            domainTask.TaskNumeber = 0;
+
+            _registerTaskUseCase.Register(domainTask);  
+
+            Assert.Equal(domainTask.CreateDate, DateTime.Now.Date);
+        }
+
+        [Fact(Skip="Rule not implemented yet")]
         public void WhenStartDateIsSetThenThePropertyProgressMustBeUpdatedInProgressTask()
         {
             var domainTaskBase = new DomainTask();
@@ -73,7 +86,7 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
             Assert.Equal(domainTask.Progress,Progress.InProgress);
         }
 
-        [Theory]
+        [Theory(Skip="Rule not implemented yet")]
         [InlineData("Title can't be changed", "Requisition title")]
         [InlineData("Estimated date can't be changed", "Base Title")]
         public void UseCaseExceptionMustBeReturnedWhenTheTitleAndEstimetedDateTaskBaseNotEqualTheTitleAndEstimetedDateTaskRequisition(string result, string title)

@@ -26,7 +26,7 @@ namespace TaskOrganizer.IntegrationTest.UseCaseIntegrationTest
         public void MustReturnJustOnlyTask()
         {
             var mock = MockDataTask.MockDataTest();
-            var id = _taskWriteDeleteOnlyRepository.Add(mock);
+            var id = _taskWriteDeleteOnlyRepository.Add(mock).TaskNumeber;
             
             var returnTask = _getTasksUseCase.Get(id);
 

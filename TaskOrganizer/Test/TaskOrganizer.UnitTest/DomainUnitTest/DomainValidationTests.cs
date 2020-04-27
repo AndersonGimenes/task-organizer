@@ -15,7 +15,7 @@ namespace TaskOrganizer.UnitTest.DomainUnitTest
 
             var ex = Assert.Throws<DomainException>(() => domainTask.SetTitle(input));
 
-            Assert.True(ex.Message.Equals(result));
+            Assert.Equal(ex.Message,result);
         }
 
         [Theory]
@@ -26,7 +26,7 @@ namespace TaskOrganizer.UnitTest.DomainUnitTest
 
             domainTask.SetTitle(input);
 
-            Assert.True(input.Equals(result));
+            Assert.Equal(input,result);
         }
 
         [Theory]
@@ -38,7 +38,7 @@ namespace TaskOrganizer.UnitTest.DomainUnitTest
 
             var ex = Assert.Throws<DomainException>(() => domainTask.SetDescription(input));
 
-            Assert.True(ex.Message.Equals(result));
+            Assert.Equal(ex.Message,result);
         }
 
         [Theory]
@@ -49,7 +49,29 @@ namespace TaskOrganizer.UnitTest.DomainUnitTest
 
             domainTask.SetDescription(input);
 
-            Assert.True(input.Equals(result));
+            Assert.Equal(input,result);
+        }
+        [Theory]
+        [InlineData("The progress not set, please inform some Progress!", null)]
+        [InlineData("The progress not set, please inform some Progress!", "")]
+        public void DomainExceptionMustBeReturnedWhenTheProgressIsNullOrEmpty(string result, string input)
+        {
+            var domainTask = new DomainTask();
+
+            var ex = Assert.Throws<DomainException>(() => domainTask.SetProgress(input));
+
+            Assert.Equal(ex.Message,result);
+        }
+
+        [Theory]
+        [InlineData("ToDo", "ToDo")]
+        public void DomainExceptionMustNotBeReturnedWhenTheProgressIsPassed(string result, string input)
+        {
+            var domainTask = new DomainTask();
+
+            domainTask.SetDescription(input);
+
+            Assert.Equal(input,result);
         }
         
     }

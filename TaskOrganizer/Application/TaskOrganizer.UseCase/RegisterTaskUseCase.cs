@@ -16,7 +16,7 @@ namespace TaskOrganizer.UseCase
             _taskReadOnlyRepository = taskReadOnlyRepository;
         }
 
-        public int Register(DomainTask domainTask)
+        public DomainTask Register(DomainTask domainTask)
         {
             if(domainTask.EstimatedDate.Date.Equals(new DateTime().Date))
             {
@@ -27,20 +27,14 @@ namespace TaskOrganizer.UseCase
             
         }
 
-        private int DecideFlow(DomainTask domainTask)
+        private DomainTask DecideFlow(DomainTask domainTask)
         {
             if(domainTask.TaskNumeber.Equals(0))
             {
-                domainTask.Progress = Progress.ToDo;
+                domainTask.CreateDate = DateTime.Now.Date;
                 return _taskWriteDeleteOnlyRepository.Add(domainTask);
             }            
-
-            if(domainTask.StartDate != null)
-            {
-                CheckFieldsInProgress(domainTask);
-                domainTask.Progress = Progress.InProgress;
-            }        
-            
+           
             _taskWriteDeleteOnlyRepository.Update(domainTask);
             
             return default;

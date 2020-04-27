@@ -10,7 +10,7 @@ namespace TaskOrganizer.Domain.Entities
         public string Description { get; private set; }
         public DateTime CreateDate { get; set; }
         public DateTime EstimatedDate { get; set; }
-        public Progress Progress { get; set; }
+        public Progress Progress { get; private set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         
@@ -24,6 +24,25 @@ namespace TaskOrganizer.Domain.Entities
         {
             description.IsValid($"Please type some {nameof(Description)}!");
             this.Description = description;
+        }
+
+        public void SetProgress(string progress){
+            progress.IsValid($"The progress not set, please inform some {nameof(Progress)}!");
+            this.Progress = ChooseProgressType(progress);
+        }
+
+        private Progress ChooseProgressType(string progress)
+        {
+            if(progress.Equals("ToDo")) 
+                return Progress.ToDo;
+
+            if(progress.Equals("InProgress"))
+                return Progress.InProgress;
+
+            if(progress.Equals("Done"))
+                return Progress.Done;
+
+            return default;
         }
     }
 }

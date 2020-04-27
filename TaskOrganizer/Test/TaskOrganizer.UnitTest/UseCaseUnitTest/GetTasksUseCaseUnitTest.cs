@@ -69,7 +69,6 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
             { 
                 CreateDate = DateTime.Now,
                 EstimatedDate = DateTime.Now.AddDays(30),
-                Progress = Progress.ToDo
             };
             data.SetTitle(title);
             data.SetDescription("Description test");

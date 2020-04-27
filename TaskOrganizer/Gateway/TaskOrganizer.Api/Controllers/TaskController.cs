@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using TaskOrganizer.Api.Controllers.Commom;
 using TaskOrganizer.Api.Models;
 using TaskOrganizer.Domain.ContractUseCase;
+using TaskOrganizer.Domain.DomainException;
 
 namespace TaskOrganizer.Api.Controllers
 {
@@ -26,7 +27,7 @@ namespace TaskOrganizer.Api.Controllers
         {
             try
             {
-                return Ok(Helper.ReturnApiOutList(_getTasksUseCase.GetAll()));
+                return Ok(Helper.ReturnTaskModelList(_getTasksUseCase.GetAll()));
             }
             catch
             {
@@ -39,11 +40,11 @@ namespace TaskOrganizer.Api.Controllers
         {
             try
             {
-                return Ok(Helper.MapperDomainTaskToTaskOut(_getTasksUseCase.Get(taskNumber)));
+                return Ok(Helper.MapperDomainTaskToTaskModel(_getTasksUseCase.Get(taskNumber)));
             }
-            catch
+            catch(Exception ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
             }
         }   
     
@@ -52,15 +53,20 @@ namespace TaskOrganizer.Api.Controllers
         {
             try
             {
-                taskModel.CreateDate = DateTime.Now.Date;
-                taskModel.TaskNumeber = _registerTaskUseCase.Register(Helper.MapperTaskInToDomainTask(taskModel));
+                var domainTask = _registerTaskUseCase.Register(Helper.MapperTaskModelToDomainTask(taskModel));
+                taskModel = Helper.MapperDomainTaskToTaskModel(domainTask);
+
                 var uri = Url.Action("Get", new {taskNumber = taskModel.TaskNumeber});
 
                 return Created(uri, taskModel);
             }
-            catch
+            catch(DomainException ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
 
@@ -69,7 +75,7 @@ namespace TaskOrganizer.Api.Controllers
         {
             try
             {
-                _registerTaskUseCase.Register(Helper.MapperTaskInToDomainTask(taskModel));
+                _registerTaskUseCase.Register(Helper.MapperTaskModelToDomainTask(taskModel));
                 return Ok();
             }
             catch
@@ -84,7 +90,7 @@ namespace TaskOrganizer.Api.Controllers
         {
             try
             {
-                _deleteTaskUseCase.Delete(Helper.MapperTaskInToDomainTask(taskModel));
+                _deleteTaskUseCase.Delete(Helper.MapperTaskModelToDomainTask(taskModel));
                 return NoContent();
             }
             catch

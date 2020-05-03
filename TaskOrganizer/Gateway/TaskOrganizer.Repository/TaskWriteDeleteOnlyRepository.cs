@@ -22,7 +22,7 @@ namespace TaskOrganizer.Repository
             _context.Add(repositoryTask);
             _context.SaveChanges();
 
-            domainTask.TaskNumeber = repositoryTask.TaskId;
+            domainTask.TaskNumber = repositoryTask.TaskId;
 
             return domainTask;
         }
@@ -45,10 +45,10 @@ namespace TaskOrganizer.Repository
 
         #region AuxiliaryMethods
 
-        private RepositoryTask MapperDomainTaskToRepositoryTask(DomainTask domainTask){
+        public static RepositoryTask MapperDomainTaskToRepositoryTask(DomainTask domainTask){
             var config = new MapperConfiguration(
                 cfg => { cfg.CreateMap<DomainTask, RepositoryTask>()
-                .ForMember(dest => dest.TaskId, opt => opt.MapFrom(x => x.TaskNumeber))
+                .ForMember(dest => dest.TaskId, opt => opt.MapFrom(x => x.TaskNumber))
                 .ForMember(dest => dest.ProgressId, opt => opt.MapFrom(x => (int)x.Progress));
             }); 
 

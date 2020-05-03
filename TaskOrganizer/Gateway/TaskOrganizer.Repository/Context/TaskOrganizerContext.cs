@@ -1,8 +1,6 @@
-using System.Collections.Generic;
 using System.IO;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Npgsql;
+using Newtonsoft.Json;
 using TaskOrganizer.Repository.Entities;
 
 namespace TaskOrganizer.Repository.Context
@@ -24,7 +22,7 @@ namespace TaskOrganizer.Repository.Context
                 return;
                 
             optionsBuilder.UseNpgsql(ReturnConnectionString());
-            
+                        
         }
             
         public virtual DbSet<RepositoryTask> RepositoryTasks { get; set; }
@@ -76,7 +74,7 @@ namespace TaskOrganizer.Repository.Context
         {
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "../TaskOrganizer.Api/appsettings.json");  
             var JSON = System.IO.File.ReadAllText(filePath);
-            dynamic returned = Newtonsoft.Json.JsonConvert.DeserializeObject(JSON);
+            dynamic returned = JsonConvert.DeserializeObject(JSON);
 
             return (string)returned["connectionString"];
         }

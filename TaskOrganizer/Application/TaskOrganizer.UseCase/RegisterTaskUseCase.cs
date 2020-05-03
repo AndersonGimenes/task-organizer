@@ -29,12 +29,20 @@ namespace TaskOrganizer.UseCase
 
         private DomainTask DecideFlow(DomainTask domainTask)
         {
-            if(domainTask.TaskNumeber.Equals(0))
+            if(domainTask.TaskNumber.Equals(0))
             {
                 domainTask.CreateDate = DateTime.Now.Date;
                 return _taskWriteDeleteOnlyRepository.Add(domainTask);
             }            
            
+            if(domainTask.Progress.Equals(Progress.InProgress))
+            {
+                if(domainTask.StartDate is null)
+                    domainTask.StartDate = DateTime.Now.Date;
+                    
+                CheckFieldsInProgress(domainTask);
+            }
+
             _taskWriteDeleteOnlyRepository.Update(domainTask);
             
             return default;
@@ -42,13 +50,14 @@ namespace TaskOrganizer.UseCase
 
         private void CheckFieldsInProgress(DomainTask domainTask)
         {
-            var task = _taskReadOnlyRepository.Get(domainTask.TaskNumeber);
+            var task = _taskReadOnlyRepository.Get(domainTask.TaskNumber);
 
             if(!task.Title.Equals(domainTask.Title))
                 throw new UseCaseException.UseCaseException("Title can't be changed");
 
             if(!task.EstimatedDate.Equals(domainTask.EstimatedDate))
                 throw new UseCaseException.UseCaseException("Estimated date can't be changed");
+
         }
     }
 }

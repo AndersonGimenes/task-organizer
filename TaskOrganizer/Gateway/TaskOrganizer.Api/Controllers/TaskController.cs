@@ -56,7 +56,7 @@ namespace TaskOrganizer.Api.Controllers
                 var domainTask = _registerTaskUseCase.Register(Helper.MapperTaskModelToDomainTask(taskModel));
                 taskModel = Helper.MapperDomainTaskToTaskModel(domainTask);
 
-                var uri = Url.Action("Get", new {taskNumber = taskModel.TaskNumeber});
+                var uri = Url.Action("Get", new {taskNumber = taskModel.TaskNumber});
 
                 return Created(uri, taskModel);
             }
@@ -84,7 +84,7 @@ namespace TaskOrganizer.Api.Controllers
             }
            
         }
-    
+
         [HttpDelete]
         public IActionResult Delete([FromBody] TaskModel taskModel)
         {

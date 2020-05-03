@@ -5,7 +5,7 @@ namespace TaskOrganizer.Domain.Entities
 {
     public class DomainTask
     {
-        public int TaskNumeber { get; set; }
+        public int TaskNumber { get; set; }
         public string Title { get; private set; }
         public string Description { get; private set; }
         public DateTime CreateDate { get; set; }

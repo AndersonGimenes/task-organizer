@@ -4,7 +4,7 @@ namespace TaskOrganizer.Api.Models
 {
     public class TaskModel
     {        
-        public int TaskNumeber { get; set; }
+        public int TaskNumber { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Progress { get; set; }     

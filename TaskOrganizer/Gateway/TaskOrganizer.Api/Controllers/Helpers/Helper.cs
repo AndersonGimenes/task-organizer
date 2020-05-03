@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using AutoMapper;
 using TaskOrganizer.Api.Models;
@@ -32,7 +31,7 @@ namespace TaskOrganizer.Api.Controllers.Commom
         {
             var domainTask = new DomainTask
             {
-                TaskNumeber = taskModel.TaskNumeber,
+                TaskNumber = taskModel.TaskNumber,
                 EstimatedDate = taskModel.EstimatedDate,
                 CreateDate = taskModel.CreateDate
             };
@@ -43,7 +42,6 @@ namespace TaskOrganizer.Api.Controllers.Commom
             return domainTask;
 
         }
-
-        
+       
     }
 }

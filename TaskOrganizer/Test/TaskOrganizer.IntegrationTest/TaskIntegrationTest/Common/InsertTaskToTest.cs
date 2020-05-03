@@ -1,26 +1,21 @@
-using System.Linq;
 using TaskOrganizer.Domain.Entities;
 using TaskOrganizer.Repository;
+using TaskOrganizer.UseCase.ContractRepository;
 
 namespace TaskOrganizer.IntegrationTest.UseCaseIntegrationTest.Common
 {
     public static class InsertTaskToTest
     {
-        public static DomainTask InsertAndReturTask()
+        public static DomainTask InsertAndReturTask(string progress)
         {
-            DomainTask task = null;
+            DomainTask task;
 
             using(var context = DataBaseInMemory.ReturnContext())
             {
                 var taskWriteDeleteOnlyRepository = new TaskWriteDeleteOnlyRepository(context);
-                var taskReadOnlyRepositoy = new TaskReadOnlyRepository(context);
-
-                var mock = MockDataTask.MockDataTest();
-                var id = taskWriteDeleteOnlyRepository.Add(mock);
-                
-                task = taskReadOnlyRepositoy.Get(id);
-            } 
-            
+                var mock = MockDataTask.MockDataTest(progress);            
+                task = taskWriteDeleteOnlyRepository.Add(mock);
+            }
             return task;
         }
     }

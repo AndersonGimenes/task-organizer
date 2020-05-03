@@ -5,17 +5,18 @@ namespace TaskOrganizer.IntegrationTest.UseCaseIntegrationTest.Common
 {
     public static class MockDataTask
     {
-        public static DomainTask MockDataTest()
+        public static DomainTask MockDataTest(string progress)
         {
             var domainTask = new DomainTask
             {
-                EstimatedDate = DateTime.Now.Date.AddDays(25)
+                EstimatedDate = new DateTime(2020, 05, 15)
             };
-            
-            domainTask.SetTitle("Title test");
-            domainTask.SetDescription("Description test");
+            domainTask.SetTitle("Title insert");
+            domainTask.SetDescription("Description insert");
+            domainTask.SetProgress(progress);
 
             return domainTask;
+            
         }
     }
 }

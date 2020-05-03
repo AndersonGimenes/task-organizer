@@ -5,6 +5,7 @@ using TaskOrganizer.UseCase.ContractRepository;
 using System.Linq;
 using AutoMapper;
 using TaskOrganizer.Repository.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace TaskOrganizer.Repository
 {
@@ -19,13 +20,13 @@ namespace TaskOrganizer.Repository
 
         public DomainTask Get(int id)
         {
-            var domainTask = _context.RepositoryTasks.Single(x => x.TaskId.Equals(id));
+            var domainTask = _context.RepositoryTasks.AsNoTracking().Single(x => x.TaskId.Equals(id));
             return MapperRepositoryTaskToDomainTask(domainTask);
         }
 
         public IList<DomainTask> GetAll()
         {
-            var domainTask = _context.RepositoryTasks.ToList();
+            var domainTask = _context.RepositoryTasks.AsNoTracking().ToList();
             return ReturnDomainTaskList(domainTask);
         }
 
@@ -45,7 +46,7 @@ namespace TaskOrganizer.Repository
         private DomainTask MapperRepositoryTaskToDomainTask(RepositoryTask repositoryTask){
             var config = new MapperConfiguration(
                 cfg => { cfg.CreateMap<RepositoryTask, DomainTask>()
-                .ForMember(dest => dest.TaskNumeber, opt => opt.MapFrom(x => x.TaskId))
+                .ForMember(dest => dest.TaskNumber, opt => opt.MapFrom(x => x.TaskId))
                 .ForMember(dest => dest.Progress, opt => opt.MapFrom(x => (int)x.ProgressId));
             }); 
 

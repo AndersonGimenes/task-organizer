@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Gateway\TaskOrganizer.Repository\TaskOrganizer.Repository.csproj" />
+    <ProjectReference Include="..\..\Gateway\TaskOrganizer.Api\TaskOrganizer.Api.csproj" />
     <ProjectReference Include="..\..\Application\TaskOrganizer.UseCase\TaskOrganizer.UseCase.csproj" />
   </ItemGroup>
 

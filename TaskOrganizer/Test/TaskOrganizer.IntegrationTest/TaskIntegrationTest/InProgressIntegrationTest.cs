@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Moq;
 using Newtonsoft.Json;
 using TaskOrganizer.Api.Controllers;
 using TaskOrganizer.Api.Models;

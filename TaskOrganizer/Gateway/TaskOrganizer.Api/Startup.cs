@@ -1,10 +1,13 @@
 using System;
+using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TaskOrganizer.Api.Models;
+using TaskOrganizer.Api.Validation;
 using TaskOrganizer.Domain.ContractUseCase;
 using TaskOrganizer.Repository;
 using TaskOrganizer.Repository.Context;

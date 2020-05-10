@@ -18,19 +18,17 @@ namespace TaskOrganizer.UseCase
 
         public DomainTask Register(DomainTask domainTask)
         {
-            if(domainTask.EstimatedDate.Date.Equals(new DateTime().Date))
-            {
-                domainTask.EstimatedDate = DateTime.Now.Date.AddDays(30);
-            }
-
             return DecideFlow(domainTask);
             
         }
 
         private DomainTask DecideFlow(DomainTask domainTask)
         {
-            if(domainTask.TaskNumber.Equals(0))
+            if(domainTask.TaskNumber.Equals((int)default))
             {
+                if(domainTask.EstimatedDate.Date.Equals(new DateTime().Date))
+                    domainTask.EstimatedDate = DateTime.Now.Date.AddDays(30);
+            
                 domainTask.CreateDate = DateTime.Now.Date;
                 return _taskWriteDeleteOnlyRepository.Add(domainTask);
             }            

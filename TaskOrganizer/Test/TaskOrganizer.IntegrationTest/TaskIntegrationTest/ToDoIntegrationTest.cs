@@ -2,10 +2,10 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
-using Newtonsoft.Json;
 using TaskOrganizer.Api.Controllers;
 using TaskOrganizer.Api.Models;
 using TaskOrganizer.Domain.ContractUseCase;
+using TaskOrganizer.IntegrationTest.TaskIntegrationTest.Common;
 using TaskOrganizer.IntegrationTest.UseCaseIntegrationTest;
 using TaskOrganizer.IntegrationTest.UseCaseIntegrationTest.Common;
 using TaskOrganizer.Repository;
@@ -45,17 +45,15 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
             _urlHelperMock.Setup(x => x.Action(It.IsAny<UrlActionContext>())).Returns($"/api/ToDo/Task/");
             _toDoController.Url = _urlHelperMock.Object;
 
-            var taskRequest = JsonDeserialize(ReturnJsonInsertNewTask());
+            var taskRequest = Json.JsonDeserialize(ReturnJsonInsertNewTask());
             var returnTask = (CreatedResult)_toDoController.Insert(taskRequest);
             
-            var obj = returnTask.Value;
-            var taskModel = MapperReturnControllerToTaskModelTest(obj);
+            var taskModel = (TaskModel)returnTask.Value;
 
-            char.TryParse(taskModel.TaskNumber.ToString(), out char charId);
-            returnTask.Location += charId;
+            returnTask.Location += taskModel.TaskNumber;
 
             Assert.Equal(returnTask.StatusCode, 201);
-            Assert.Equal(returnTask.Location, $"/api/ToDo/Task/{charId}");
+            Assert.Equal(returnTask.Location, $"/api/ToDo/Task/{taskModel.TaskNumber}");
             Assert.Equal(taskRequest.Title, taskModel.Title);
             Assert.Equal(taskRequest.Description, taskModel.Description);
             Assert.Equal(taskRequest.Progress, taskModel.Progress);
@@ -69,7 +67,7 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         {
             var taskNumber = InsertTaskToTest.InsertAndReturTask("ToDo").TaskNumber;
 
-            var taskRequest = JsonDeserialize(ReturnJsonUpdateTask(taskNumber));
+            var taskRequest = Json.JsonDeserialize(ReturnJsonUpdateTask(taskNumber));
             var returnTask = (OkResult)_toDoController.Update(taskRequest);
             
             var taskReturn = _getTasksUseCase.Get(taskNumber);
@@ -89,9 +87,8 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
             var task = InsertTaskToTest.InsertAndReturTask("ToDo");
                         
             var returnTask = (OkObjectResult)_toDoController.Get(task.TaskNumber);
-            var obj = returnTask.Value;
-            var taskModel = MapperReturnControllerToTaskModelTest(obj);
-
+            var taskModel = (TaskModel)returnTask.Value;
+            
             Assert.Equal(taskModel.Title, task.Title);
             Assert.Equal(taskModel.Description, task.Description);
             Assert.Equal(taskModel.CreateDate, task.CreateDate);
@@ -103,7 +100,7 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         {
             var taskNumber = InsertTaskToTest.InsertAndReturTask("ToDo").TaskNumber;
 
-            var taskRequest = JsonDeserialize(ReturnJsonUpdateTask(taskNumber));
+            var taskRequest = Json.JsonDeserialize(ReturnJsonUpdateTask(taskNumber));
             var returnTask = (NoContentResult)_toDoController.Delete(taskRequest);
             
             var ex = Assert.Throws<InvalidOperationException>(() => _getTasksUseCase.Get(taskNumber));
@@ -113,36 +110,13 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         [Fact]
         public void IfStardDateOrEndDateWasFillThenAArgumentExceptionWillBeThrows()
         {
-            var taskRequest = JsonDeserialize(ReturnInvalidJsonInsert());
+            var taskRequest = Json.JsonDeserialize(ReturnInvalidJsonInsert());
             var badRequest = (BadRequestObjectResult) _toDoController.Insert(taskRequest); 
 
             Assert.Equal(badRequest.Value, "When Progress is ToDo cannot record StartDate.\nWhen Progress is ToDo cannot record EndDate.");
         }
 
         #region AuxiliaryMethods
-        private TaskModel JsonDeserialize(string json)
-        {
-            return JsonConvert.DeserializeObject<TaskModel>(json);
-        }
-
-        private TaskModel MapperReturnControllerToTaskModelTest(object obj)
-        {
-            var type = obj.GetType();
-            TaskModel taskModel = new TaskModel
-            {
-                TaskNumber = Convert.ToInt32(type.GetProperty(nameof(taskModel.TaskNumber)).GetValue(obj)),
-                Title = type.GetProperty(nameof(taskModel.Title)).GetValue(obj).ToString(),
-                Description = type.GetProperty(nameof(taskModel.Description)).GetValue(obj).ToString(),
-                Progress = type.GetProperty(nameof(taskModel.Progress)).GetValue(obj).ToString(),
-                EstimatedDate = Convert.ToDateTime(type.GetProperty(nameof(taskModel.EstimatedDate)).GetValue(obj)),
-                CreateDate = Convert.ToDateTime(type.GetProperty(nameof(taskModel.CreateDate)).GetValue(obj)),
-                StartDate = Convert.ToDateTime(type.GetProperty(nameof(taskModel.StartDate)).GetValue(obj)),
-                EndDate = Convert.ToDateTime(type.GetProperty(nameof(taskModel.EndDate)).GetValue(obj))
-            };
-            
-            return taskModel;
-        }
-       
         private string ReturnJsonInsertNewTask()
         {
             return @"{

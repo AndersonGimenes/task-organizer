@@ -8,13 +8,13 @@ using TaskOrganizer.Domain.DomainException;
 namespace TaskOrganizer.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/task/")]
-    public class InProgressController : ControllerBase
+    [Route("api/[Controller]/task")]
+    public class DoneController : ControllerBase
     {
         private readonly IGetTasksUseCase _getTasksUseCase;
         private readonly IRegisterTaskUseCase _registerTaskUseCase;
 
-        public InProgressController(IGetTasksUseCase getTasksUseCase, IRegisterTaskUseCase registerTaskUseCase)
+        public DoneController(IGetTasksUseCase getTasksUseCase, IRegisterTaskUseCase registerTaskUseCase)
         {
             _getTasksUseCase = getTasksUseCase;
             _registerTaskUseCase = registerTaskUseCase;
@@ -38,8 +38,6 @@ namespace TaskOrganizer.Api.Controllers
         {
             try
             {
-                taskModel.IsValid();
-
                 _registerTaskUseCase.Register(Helper.MapperTaskModelToDomainTask(taskModel));
                 return Ok();
             }
@@ -55,7 +53,6 @@ namespace TaskOrganizer.Api.Controllers
             {
                 return BadRequest(ex.Message);
             }
-           
         }
     }
 }

@@ -70,12 +70,10 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
         public void WhenTaskProgressIsEqualToInProgressAndStartDateNullThenStartDateWillBeFilledWithDateTimeNow()
         {
             var domainTaskOriginal = BaseOriginalTask();
-            domainTaskOriginal.EstimatedDate = DateTime.Now.Date;
-
-            var domainTask = BaseRequestTask();
-            domainTask.SetTitle("Test original title");
-            domainTask.EstimatedDate = DateTime.Now.Date;
-
+            domainTaskOriginal.StartDate = null;
+            
+            var domainTask = BaseRequestTask("InProgress");
+            
             _mockTaskReadOnlyRepository.Setup(x => x.Get(It.IsAny<int>())).Returns(domainTaskOriginal);
                        
             _registerTaskUseCase.Register(domainTask);  
@@ -84,12 +82,28 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
         }
 
         [Fact]
+        public void WhenTaskProgressIsEqualToDoneAndEndDateIsNullThenEndDateWillBeFilledWithDateTimeNow()
+        {
+            var domainTaskOriginal = BaseOriginalTask();
+            domainTaskOriginal.StartDate = DateTime.Now.Date;
+
+            var domainTask = BaseRequestTask("Done");
+            domainTask.StartDate = DateTime.Now.Date;
+
+            _mockTaskReadOnlyRepository.Setup(x => x.Get(It.IsAny<int>())).Returns(domainTaskOriginal);
+                       
+            _registerTaskUseCase.Register(domainTask);  
+
+            Assert.Equal(domainTask.EndDate, DateTime.Now.Date);
+        }
+
+        [Fact]
         public void WhenTheTaskProgressIsEqualToInProgressAndTheRequestTitleIsDifferentFromTheOriginalTitleTaskAUseCaseExceptionShouldBeThrown()
         {
             var result = "Title can't be changed";
             var domainTaskOriginal = BaseOriginalTask();
 
-            var domainTaskRequest = BaseRequestTask();
+            var domainTaskRequest = BaseRequestTask("InProgress");
             domainTaskRequest.SetTitle("Test request title");
             
             _mockTaskReadOnlyRepository.Setup(x => x.Get(It.IsAny<int>())).Returns(domainTaskOriginal);
@@ -105,9 +119,79 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
             var result =  "Estimated date can't be changed";
             var domainTaskOriginal = BaseOriginalTask();
                         
-            var domainTaskRequest = BaseRequestTask();
-            domainTaskRequest.SetTitle("Test original title");
+            var domainTaskRequest = BaseRequestTask("InProgress");
             domainTaskRequest.EstimatedDate = DateTime.Now.Date.AddDays(10);
+            
+            _mockTaskReadOnlyRepository.Setup(x => x.Get(It.IsAny<int>())).Returns(domainTaskOriginal);
+
+            var ex = Assert.Throws<UseCaseException>(() => _registerTaskUseCase.Register(domainTaskRequest));
+
+            Assert.Equal(ex.Message, result);
+        }
+
+        [Fact]
+        public void WhenTheTaskProgressIsEqualToInProgressAndTheRequestCreateDateIsDifferentFromTheOriginalCreateDateATaskAUseCaseExceptionShouldBeThrown()
+        {
+            var result =  "Create date can't be changed";
+            var domainTaskOriginal = BaseOriginalTask();
+            domainTaskOriginal.CreateDate = DateTime.Now.Date;            
+
+            var domainTaskRequest = BaseRequestTask("InProgress");
+            domainTaskRequest.CreateDate = DateTime.Now.Date.AddDays(10);
+            
+            _mockTaskReadOnlyRepository.Setup(x => x.Get(It.IsAny<int>())).Returns(domainTaskOriginal);
+
+            var ex = Assert.Throws<UseCaseException>(() => _registerTaskUseCase.Register(domainTaskRequest));
+
+            Assert.Equal(ex.Message, result);
+        }
+
+        [Fact]
+        public void WhenTheTaskProgressIsEqualToInProgressAndTheRequestStartDateIsDifferentFromTheOriginalStartDateATaskAUseCaseExceptionShouldBeThrown()
+        {
+            var result =  "Start date can't be changed";
+            var domainTaskOriginal = BaseOriginalTask();
+            domainTaskOriginal.CreateDate = DateTime.Now.Date;    
+            domainTaskOriginal.StartDate = DateTime.Now.Date;        
+
+            var domainTaskRequest = BaseRequestTask("InProgress");
+            domainTaskRequest.CreateDate = DateTime.Now.Date;
+            domainTaskRequest.StartDate = DateTime.Now.Date.AddDays(10);
+            
+            _mockTaskReadOnlyRepository.Setup(x => x.Get(It.IsAny<int>())).Returns(domainTaskOriginal);
+
+            var ex = Assert.Throws<UseCaseException>(() => _registerTaskUseCase.Register(domainTaskRequest));
+
+            Assert.Equal(ex.Message, result);
+        }
+
+        [Fact]
+        public void WhenTheTaskProgressIsEqualToDoneAndTheRequestDescriptionIsDifferentFromTheOriginalDescriptionATaskAUseCaseExceptionShouldBeThrown()
+        {
+            var result = "Description can't be changed";
+            var domainTaskOriginal = BaseOriginalTask();
+            
+            var domainTaskRequest = BaseRequestTask("Done");
+            domainTaskRequest.SetDescription("Request Description");
+            
+            _mockTaskReadOnlyRepository.Setup(x => x.Get(It.IsAny<int>())).Returns(domainTaskOriginal);
+
+            var ex = Assert.Throws<UseCaseException>(() => _registerTaskUseCase.Register(domainTaskRequest));
+
+            Assert.Equal(ex.Message, result);
+        }
+
+         [Fact]
+        public void WhenTheTaskProgressIsEqualToDoneAndTheRequestEndDateIsDifferentFromTheOriginalEndDateATaskAUseCaseExceptionShouldBeThrown()
+        {
+            var result =  "End date can't be changed";
+            var domainTaskOriginal = BaseOriginalTask();
+            domainTaskOriginal.StartDate = DateTime.Now.Date; 
+            domainTaskOriginal.EndDate = DateTime.Now.Date;       
+
+            var domainTaskRequest = BaseRequestTask("Done");
+            domainTaskRequest.StartDate = DateTime.Now.Date;
+            domainTaskRequest.EndDate = DateTime.Now.Date.AddDays(10);
             
             _mockTaskReadOnlyRepository.Setup(x => x.Get(It.IsAny<int>())).Returns(domainTaskOriginal);
 
@@ -122,21 +206,28 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
             var domainTask = new DomainTask
             {
                 TaskNumber = 1,
-                EstimatedDate = DateTime.Now.Date
+                EstimatedDate = DateTime.Now.Date,
+                CreateDate = DateTime.Now.Date,
+
             };
             domainTask.SetTitle("Test original title");
+            domainTask.SetDescription("Test original description");
 
             return domainTask;
         }
 
 
-        private DomainTask BaseRequestTask()
+        private DomainTask BaseRequestTask(string progress)
         {
             var domainTask = new DomainTask
             {
-                TaskNumber = 1
+                TaskNumber = 1,
+                EstimatedDate = DateTime.Now.Date,
+                CreateDate = DateTime.Now.Date
             };
-            domainTask.SetProgress("InProgress");
+            domainTask.SetProgress(progress);
+            domainTask.SetTitle("Test original title");
+            domainTask.SetDescription("Test original description");
 
             return domainTask;            
         }

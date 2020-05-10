@@ -9,7 +9,7 @@ using TaskOrganizer.Domain.DomainException;
 namespace TaskOrganizer.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/")]
+    [Route("api/[controller]/task/")]
     public class ToDoController : ControllerBase
     {
         
@@ -24,7 +24,7 @@ namespace TaskOrganizer.Api.Controllers
             _deleteTaskUseCase = deleteTaskUseCase;
         }
 
-        [HttpGet("/Task/{taskNumber}")]
+        [HttpGet("{taskNumber}")]
         public IActionResult Get(int taskNumber)
         {
             try
@@ -37,7 +37,7 @@ namespace TaskOrganizer.Api.Controllers
             }
         }   
     
-        [HttpPost("Task")]
+        [HttpPost]
         public IActionResult Insert([FromBody] TaskModel taskModel)
         {
             try
@@ -65,7 +65,7 @@ namespace TaskOrganizer.Api.Controllers
             }
         }
 
-        [HttpPut("Task")]
+        [HttpPut]
         public IActionResult Update([FromBody] TaskModel taskModel)
         {
             try
@@ -90,7 +90,7 @@ namespace TaskOrganizer.Api.Controllers
            
         }
 
-        [HttpDelete("Task")]
+        [HttpDelete]
         public IActionResult Delete([FromBody] TaskModel taskModel)
         {
             try

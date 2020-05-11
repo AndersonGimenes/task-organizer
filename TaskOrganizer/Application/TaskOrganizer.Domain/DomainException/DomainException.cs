@@ -1,9 +1,7 @@
 using System;
-using System.Runtime.Serialization;
 
 namespace TaskOrganizer.Domain.DomainException
 {
-    [Serializable]
     public class DomainException : Exception
     {
         public DomainException()
@@ -18,8 +16,5 @@ namespace TaskOrganizer.Domain.DomainException
         {
         }
 
-        protected DomainException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
     }
 }

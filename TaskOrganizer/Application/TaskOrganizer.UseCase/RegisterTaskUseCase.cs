@@ -18,19 +18,17 @@ namespace TaskOrganizer.UseCase
 
         public DomainTask Register(DomainTask domainTask)
         {
-            if(domainTask.EstimatedDate.Date.Equals(new DateTime().Date))
-            {
-                domainTask.EstimatedDate = DateTime.Now.Date.AddDays(30);
-            }
-
             return DecideFlow(domainTask);
             
         }
 
         private DomainTask DecideFlow(DomainTask domainTask)
         {
-            if(domainTask.TaskNumber.Equals(0))
+            if(domainTask.TaskNumber.Equals((int)default))
             {
+                if(domainTask.EstimatedDate.Date.Equals(new DateTime().Date))
+                    domainTask.EstimatedDate = DateTime.Now.Date.AddDays(30);
+            
                 domainTask.CreateDate = DateTime.Now.Date;
                 return _taskWriteDeleteOnlyRepository.Add(domainTask);
             }            
@@ -43,21 +41,52 @@ namespace TaskOrganizer.UseCase
                 CheckFieldsInProgress(domainTask);
             }
 
+            if(domainTask.Progress.Equals(Progress.Done))
+            {
+                if(domainTask.EndDate is null)
+                    domainTask.EndDate = DateTime.Now.Date;
+                
+                CheckFieldsDone(domainTask);
+            }
+
             _taskWriteDeleteOnlyRepository.Update(domainTask);
             
             return default;
+        }
+
+        private void CheckFieldsDone(DomainTask domainTask)
+        {
+            var task = _taskReadOnlyRepository.Get(domainTask.TaskNumber);
+
+            if(!task.Description.Equals(domainTask.Description))
+                throw new UseCaseException.UseCaseException("Description can't be changed");
+
+            if(task.EndDate != null && !task.EndDate.Equals(domainTask.EndDate))
+                throw new UseCaseException.UseCaseException("End date can't be changed");
+
+            CheckFieldsTitleAndEstimatedDate(domainTask, task);
         }
 
         private void CheckFieldsInProgress(DomainTask domainTask)
         {
             var task = _taskReadOnlyRepository.Get(domainTask.TaskNumber);
 
-            if(!task.Title.Equals(domainTask.Title))
+            CheckFieldsTitleAndEstimatedDate(domainTask, task);
+        }
+
+        private void CheckFieldsTitleAndEstimatedDate(DomainTask taskRequest, DomainTask taskBase)
+        {
+            if(!taskBase.Title.Equals(taskRequest.Title))
                 throw new UseCaseException.UseCaseException("Title can't be changed");
 
-            if(!task.EstimatedDate.Equals(domainTask.EstimatedDate))
+            if(!taskBase.EstimatedDate.Equals(taskRequest.EstimatedDate))
                 throw new UseCaseException.UseCaseException("Estimated date can't be changed");
 
+            if(!taskBase.CreateDate.Equals(taskRequest.CreateDate))
+                throw new UseCaseException.UseCaseException("Create date can't be changed");
+
+            if(taskBase.StartDate != null && !taskBase.StartDate.Equals(taskRequest.StartDate))
+                throw new UseCaseException.UseCaseException("Start date can't be changed");
         }
     }
 }

@@ -1,9 +1,7 @@
 using System;
-using System.Runtime.Serialization;
 
 namespace TaskOrganizer.UseCase.UseCaseException
 {
-    [Serializable]
     public class UseCaseException : Exception
     {
         public UseCaseException()
@@ -15,10 +13,6 @@ namespace TaskOrganizer.UseCase.UseCaseException
         }
 
         public UseCaseException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected UseCaseException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

@@ -33,7 +33,9 @@ namespace TaskOrganizer.Api.Controllers.Commom
             {
                 TaskNumber = taskModel.TaskNumber,
                 EstimatedDate = taskModel.EstimatedDate,
-                CreateDate = taskModel.CreateDate
+                CreateDate = taskModel.CreateDate,
+                StartDate = taskModel.StartDate,
+                EndDate = taskModel.EndDate
             };
             domainTask.SetTitle(taskModel.Title);
             domainTask.SetDescription(taskModel.Description);

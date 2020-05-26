@@ -36,6 +36,8 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         [Fact]
         public void MustBeUpdateAInProgressTask()
         {
+            var statusCodeResult = 200;
+
             var taskNumber = InsertTaskToTest.InsertAndReturTask("ToDo").TaskNumber;
 
             var taskRequest = Json.JsonDeserialize(ReturnJsonUpdateTask(taskNumber));
@@ -43,7 +45,7 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
             
             var taskReturn = _getTasksUseCase.Get(taskNumber);
             
-            Assert.Equal(returnTask.StatusCode, 200);
+            Assert.Equal(returnTask.StatusCode, statusCodeResult);
             Assert.Equal(taskRequest.TaskNumber, taskReturn.TaskNumber);
             Assert.Equal(taskRequest.Title, taskReturn.Title);
             Assert.Equal(taskRequest.Description, taskReturn.Description);
@@ -69,10 +71,12 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         [Fact]
         public void IfEndDateWasFillThenAArgumentExceptionWillBeThrows()
         {
+            var result = "When Progress is ToDo cannot record EndDate.";
+
             var taskRequest = Json.JsonDeserialize(ReturnInvalidJsonUpdate());
             var badRequest = (BadRequestObjectResult) _inProgressController.Update(taskRequest); 
 
-            Assert.Equal(badRequest.Value, "When Progress is ToDo cannot record EndDate.");
+            Assert.Equal(badRequest.Value,result);
         }
 
         #region AuxiliaryMethods

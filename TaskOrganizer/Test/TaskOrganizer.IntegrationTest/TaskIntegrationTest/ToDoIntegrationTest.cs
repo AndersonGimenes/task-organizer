@@ -42,6 +42,8 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         [Fact]
         public void MustBeInsertANewTask()
         {
+            var statusCodeResult = 201;
+
             _urlHelperMock.Setup(x => x.Action(It.IsAny<UrlActionContext>())).Returns($"/api/ToDo/Task/");
             _toDoController.Url = _urlHelperMock.Object;
 
@@ -52,7 +54,7 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
 
             returnTask.Location += taskModel.TaskNumber;
 
-            Assert.Equal(returnTask.StatusCode, 201);
+            Assert.Equal(returnTask.StatusCode, statusCodeResult);
             Assert.Equal(returnTask.Location, $"/api/ToDo/Task/{taskModel.TaskNumber}");
             Assert.Equal(taskRequest.Title, taskModel.Title);
             Assert.Equal(taskRequest.Description, taskModel.Description);
@@ -65,6 +67,8 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         [Fact]
         public void MustBeUpdateATask()
         {
+            var statusCodeResult = 200;
+
             var taskNumber = InsertTaskToTest.InsertAndReturTask("ToDo").TaskNumber;
 
             var taskRequest = Json.JsonDeserialize(ReturnJsonUpdateTask(taskNumber));
@@ -72,7 +76,7 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
             
             var taskReturn = _getTasksUseCase.Get(taskNumber);
             
-            Assert.Equal(returnTask.StatusCode, 200);
+            Assert.Equal(returnTask.StatusCode, statusCodeResult);
             Assert.Equal(taskRequest.TaskNumber, taskReturn.TaskNumber);
             Assert.Equal(taskRequest.Title, taskReturn.Title);
             Assert.Equal(taskRequest.Description, taskReturn.Description);
@@ -98,22 +102,27 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         [Fact]
         public void MustBeDeleteATask()
         {
+            var result = "Sequence contains no elements";
+            var statusCodeResult = 204;
+
             var taskNumber = InsertTaskToTest.InsertAndReturTask("ToDo").TaskNumber;
 
             var taskRequest = Json.JsonDeserialize(ReturnJsonUpdateTask(taskNumber));
             var returnTask = (NoContentResult)_toDoController.Delete(taskRequest);
             
             var ex = Assert.Throws<InvalidOperationException>(() => _getTasksUseCase.Get(taskNumber));
-            Assert.Equal(ex.Message, "Sequence contains no elements");
-            Assert.Equal(returnTask.StatusCode, 204);
+            Assert.Equal(ex.Message, result);
+            Assert.Equal(returnTask.StatusCode, statusCodeResult);
         }
         [Fact]
         public void IfStardDateOrEndDateWasFillThenAArgumentExceptionWillBeThrows()
         {
+            var result = "When Progress is ToDo cannot record StartDate.\nWhen Progress is ToDo cannot record EndDate.";
+
             var taskRequest = Json.JsonDeserialize(ReturnInvalidJsonInsert());
             var badRequest = (BadRequestObjectResult) _toDoController.Insert(taskRequest); 
 
-            Assert.Equal(badRequest.Value, "When Progress is ToDo cannot record StartDate.\nWhen Progress is ToDo cannot record EndDate.");
+            Assert.Equal(badRequest.Value, result);
         }
 
         #region AuxiliaryMethods

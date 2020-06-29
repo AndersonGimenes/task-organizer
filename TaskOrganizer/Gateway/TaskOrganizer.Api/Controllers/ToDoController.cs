@@ -1,10 +1,10 @@
 using System;
-using FluentValidation;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using TaskOrganizer.Api.Controllers.Commom;
 using TaskOrganizer.Api.Models;
 using TaskOrganizer.Domain.ContractUseCase;
 using TaskOrganizer.Domain.DomainException;
+using TaskOrganizer.Domain.Entities;
 
 namespace TaskOrganizer.Api.Controllers
 {
@@ -16,12 +16,14 @@ namespace TaskOrganizer.Api.Controllers
         private readonly IGetTasksUseCase _getTasksUseCase;
         private readonly IRegisterTaskUseCase _registerTaskUseCase;
         private readonly IDeleteTaskUseCase _deleteTaskUseCase;
+        private readonly IMapper _mapper;
 
-        public ToDoController(IGetTasksUseCase getTasksUseCase, IRegisterTaskUseCase registerTaskUseCase, IDeleteTaskUseCase deleteTaskUseCase)
+        public ToDoController(IGetTasksUseCase getTasksUseCase, IRegisterTaskUseCase registerTaskUseCase, IDeleteTaskUseCase deleteTaskUseCase, IMapper mapper)
         {           
             _getTasksUseCase = getTasksUseCase;
             _registerTaskUseCase = registerTaskUseCase;
             _deleteTaskUseCase = deleteTaskUseCase;
+            _mapper = mapper;
         }
 
         [HttpGet("{taskNumber}")]
@@ -29,7 +31,10 @@ namespace TaskOrganizer.Api.Controllers
         {
             try
             {
-                return Ok(Helper.MapperDomainTaskToTaskModel(_getTasksUseCase.Get(taskNumber)));
+                var domainTask = _getTasksUseCase.Get(taskNumber);
+                var taskModel = _mapper.Map<TaskModel>(domainTask);
+
+                return Ok(taskModel);
             }
             catch(Exception ex)
             {
@@ -44,8 +49,9 @@ namespace TaskOrganizer.Api.Controllers
             {
                 taskModel.IsValid();
 
-                var domainTask = _registerTaskUseCase.Register(Helper.MapperTaskModelToDomainTask(taskModel));
-                taskModel = Helper.MapperDomainTaskToTaskModel(domainTask);
+                var domainTask = _mapper.Map<DomainTask>(taskModel);
+
+                taskModel = _mapper.Map<TaskModel>(_registerTaskUseCase.Register(domainTask));
 
                 var uri = Url.Action("Get", new {taskNumber = taskModel.TaskNumber});
 
@@ -72,7 +78,10 @@ namespace TaskOrganizer.Api.Controllers
             {
                 taskModel.IsValid();
 
-                _registerTaskUseCase.Register(Helper.MapperTaskModelToDomainTask(taskModel));
+                var domainTask = _mapper.Map<DomainTask>(taskModel);
+
+                _registerTaskUseCase.Register(domainTask);
+
                 return Ok();
             }
             catch(ArgumentException ex)
@@ -95,7 +104,10 @@ namespace TaskOrganizer.Api.Controllers
         {
             try
             {
-                _deleteTaskUseCase.Delete(Helper.MapperTaskModelToDomainTask(taskModel));
+                var domainTask = _mapper.Map<DomainTask>(taskModel);
+
+                _deleteTaskUseCase.Delete(domainTask);
+                
                 return NoContent();
             }
             catch(Exception ex)

@@ -1,5 +1,7 @@
+using System.Collections.Generic;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using TaskOrganizer.Api.Controllers.Commom;
+using TaskOrganizer.Api.Models;
 using TaskOrganizer.Domain.ContractUseCase;
 
 namespace TaskOrganizer.Api.Controllers
@@ -9,9 +11,12 @@ namespace TaskOrganizer.Api.Controllers
     public class TaskController : ControllerBase
     {
         private readonly IGetTasksUseCase _getTasksUseCase;
-        public TaskController(IGetTasksUseCase getTasksUseCase)
+        private readonly IMapper _mapper;
+
+        public TaskController(IGetTasksUseCase getTasksUseCase, IMapper mapper)
         {           
             _getTasksUseCase = getTasksUseCase;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -19,7 +24,11 @@ namespace TaskOrganizer.Api.Controllers
         {
             try
             {
-                return Ok(Helper.ReturnTaskModelList(_getTasksUseCase.GetAll()));
+                var domainTaskList = _getTasksUseCase.GetAll();
+
+                var taskModelList = _mapper.Map<List<TaskModel>>(domainTaskList);
+
+                return Ok(taskModelList);
             }
             catch
             {

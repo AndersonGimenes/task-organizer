@@ -12,8 +12,6 @@ namespace TaskOrganizer.Repository.Mapping
                 x.AddProfile(new MappingProfile());
             });
 
-            var mapper = mappingConfiguration.CreateMapper();
-            
             return new Mapper(mappingConfiguration);
         }
     }

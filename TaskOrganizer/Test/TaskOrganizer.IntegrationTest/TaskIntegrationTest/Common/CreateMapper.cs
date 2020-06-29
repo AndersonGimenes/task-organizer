@@ -13,8 +13,6 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest.Common
                 x.AddProfile(new MappingProfile());
             });
 
-            var mapper = mappingConfiguration.CreateMapper();
-            
             return new Mapper(mappingConfiguration);
         }
     }

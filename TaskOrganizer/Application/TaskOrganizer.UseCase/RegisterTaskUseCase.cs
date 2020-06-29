@@ -2,6 +2,7 @@
 using TaskOrganizer.Domain.Entities;
 using TaskOrganizer.UseCase.ContractRepository;
 using TaskOrganizer.Domain.ContractUseCase;
+using TaskOrganizer.Domain.Enum;
 
 namespace TaskOrganizer.UseCase
 {

@@ -1,22 +1,20 @@
 using System;
 using TaskOrganizer.Domain.Entities;
+using TaskOrganizer.Domain.Enum;
 
 namespace TaskOrganizer.IntegrationTest.UseCaseIntegrationTest.Common
 {
     public static class MockDataTask
     {
-        public static DomainTask MockDataTest(string progress)
+        public static DomainTask MockDataTest(Progress progress)
         {
-            var domainTask = new DomainTask
+            return new DomainTask
             {
-                EstimatedDate = new DateTime(2020, 05, 15)
+                EstimatedDate = new DateTime(2020, 05, 15),
+                Title = "Title insert",
+                Description = "Description insert",
+                Progress = progress
             };
-            domainTask.SetTitle("Title insert");
-            domainTask.SetDescription("Description insert");
-            domainTask.SetProgress(progress);
-
-            return domainTask;
-            
         }
     }
 }

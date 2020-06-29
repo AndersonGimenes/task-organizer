@@ -4,55 +4,39 @@ using TaskOrganizer.Repository.Context;
 using TaskOrganizer.UseCase.ContractRepository;
 using System.Linq;
 using AutoMapper;
-using TaskOrganizer.Repository.Entities;
 using Microsoft.EntityFrameworkCore;
+using TaskOrganizer.Repository.Mapping;
 
 namespace TaskOrganizer.Repository
 {
     public class TaskReadOnlyRepository : ITaskReadOnlyRepository
     {
         private readonly TaskOrganizerContext _context;
+        private readonly IMapper _mapper;
 
         public TaskReadOnlyRepository(TaskOrganizerContext context)
         {
             _context = context;
+            _mapper = CreateMapper.CreateMapperProfile();
         }
 
         public DomainTask Get(int id)
         {
-            var domainTask = _context.RepositoryTasks.AsNoTracking().Single(x => x.TaskId.Equals(id));
-            return MapperRepositoryTaskToDomainTask(domainTask);
+            var repositoryTask = _context.RepositoryTasks
+                .AsNoTracking()
+                .Single(x => x.TaskId.Equals(id));
+
+            return _mapper.Map<DomainTask>(repositoryTask);
         }
 
         public IList<DomainTask> GetAll()
         {
-            var domainTask = _context.RepositoryTasks.AsNoTracking().ToList();
-            return ReturnDomainTaskList(domainTask);
+            var repositoryTasks = _context.RepositoryTasks
+                .AsNoTracking()
+                .ToList();
+            
+            return _mapper.Map<List<DomainTask>>(repositoryTasks);
         }
-
-        #region AuxiliaryMethods
-
-        private IList<DomainTask> ReturnDomainTaskList(List<RepositoryTask> list)
-        {
-            var listReturn = new List<DomainTask>();
-            foreach(var item in list)
-            {
-                listReturn.Add(MapperRepositoryTaskToDomainTask(item));
-            }
-
-            return listReturn;
-        }
-
-        private DomainTask MapperRepositoryTaskToDomainTask(RepositoryTask repositoryTask){
-            var config = new MapperConfiguration(
-                cfg => { cfg.CreateMap<RepositoryTask, DomainTask>()
-                .ForMember(dest => dest.TaskNumber, opt => opt.MapFrom(x => x.TaskId))
-                .ForMember(dest => dest.Progress, opt => opt.MapFrom(x => (int)x.ProgressId));
-            }); 
-
-            return config.CreateMapper().Map<RepositoryTask,DomainTask>(repositoryTask);            
-        }
-
-        #endregion
+        
     }
 }

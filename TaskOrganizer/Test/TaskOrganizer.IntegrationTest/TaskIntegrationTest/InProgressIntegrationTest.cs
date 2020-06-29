@@ -1,8 +1,10 @@
 using System;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TaskOrganizer.Api.Controllers;
 using TaskOrganizer.Api.Models;
 using TaskOrganizer.Domain.ContractUseCase;
+using TaskOrganizer.Domain.Enum;
 using TaskOrganizer.IntegrationTest.TaskIntegrationTest.Common;
 using TaskOrganizer.IntegrationTest.UseCaseIntegrationTest;
 using TaskOrganizer.IntegrationTest.UseCaseIntegrationTest.Common;
@@ -21,6 +23,7 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         private readonly ITaskReadOnlyRepository _taskReadOnlyRepository;
         private readonly IRegisterTaskUseCase _registerTaskUseCase;
         private readonly IGetTasksUseCase _getTasksUseCase;
+        private readonly IMapper _mapper;
         private readonly InProgressController _inProgressController;
         
         public InProgressIntegrationTest()
@@ -30,20 +33,23 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
             _taskWriteDeleteOnlyRepository = new TaskWriteDeleteOnlyRepository(_context);            
             _registerTaskUseCase = new RegisterTaskUseCase(_taskWriteDeleteOnlyRepository, _taskReadOnlyRepository);
             _getTasksUseCase = new GetTasksUseCase(_taskReadOnlyRepository);
-            _inProgressController = new InProgressController(_getTasksUseCase,_registerTaskUseCase);
+            _mapper = CreateMapper.CreateMapperProfile();
+            _inProgressController = new InProgressController(_getTasksUseCase,_registerTaskUseCase, _mapper);
         }
 
         [Fact]
-        public void MustBeUpdateAInProgressTask()
+        public void MustBeUpdateToInProgressTask()
         {
-            var taskNumber = InsertTaskToTest.InsertAndReturTask("ToDo").TaskNumber;
+            var statusCodeResult = 200;
+
+            var taskNumber = InsertTaskToTest.InsertAndReturTask(Progress.ToDo).TaskNumber;
 
             var taskRequest = Json.JsonDeserialize(ReturnJsonUpdateTask(taskNumber));
             OkResult returnTask = (OkResult)_inProgressController.Update(taskRequest);
             
             var taskReturn = _getTasksUseCase.Get(taskNumber);
             
-            Assert.Equal(returnTask.StatusCode, 200);
+            Assert.Equal(returnTask.StatusCode, statusCodeResult);
             Assert.Equal(taskRequest.TaskNumber, taskReturn.TaskNumber);
             Assert.Equal(taskRequest.Title, taskReturn.Title);
             Assert.Equal(taskRequest.Description, taskReturn.Description);
@@ -55,7 +61,7 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         [Fact]
         public void MustReturnJustOnlyTask()
         {
-            var task = InsertTaskToTest.InsertAndReturTask("ToDo");
+            var task = InsertTaskToTest.InsertAndReturTask(Progress.ToDo);
                         
             OkObjectResult returnTask = (OkObjectResult)_inProgressController.Get(task.TaskNumber);
             var taskModel = (TaskModel)returnTask.Value;
@@ -69,10 +75,12 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         [Fact]
         public void IfEndDateWasFillThenAArgumentExceptionWillBeThrows()
         {
+            var result = "When Progress is InProgress cannot record EndDate.";
+
             var taskRequest = Json.JsonDeserialize(ReturnInvalidJsonUpdate());
             var badRequest = (BadRequestObjectResult) _inProgressController.Update(taskRequest); 
 
-            Assert.Equal(badRequest.Value, "When Progress is ToDo cannot record EndDate.");
+            Assert.Equal(badRequest.Value,result);
         }
 
         #region AuxiliaryMethods

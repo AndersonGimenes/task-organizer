@@ -1,5 +1,7 @@
+using System;
 using TaskOrganizer.Domain.DomainException;
 using TaskOrganizer.Domain.Entities;
+using TaskOrganizer.Domain.Enum;
 using Xunit;
 
 namespace TaskOrganizer.UnitTest.DomainUnitTest
@@ -11,9 +13,14 @@ namespace TaskOrganizer.UnitTest.DomainUnitTest
         [InlineData("Please type some Title!", "")]
         public void DomainExceptionMustBeReturnedWhenTheTitleIsNullOrEmpty(string result, string input)
         {
-            var domainTask = new DomainTask();
+            var domainTask = new DomainTask
+            {
+                Title = input,
+                Progress = Progress.ToDo,
+                Description = "Any"
+            };
 
-            var ex = Assert.Throws<DomainException>(() => domainTask.SetTitle(input));
+            var ex = Assert.Throws<DomainException>(() => domainTask.IsValid());
 
             Assert.Equal(ex.Message,result);
         }
@@ -24,7 +31,7 @@ namespace TaskOrganizer.UnitTest.DomainUnitTest
         {
             var domainTask = new DomainTask();
 
-            domainTask.SetTitle(input);
+            domainTask.Title = input;
 
             Assert.Equal(input,result);
         }
@@ -34,9 +41,14 @@ namespace TaskOrganizer.UnitTest.DomainUnitTest
         [InlineData("Please type some Description!", "")]
         public void DomainExceptionMustBeReturnedWhenTheDescriptionIsNullOrEmpty(string result, string input)
         {
-            var domainTask = new DomainTask();
+            var domainTask = new DomainTask
+            {
+                Title = "Any",
+                Progress = Progress.ToDo,
+                Description = input
+            };
 
-            var ex = Assert.Throws<DomainException>(() => domainTask.SetDescription(input));
+            var ex = Assert.Throws<DomainException>(() => domainTask.IsValid());
 
             Assert.Equal(ex.Message,result);
         }
@@ -47,32 +59,10 @@ namespace TaskOrganizer.UnitTest.DomainUnitTest
         {
             var domainTask = new DomainTask();
 
-            domainTask.SetDescription(input);
+            domainTask.Description = input;
 
             Assert.Equal(input,result);
         }
-        [Theory]
-        [InlineData("The progress not set, please inform some Progress!", null)]
-        [InlineData("The progress not set, please inform some Progress!", "")]
-        public void DomainExceptionMustBeReturnedWhenTheProgressIsNullOrEmpty(string result, string input)
-        {
-            var domainTask = new DomainTask();
-
-            var ex = Assert.Throws<DomainException>(() => domainTask.SetProgress(input));
-
-            Assert.Equal(ex.Message,result);
-        }
-
-        [Theory]
-        [InlineData("ToDo", "ToDo")]
-        public void DomainExceptionMustNotBeReturnedWhenTheProgressIsPassed(string result, string input)
-        {
-            var domainTask = new DomainTask();
-
-            domainTask.SetDescription(input);
-
-            Assert.Equal(input,result);
-        }
-        
+       
     }
 }

@@ -2,6 +2,7 @@ using AutoMapper;
 using TaskOrganizer.Domain.Entities;
 using TaskOrganizer.Repository.Context;
 using TaskOrganizer.Repository.Entities;
+using TaskOrganizer.Repository.Mapping;
 using TaskOrganizer.UseCase.ContractRepository;
 
 namespace TaskOrganizer.Repository
@@ -9,16 +10,18 @@ namespace TaskOrganizer.Repository
     public class TaskWriteDeleteOnlyRepository : ITaskWriteDeleteOnlyRepository
     {
         private readonly TaskOrganizerContext _context;
+        private readonly IMapper _mapper;
 
         public TaskWriteDeleteOnlyRepository(TaskOrganizerContext context)
         {
             _context = context;
+            _mapper = CreateMapper.CreateMapperProfile();
         }
 
         public DomainTask Add(DomainTask domainTask)
         {
-            var repositoryTask = MapperDomainTaskToRepositoryTask(domainTask); 
-                        
+            var repositoryTask = _mapper.Map<RepositoryTask>(domainTask);
+                            
             _context.Add(repositoryTask);
             _context.SaveChanges();
 
@@ -29,7 +32,7 @@ namespace TaskOrganizer.Repository
 
         public void Delete(DomainTask domainTask)
         {
-            var repositoryTask = MapperDomainTaskToRepositoryTask(domainTask);
+            var repositoryTask = _mapper.Map<RepositoryTask>(domainTask);
 
             _context.Remove(repositoryTask);
             _context.SaveChanges();
@@ -37,24 +40,11 @@ namespace TaskOrganizer.Repository
 
         public void Update(DomainTask domainTask)
         {
-            var repositoryTask = MapperDomainTaskToRepositoryTask(domainTask);
+            var repositoryTask = _mapper.Map<RepositoryTask>(domainTask);
             
             _context.Update(repositoryTask);
             _context.SaveChanges();
         }
 
-        #region AuxiliaryMethods
-
-        public static RepositoryTask MapperDomainTaskToRepositoryTask(DomainTask domainTask){
-            var config = new MapperConfiguration(
-                cfg => { cfg.CreateMap<DomainTask, RepositoryTask>()
-                .ForMember(dest => dest.TaskId, opt => opt.MapFrom(x => x.TaskNumber))
-                .ForMember(dest => dest.ProgressId, opt => opt.MapFrom(x => (int)x.Progress));
-            }); 
-
-            return config.CreateMapper().Map<DomainTask, RepositoryTask>(domainTask);            
-        }
-
-        #endregion
     }
 }

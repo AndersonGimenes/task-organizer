@@ -1,4 +1,6 @@
+using System;
 using TaskOrganizer.Domain.Entities;
+using TaskOrganizer.Domain.Enum;
 using TaskOrganizer.Repository;
 using TaskOrganizer.UseCase.ContractRepository;
 
@@ -6,7 +8,7 @@ namespace TaskOrganizer.IntegrationTest.UseCaseIntegrationTest.Common
 {
     public static class InsertTaskToTest
     {
-        public static DomainTask InsertAndReturTask(string progress)
+        public static DomainTask InsertAndReturTask(Progress progress)
         {
             DomainTask task;
 

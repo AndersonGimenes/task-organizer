@@ -1,4 +1,4 @@
-﻿namespace TaskOrganizer.Domain.Entities
+﻿namespace TaskOrganizer.Domain.Enum
 {
     public enum Progress
     {

@@ -1,8 +1,11 @@
 using System.Collections.Generic;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TaskOrganizer.Api.Controllers;
 using TaskOrganizer.Api.Models;
 using TaskOrganizer.Domain.ContractUseCase;
+using TaskOrganizer.Domain.Enum;
+using TaskOrganizer.IntegrationTest.TaskIntegrationTest.Common;
 using TaskOrganizer.IntegrationTest.UseCaseIntegrationTest;
 using TaskOrganizer.IntegrationTest.UseCaseIntegrationTest.Common;
 using TaskOrganizer.Repository;
@@ -18,6 +21,7 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         private readonly TaskOrganizerContext _context;        
         private readonly ITaskReadOnlyRepository _taskReadOnlyRepository;
         private readonly IGetTasksUseCase _getTasksUseCase;
+        private readonly IMapper _mapper;
         private readonly TaskController _taskController;
 
         public TaskIntegrationTest()
@@ -25,7 +29,8 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
             _context = DataBaseInMemory.ReturnContext();
             _taskReadOnlyRepository = new TaskReadOnlyRepository(_context);
             _getTasksUseCase = new GetTasksUseCase(_taskReadOnlyRepository);
-            _taskController = new TaskController(_getTasksUseCase);
+            _mapper = CreateMapper.CreateMapperProfile();
+            _taskController = new TaskController(_getTasksUseCase, _mapper);
         }
 
         [Fact]
@@ -33,7 +38,7 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         {
             for(var x = 0; x < 4; x++)
             {                       
-                InsertTaskToTest.InsertAndReturTask("ToDo");
+                InsertTaskToTest.InsertAndReturTask(Progress.ToDo);
             }  
 
             OkObjectResult returnTask = (OkObjectResult)_taskController.GetAll();

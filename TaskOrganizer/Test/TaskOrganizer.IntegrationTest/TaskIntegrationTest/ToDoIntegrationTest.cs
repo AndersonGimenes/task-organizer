@@ -1,10 +1,12 @@
 using System;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using TaskOrganizer.Api.Controllers;
 using TaskOrganizer.Api.Models;
 using TaskOrganizer.Domain.ContractUseCase;
+using TaskOrganizer.Domain.Enum;
 using TaskOrganizer.IntegrationTest.TaskIntegrationTest.Common;
 using TaskOrganizer.IntegrationTest.UseCaseIntegrationTest;
 using TaskOrganizer.IntegrationTest.UseCaseIntegrationTest.Common;
@@ -24,6 +26,7 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         private readonly IRegisterTaskUseCase _registerTaskUseCase;
         private readonly IGetTasksUseCase _getTasksUseCase;
         private readonly IDeleteTaskUseCase _deleteTaskUseCase;
+        private readonly IMapper _mapper;
         private readonly ToDoController _toDoController;
         private readonly Mock<IUrlHelper> _urlHelperMock;
 
@@ -35,7 +38,8 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
             _registerTaskUseCase = new RegisterTaskUseCase(_taskWriteDeleteOnlyRepository, _taskReadOnlyRepository);
             _getTasksUseCase = new GetTasksUseCase(_taskReadOnlyRepository);
             _deleteTaskUseCase = new DeleteTaskUseCase(_taskWriteDeleteOnlyRepository);
-            _toDoController = new ToDoController(_getTasksUseCase,_registerTaskUseCase, _deleteTaskUseCase);
+            _mapper = CreateMapper.CreateMapperProfile();
+            _toDoController = new ToDoController(_getTasksUseCase,_registerTaskUseCase, _deleteTaskUseCase, _mapper);
             _urlHelperMock = new Mock<IUrlHelper>();
         }
 
@@ -69,7 +73,7 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         {
             var statusCodeResult = 200;
 
-            var taskNumber = InsertTaskToTest.InsertAndReturTask("ToDo").TaskNumber;
+            var taskNumber = InsertTaskToTest.InsertAndReturTask(Progress.ToDo).TaskNumber;
 
             var taskRequest = Json.JsonDeserialize(ReturnJsonUpdateTask(taskNumber));
             var returnTask = (OkResult)_toDoController.Update(taskRequest);
@@ -88,7 +92,7 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         [Fact]
         public void MustReturnJustOnlyTask()
         {
-            var task = InsertTaskToTest.InsertAndReturTask("ToDo");
+            var task = InsertTaskToTest.InsertAndReturTask(Progress.ToDo);
                         
             var returnTask = (OkObjectResult)_toDoController.Get(task.TaskNumber);
             var taskModel = (TaskModel)returnTask.Value;
@@ -105,7 +109,7 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
             var result = "Sequence contains no elements";
             var statusCodeResult = 204;
 
-            var taskNumber = InsertTaskToTest.InsertAndReturTask("ToDo").TaskNumber;
+            var taskNumber = InsertTaskToTest.InsertAndReturTask(Progress.ToDo).TaskNumber;
 
             var taskRequest = Json.JsonDeserialize(ReturnJsonUpdateTask(taskNumber));
             var returnTask = (NoContentResult)_toDoController.Delete(taskRequest);

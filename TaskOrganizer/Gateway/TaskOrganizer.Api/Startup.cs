@@ -16,6 +16,8 @@ using TaskOrganizer.Repository.Context;
 using TaskOrganizer.UseCase;
 using TaskOrganizer.UseCase.ContractRepository;
 using TaskOrganizer.Api.Mapping;
+using TaskOrganizer.Domain.ContractUseCase.Task;
+using TaskOrganizer.UseCase.Task;
 
 namespace TaskOrganizer.Api
 {
@@ -38,6 +40,8 @@ namespace TaskOrganizer.Api
             services.AddTransient<ITaskWriteDeleteOnlyRepository, TaskWriteDeleteOnlyRepository>();
             
             // UseCase
+            services.AddTransient<ITaskUseCase, TaskUseCase>();
+
             services.AddTransient<IGetTasksUseCase, GetTasksUseCase>();
             services.AddTransient<IRegisterTaskUseCase, RegisterTaskUseCase>();
             services.AddTransient<IDeleteTaskUseCase, DeleteTaskUseCase>();
@@ -55,6 +59,9 @@ namespace TaskOrganizer.Api
 
             var mapper = mappingConfiguration.CreateMapper();
             services.AddSingleton(mapper);
+
+            // [TODO]
+            // put repository mapper instace here
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

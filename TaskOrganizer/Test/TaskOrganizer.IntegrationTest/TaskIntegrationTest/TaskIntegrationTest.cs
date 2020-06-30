@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ using TaskOrganizer.Repository;
 using TaskOrganizer.Repository.Context;
 using TaskOrganizer.UseCase;
 using TaskOrganizer.UseCase.ContractRepository;
+using TaskOrganizer.UseCase.Task;
 using Xunit;
 
 namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
@@ -20,7 +22,7 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
     {
         private readonly TaskOrganizerContext _context;        
         private readonly ITaskReadOnlyRepository _taskReadOnlyRepository;
-        private readonly IGetTasksUseCase _getTasksUseCase;
+        private readonly TaskUseCase _taskUseCase;
         private readonly IMapper _mapper;
         private readonly TaskController _taskController;
 
@@ -28,9 +30,9 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         {
             _context = DataBaseInMemory.ReturnContext();
             _taskReadOnlyRepository = new TaskReadOnlyRepository(_context);
-            _getTasksUseCase = new GetTasksUseCase(_taskReadOnlyRepository);
+            _taskUseCase = new TaskUseCase(_taskReadOnlyRepository);
             _mapper = CreateMapper.CreateMapperProfile();
-            _taskController = new TaskController(_getTasksUseCase, _mapper);
+            _taskController = new TaskController(_taskUseCase, _mapper);
         }
 
         [Fact]
@@ -46,6 +48,22 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
 
             Assert.True(list.Count > 0);
           
+        }
+
+        [Fact(Skip="Fix this")]
+        public void MustReturnAEspecificTask()
+        {
+            var task = InsertTaskToTest.InsertAndReturTask(Progress.ToDo);
+            
+            OkObjectResult returnTask = (OkObjectResult)_taskController.Get(task.TaskNumber);
+            var taskRetorned = (TaskModel)returnTask.Value;
+
+            Assert.Equal(taskRetorned.TaskNumber, task.TaskNumber);
+            Assert.Equal(taskRetorned.Title, task.Title);
+            Assert.Equal(taskRetorned.Description, task.Description);
+            Assert.Equal(taskRetorned.CreateDate, DateTime.Now.Date);
+            Assert.Equal(taskRetorned.Progress, task.Progress.ToString());
+            Assert.Equal(taskRetorned.EstimatedDate, task.EstimatedDate);
         }
  
     }

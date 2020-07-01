@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using FluentValidation;
+using TaskOrganizer.Domain.Constant;
 using TaskOrganizer.Domain.Entities;
 
 namespace TaskOrganizer.Domain.Validation
@@ -11,11 +12,15 @@ namespace TaskOrganizer.Domain.Validation
         {
             RuleFor(x => x.Title)
                 .NotEmpty()
-                .WithMessage(x => $"Please type some {nameof(x.Title)}!");
+                .WithMessage(x => string.Format(DomainMessage.titleOrDescripitionNullOrEmpty, nameof(x.Title)));
 
             RuleFor(x => x.Description)
                 .NotEmpty()
-                .WithMessage(x => $"Please type some {nameof(x.Description)}!");
+                .WithMessage(x => string.Format(DomainMessage.titleOrDescripitionNullOrEmpty, nameof(x.Description)));
+
+            RuleFor(x => x.Progress)
+                .IsInEnum()
+                .WithMessage(x => string.Format(DomainMessage.invalidProgress, nameof(x.Progress)));
 
         }
 

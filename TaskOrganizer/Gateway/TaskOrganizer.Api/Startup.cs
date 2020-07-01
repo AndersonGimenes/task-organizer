@@ -1,15 +1,11 @@
-using System.Security.Cryptography.X509Certificates;
 using System;
 using AutoMapper;
-using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TaskOrganizer.Api.Models;
-using TaskOrganizer.Api.Validation;
 using TaskOrganizer.Domain.ContractUseCase;
 using TaskOrganizer.Repository;
 using TaskOrganizer.Repository.Context;
@@ -18,6 +14,8 @@ using TaskOrganizer.UseCase.ContractRepository;
 using TaskOrganizer.Api.Mapping;
 using TaskOrganizer.Domain.ContractUseCase.Task;
 using TaskOrganizer.UseCase.Task;
+using TaskOrganizer.Domain.ContractUseCase.Task.ToDo;
+using TaskOrganizer.UseCase.Task.ToDo;
 
 namespace TaskOrganizer.Api
 {
@@ -41,7 +39,10 @@ namespace TaskOrganizer.Api
             
             // UseCase
             services.AddTransient<ITaskUseCase, TaskUseCase>();
+            services.AddTransient<IToDoUseCase, ToDoUseCase>();
 
+            // [TODO]
+            // After refactor remove this services
             services.AddTransient<IGetTasksUseCase, GetTasksUseCase>();
             services.AddTransient<IRegisterTaskUseCase, RegisterTaskUseCase>();
             services.AddTransient<IDeleteTaskUseCase, DeleteTaskUseCase>();

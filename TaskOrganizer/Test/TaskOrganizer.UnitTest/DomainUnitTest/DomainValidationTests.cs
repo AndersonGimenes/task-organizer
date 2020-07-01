@@ -33,7 +33,7 @@ namespace TaskOrganizer.UnitTest.DomainUnitTest
 
             domainTask.Title = input;
 
-            Assert.Equal(input,result);
+            Assert.Equal(domainTask.Title,result);
         }
 
         [Theory]
@@ -61,7 +61,35 @@ namespace TaskOrganizer.UnitTest.DomainUnitTest
 
             domainTask.Description = input;
 
-            Assert.Equal(input,result);
+            Assert.Equal(domainTask.Description,result);
+        }
+
+        [Theory]
+        [InlineData("The progress not set, please inform some Progress!", 0)]
+        public void DomainExceptionMustBeReturnedWhenTheProgressIsNotValid(string result, int input)
+        {
+            
+            var domainTask = new DomainTask
+            {
+                Title = "Test",
+                Progress = (Progress)input,
+                Description = "Any"
+            };
+
+            var ex = Assert.Throws<DomainException>(() => domainTask.IsValid());
+
+            Assert.Equal(ex.Message, result);
+        }
+
+        [Theory]
+        [InlineData(Progress.ToDo, Progress.ToDo)]
+        public void DomainExceptionMustNotBeReturnedWhenTheProgressIsPassed(Progress result, Progress input)
+        {
+            var domainTask = new DomainTask();
+
+            domainTask.Progress = input;
+
+            Assert.Equal(domainTask.Progress,result);
         }
        
     }

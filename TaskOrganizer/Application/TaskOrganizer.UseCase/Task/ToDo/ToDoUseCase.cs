@@ -1,4 +1,5 @@
 using System;
+using TaskOrganizer.Domain.Constant;
 using TaskOrganizer.Domain.ContractUseCase.Task.ToDo;
 using TaskOrganizer.Domain.Entities;
 using TaskOrganizer.Domain.Enum;
@@ -41,11 +42,11 @@ namespace TaskOrganizer.UseCase.Task.ToDo
             var domainTaskDto = _taskReadOnlyRepository.Get(domainTask.TaskNumber);
             
             if(domainTaskDto is null)
-                throw new RegisterNotFoundException("Register not found");
+                throw new RegisterNotFoundException(UseCaseMessage.registerNotFound);
 
             // verify if createDate to doesn't update
             if(domainTaskDto.CreateDate != domainTask.CreateDate)
-                throw new UseCaseException.UseCaseException($"The {nameof(domainTask.CreateDate)} can't be update!");
+                throw new UseCaseException.UseCaseException(string.Format(UseCaseMessage.fieldNotUpdate, nameof(domainTask.CreateDate)));
 
             _taskWriteDeleteOnlyRepository.Update(domainTask);
         }
@@ -60,7 +61,7 @@ namespace TaskOrganizer.UseCase.Task.ToDo
         private void ProgressToDoValidation(DomainTask domainTask)
         {
             if(domainTask.Progress != Progress.ToDo)
-                throw new UseCaseException.UseCaseException($"The {nameof(domainTask.Progress)} must be ToDo.");
+                throw new UseCaseException.UseCaseException(string.Format(UseCaseMessage.invalidProgress ,nameof(domainTask.Progress),"ToDo"));
         }
 
         #endregion

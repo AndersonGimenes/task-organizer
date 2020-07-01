@@ -2,9 +2,10 @@ using System;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TaskOrganizer.Api.Models;
-using TaskOrganizer.Domain.ContractUseCase;
+using TaskOrganizer.Domain.ContractUseCase.Task.ToDo;
 using TaskOrganizer.Domain.DomainException;
 using TaskOrganizer.Domain.Entities;
+using TaskOrganizer.UseCase.UseCaseException;
 
 namespace TaskOrganizer.Api.Controllers
 {
@@ -12,56 +13,30 @@ namespace TaskOrganizer.Api.Controllers
     [Route("api/[controller]/task/")]
     public class ToDoController : ControllerBase
     {
-        
-        private readonly IGetTasksUseCase _getTasksUseCase;
-        private readonly IRegisterTaskUseCase _registerTaskUseCase;
-        private readonly IDeleteTaskUseCase _deleteTaskUseCase;
+        private readonly IToDoUseCase _toDoUseCase;
         private readonly IMapper _mapper;
 
-        public ToDoController(IGetTasksUseCase getTasksUseCase, IRegisterTaskUseCase registerTaskUseCase, IDeleteTaskUseCase deleteTaskUseCase, IMapper mapper)
+        public ToDoController(IToDoUseCase toDoUseCase, IMapper mapper)
         {           
-            _getTasksUseCase = getTasksUseCase;
-            _registerTaskUseCase = registerTaskUseCase;
-            _deleteTaskUseCase = deleteTaskUseCase;
+            _toDoUseCase = toDoUseCase;
             _mapper = mapper;
+
         }
-
-        [HttpGet("{taskNumber}")]
-        public IActionResult Get(int taskNumber)
-        {
-            try
-            {
-                var domainTask = _getTasksUseCase.Get(taskNumber);
-                var taskModel = _mapper.Map<TaskModel>(domainTask);
-
-                return Ok(taskModel);
-            }
-            catch(Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
-        }   
     
         [HttpPost]
-        public IActionResult Insert([FromBody] TaskModel taskModel)
+        public IActionResult Insert([FromBody] ToDoModel toDoModel)
         {
             try
             {
-                taskModel.IsValid();
+                toDoModel.IsValid();
 
-                var domainTask = _mapper.Map<DomainTask>(taskModel);
+                var domainTask = _mapper.Map<DomainTask>(toDoModel);
 
-                taskModel = _mapper.Map<TaskModel>(_registerTaskUseCase.Register(domainTask));
+                toDoModel = _mapper.Map<ToDoModel>(_toDoUseCase.InsertNewTask(domainTask));
 
-                var uri = Url.Action("Get", new {taskNumber = taskModel.TaskNumber});
-
-                return Created(uri, taskModel);
+                return Created(string.Empty, toDoModel);
             }
-            catch(ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch(DomainException ex)
+            catch(Exception ex) when (ex is InvalidOperationException || ex is ArgumentException || ex is DomainException || ex is UseCaseException)
             {
                 return BadRequest(ex.Message);
             }
@@ -72,23 +47,19 @@ namespace TaskOrganizer.Api.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update([FromBody] TaskModel taskModel)
+        public IActionResult Update([FromBody] ToDoModel toDoModel)
         {
             try
             {
-                taskModel.IsValid();
+                toDoModel.IsValid();
 
-                var domainTask = _mapper.Map<DomainTask>(taskModel);
+                var domainTask = _mapper.Map<DomainTask>(toDoModel);
 
-                _registerTaskUseCase.Register(domainTask);
+                _toDoUseCase.UpdateTask(domainTask);
 
                 return Ok();
             }
-            catch(ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch(DomainException ex)
+            catch(Exception ex) when (ex is InvalidOperationException || ex is ArgumentException || ex is DomainException || ex is UseCaseException)
             {
                 return BadRequest(ex.Message);
             }
@@ -96,17 +67,16 @@ namespace TaskOrganizer.Api.Controllers
             {
                 return BadRequest(ex.Message);
             }
-           
         }
 
         [HttpDelete]
-        public IActionResult Delete([FromBody] TaskModel taskModel)
+        public IActionResult Delete([FromBody] ToDoModel toDoModel)
         {
             try
             {
-                var domainTask = _mapper.Map<DomainTask>(taskModel);
+                var domainTask = _mapper.Map<DomainTask>(toDoModel);
 
-                _deleteTaskUseCase.Delete(domainTask);
+                _toDoUseCase.Delete(domainTask);
                 
                 return NoContent();
             }

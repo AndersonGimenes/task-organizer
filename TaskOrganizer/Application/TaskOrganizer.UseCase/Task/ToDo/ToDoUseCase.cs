@@ -41,7 +41,7 @@ namespace TaskOrganizer.UseCase.Task.ToDo
             var domainTaskDto = _taskReadOnlyRepository.Get(domainTask.TaskNumber);
             
             if(domainTaskDto is null)
-                throw new RegisterNotFound("Register not found");
+                throw new RegisterNotFoundException("Register not found");
 
             // verify if createDate to doesn't update
             if(domainTaskDto.CreateDate != domainTask.CreateDate)

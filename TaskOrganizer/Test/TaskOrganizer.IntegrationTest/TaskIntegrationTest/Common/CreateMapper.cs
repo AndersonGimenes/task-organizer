@@ -1,5 +1,5 @@
 using AutoMapper;
-using TaskOrganizer.Api.Mapping;
+using TaskOrganizer.Repository.Mapping;
 
 namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest.Common
 {
@@ -10,7 +10,7 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest.Common
             //Mapper configuration
             var mappingConfiguration = new MapperConfiguration(x => 
             { 
-                x.AddProfile(new MappingProfile());
+                x.AddProfile(new MappingProfileRepository());
             });
 
             return new Mapper(mappingConfiguration);

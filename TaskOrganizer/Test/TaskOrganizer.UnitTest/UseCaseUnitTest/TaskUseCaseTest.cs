@@ -8,7 +8,7 @@ using TaskOrganizer.UseCase.ContractRepository;
 using TaskOrganizer.UseCase.Task;
 using Xunit;
 
-namespace TaskOrganizer.UnitTest.UseCaseUnitTest.Task
+namespace TaskOrganizer.UnitTest.UseCaseUnitTest
 {
     public class TaskUseCaseTest
     {

@@ -29,7 +29,7 @@ namespace TaskOrganizer.Repository
             return _mapper.Map<DomainTask>(repositoryTask);
         }
 
-        public IList<DomainTask> GetAll()
+        public List<DomainTask> GetAll()
         {
             var repositoryTasks = _context.RepositoryTasks
                 .AsNoTracking()

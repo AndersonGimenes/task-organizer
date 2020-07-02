@@ -18,10 +18,9 @@ namespace TaskOrganizer.UseCase
             return _taskReadOnlyRepositoy.Get(id);
         }
 
-        public IList<DomainTask> GetAll()
+        public List<DomainTask> GetAll()
         {
             return _taskReadOnlyRepositoy.GetAll();
         }
-
     }
 }

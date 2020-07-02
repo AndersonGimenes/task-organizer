@@ -1,11 +1,9 @@
 using System;
-using TaskOrganizer.Domain.Constant;
 using TaskOrganizer.Domain.ContractUseCase.Task.ToDo;
 using TaskOrganizer.Domain.Entities;
 using TaskOrganizer.Domain.Enum;
 using TaskOrganizer.UseCase.ContractRepository;
 using TaskOrganizer.UseCase.Task.Extension;
-using TaskOrganizer.UseCase.UseCaseException;
 
 namespace TaskOrganizer.UseCase.Task.ToDo
 {

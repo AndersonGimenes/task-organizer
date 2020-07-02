@@ -28,7 +28,7 @@ namespace TaskOrganizer.Api.Controllers
         }
     
         [HttpPost]
-        public IActionResult Create([FromBody] ToDoModel toDoModel)
+        public IActionResult CreateTask([FromBody] ToDoModel toDoModel)
         {
             try
             {
@@ -51,7 +51,7 @@ namespace TaskOrganizer.Api.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update([FromBody] ToDoModel toDoModel)
+        public IActionResult UpdateTask([FromBody] ToDoModel toDoModel)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace TaskOrganizer.Api.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete([FromBody] ToDoModel toDoModel)
+        public IActionResult DeleteTask([FromBody] ToDoModel toDoModel)
         {
             try
             {

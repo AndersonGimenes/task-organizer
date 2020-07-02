@@ -7,13 +7,14 @@ using TaskOrganizer.Domain.Enum;
 using TaskOrganizer.UseCase.ContractRepository;
 using TaskOrganizer.UseCase.Task;
 using Xunit;
+using TaskOrganizer.Domain.ContractUseCase.Task;
 
 namespace TaskOrganizer.UnitTest.UseCaseUnitTest
 {
     public class TaskUseCaseTest
     {
         private readonly Mock<ITaskReadOnlyRepository> _taskReadOnlyRepository;
-        private readonly TaskUseCase _taskUseCase;
+        private readonly ITaskUseCase _taskUseCase;
 
         public TaskUseCaseTest()
         {    

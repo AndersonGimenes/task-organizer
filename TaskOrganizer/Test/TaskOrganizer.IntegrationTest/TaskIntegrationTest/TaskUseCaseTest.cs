@@ -1,7 +1,5 @@
 using System.Linq;
-using AutoMapper;
-using TaskOrganizer.Domain.Enum;
-using TaskOrganizer.IntegrationTest.TaskIntegrationTest.Common;
+using TaskOrganizer.Domain.ContractUseCase.Task;
 using TaskOrganizer.IntegrationTest.UseCaseIntegrationTest;
 using TaskOrganizer.IntegrationTest.UseCaseIntegrationTest.Common;
 using TaskOrganizer.Repository;
@@ -16,7 +14,7 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
     {
         private readonly TaskOrganizerContext _context;        
         private readonly ITaskReadOnlyRepository _taskReadOnlyRepository;
-        private readonly TaskUseCase _taskUseCase;
+        private readonly ITaskUseCase _taskUseCase;
               
         public TaskUseCaseTest()
         {

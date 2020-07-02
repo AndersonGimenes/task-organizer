@@ -13,18 +13,22 @@ namespace TaskOrganizer.Api.Controllers
     [Route("api/[controller]/task/")]
     public class ToDoController : ControllerBase
     {
-        private readonly IToDoUseCase _toDoUseCase;
+        private readonly IToDoCreateTaskUseCase _toDoCreateTaskUseCase;
+        private readonly IToDoUpdateTaskUseCase _toDoUpdateTaskUseCase;
+        private readonly IToDoDeleteTaskUseCase _toDoDeleteTaskUseCase;
         private readonly IMapper _mapper;
 
-        public ToDoController(IToDoUseCase toDoUseCase, IMapper mapper)
+        public ToDoController(IToDoCreateTaskUseCase toDoCreateTaskUseCase, IToDoUpdateTaskUseCase toDoUpdateTaskUseCase, IToDoDeleteTaskUseCase toDoDeleteTaskUseCase, IMapper mapper)
         {           
-            _toDoUseCase = toDoUseCase;
+            _toDoCreateTaskUseCase = toDoCreateTaskUseCase;
+            _toDoUpdateTaskUseCase = toDoUpdateTaskUseCase;
+            _toDoDeleteTaskUseCase = toDoDeleteTaskUseCase;
             _mapper = mapper;
 
         }
     
         [HttpPost]
-        public IActionResult Insert([FromBody] ToDoModel toDoModel)
+        public IActionResult Create([FromBody] ToDoModel toDoModel)
         {
             try
             {
@@ -32,7 +36,7 @@ namespace TaskOrganizer.Api.Controllers
 
                 var domainTask = _mapper.Map<DomainTask>(toDoModel);
 
-                toDoModel = _mapper.Map<ToDoModel>(_toDoUseCase.InsertNewTask(domainTask));
+                toDoModel = _mapper.Map<ToDoModel>(_toDoCreateTaskUseCase.CreateNewTask(domainTask));
 
                 return Created(string.Empty, toDoModel);
             }
@@ -55,13 +59,17 @@ namespace TaskOrganizer.Api.Controllers
 
                 var domainTask = _mapper.Map<DomainTask>(toDoModel);
 
-                _toDoUseCase.UpdateTask(domainTask);
+                _toDoUpdateTaskUseCase.UpdateTask(domainTask);
 
                 return Ok();
             }
             catch(Exception ex) when (ex is InvalidOperationException || ex is ArgumentException || ex is DomainException || ex is UseCaseException)
             {
                 return BadRequest(ex.Message);
+            }
+            catch(Exception ex) when (ex is RegisterNotFoundException)
+            {
+                return NotFound(ex.Message);
             }
             catch(Exception ex)
             {
@@ -76,9 +84,13 @@ namespace TaskOrganizer.Api.Controllers
             {
                 var domainTask = _mapper.Map<DomainTask>(toDoModel);
 
-                _toDoUseCase.Delete(domainTask);
+                _toDoDeleteTaskUseCase.Delete(domainTask);
                 
                 return NoContent();
+            }
+            catch(Exception ex) when (ex is RegisterNotFoundException)
+            {
+                return NotFound(ex.Message);
             }
             catch(Exception ex)
             {

@@ -1,8 +1,8 @@
 using TaskOrganizer.Domain.Entities;
 
-namespace TaskOrganizer.Domain.ContractUseCase.Task
+namespace TaskOrganizer.Domain.ContractUseCase.Task.ToDo
 {
-    public interface IBaseTaskUseCase
+    public interface IToDoUpdateTaskUseCase
     {
         void UpdateTask(DomainTask domainTask);
     }

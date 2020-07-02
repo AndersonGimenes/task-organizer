@@ -39,7 +39,9 @@ namespace TaskOrganizer.Api
             
             // UseCase
             services.AddTransient<ITaskUseCase, TaskUseCase>();
-            services.AddTransient<IToDoUseCase, ToDoUseCase>();
+            services.AddTransient<IToDoCreateTaskUseCase, ToDoCreateTaskUseCase>();
+            services.AddTransient<IToDoUpdateTaskUseCase, ToDoUpdateTaskUseCase>();
+            services.AddTransient<IToDoDeleteTaskUseCase, ToDoDeleteTaskUseCase>();
 
             // [TODO]
             // After refactor remove this services

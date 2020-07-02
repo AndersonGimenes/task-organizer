@@ -5,9 +5,9 @@ using TaskOrganizer.Domain.Enum;
 
 namespace TaskOrganizer.Api.Mapping
 {
-    public class MappingProfile : Profile
+    public class MappingProfileApi : Profile
     {
-        public MappingProfile()
+        public MappingProfileApi()
         {
             CreateMap<DomainTask, TaskModel>();
 

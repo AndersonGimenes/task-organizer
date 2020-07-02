@@ -9,7 +9,7 @@ namespace TaskOrganizer.Repository.Mapping
             //Mapper configuration
             var mappingConfiguration = new MapperConfiguration(x => 
             { 
-                x.AddProfile(new MappingProfile());
+                x.AddProfile(new MappingProfileRepository());
             });
 
             return new Mapper(mappingConfiguration);

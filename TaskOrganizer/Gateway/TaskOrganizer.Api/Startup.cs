@@ -57,7 +57,7 @@ namespace TaskOrganizer.Api
             //Mapper configuration
             var mappingConfiguration = new MapperConfiguration(x => 
             { 
-                x.AddProfile(new MappingProfile());
+                x.AddProfile(new MappingProfileApi());
             });
 
             var mapper = mappingConfiguration.CreateMapper();

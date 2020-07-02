@@ -22,18 +22,20 @@ namespace TaskOrganizer.Repository
 
         public DomainTask Get(int id)
         {
-            var repositoryTask = _context.RepositoryTasks
-                .AsNoTracking()
-                .Single(x => x.TaskId.Equals(id));
+            var repositoryTask = _context
+                                    .RepositoryTasks
+                                    .AsNoTracking()
+                                    .Single(x => x.TaskId.Equals(id));
 
             return _mapper.Map<DomainTask>(repositoryTask);
         }
 
         public List<DomainTask> GetAll()
         {
-            var repositoryTasks = _context.RepositoryTasks
-                .AsNoTracking()
-                .ToList();
+            var repositoryTasks = _context
+                                    .RepositoryTasks
+                                    .AsNoTracking()
+                                    .ToList();
             
             return _mapper.Map<List<DomainTask>>(repositoryTasks);
         }

@@ -1,6 +1,8 @@
+using System;
 using TaskOrganizer.Domain.Constant;
 using TaskOrganizer.Domain.ContractUseCase.Task.ToDo;
 using TaskOrganizer.Domain.Entities;
+using TaskOrganizer.Domain.Enum;
 using TaskOrganizer.UseCase.ContractRepository;
 using TaskOrganizer.UseCase.UseCaseException;
 
@@ -23,6 +25,9 @@ namespace TaskOrganizer.UseCase.Task.ToDo
             
             if(domainTaskDto is null)
                 throw new RegisterNotFoundException(UseCaseMessage.registerNotFound);
+
+            if(!domainTaskDto.Progress.Equals(Progress.ToDo))
+                throw new UseCaseException.UseCaseException(string.Format(UseCaseMessage.registerCannotDelete, nameof(domainTaskDto.Progress)));
 
             _taskWriteDeleteOnlyRepository.Delete(domainTask);
         }

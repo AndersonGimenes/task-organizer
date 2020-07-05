@@ -14,7 +14,7 @@ namespace TaskOrganizer.IntegrationTest.UseCaseIntegrationTest.Common
             {
                 new RepositoryTask
                 {
-                    TaskId = 1,
+                    TaskId = 10,
                     EstimatedDate = DateTime.Now.Date.AddDays(20),
                     CreateDate = DateTime.Now.Date,
                     Title = "Test title one", 
@@ -25,7 +25,7 @@ namespace TaskOrganizer.IntegrationTest.UseCaseIntegrationTest.Common
                 },
                 new RepositoryTask
                 {
-                    TaskId = 2,
+                    TaskId = 20,
                     EstimatedDate = DateTime.Now.Date.AddDays(20),
                     CreateDate = DateTime.Now.Date,
                     Title = "Test title two", 
@@ -36,7 +36,7 @@ namespace TaskOrganizer.IntegrationTest.UseCaseIntegrationTest.Common
                 },
                 new RepositoryTask
                 {
-                    TaskId = 3,
+                    TaskId = 30,
                     EstimatedDate = DateTime.Now.Date.AddDays(20),
                     CreateDate = DateTime.Now.Date,
                     Title = "Test title three", 

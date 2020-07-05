@@ -44,7 +44,7 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         [Fact]
         public void MustReturnAEspecificTask()
         {
-            var taskNumber = 3;
+            var taskNumber = 30;
             var taskDto = _taskReadOnlyRepository.Get(taskNumber);
 
             var taskRetorned = _taskUseCase.Get(taskNumber);

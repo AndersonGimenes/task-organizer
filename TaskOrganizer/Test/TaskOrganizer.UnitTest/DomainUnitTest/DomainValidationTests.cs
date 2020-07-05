@@ -8,14 +8,14 @@ namespace TaskOrganizer.UnitTest.DomainUnitTest
 {
     public class DomainValidationTests
     {
-        [Theory]
-        [InlineData("Please type some Title!", null)]
-        [InlineData("Please type some Title!", "")]
-        public void DomainExceptionMustBeReturnedWhenTheTitleIsNullOrEmpty(string result, string input)
+        [Fact]
+        public void DomainExceptionMustBeReturnedWhenTheTitleIsNull()
         {
+            var result = "Please type some Title!";
+
             var domainTask = new DomainTask
             {
-                Title = input,
+                Title = null,
                 Progress = Progress.ToDo,
                 Description = "Any"
             };
@@ -25,27 +25,16 @@ namespace TaskOrganizer.UnitTest.DomainUnitTest
             Assert.Equal(ex.Message,result);
         }
 
-        [Theory]
-        [InlineData("Title test", "Title test")]
-        public void DomainExceptionMustNotBeReturnedWhenTheTitleIsPassed(string result, string input)
+        [Fact]
+        public void DomainExceptionMustBeReturnedWhenTheTitleIsEmpty()
         {
-            var domainTask = new DomainTask();
+            var result = "Please type some Title!";
 
-            domainTask.Title = input;
-
-            Assert.Equal(domainTask.Title,result);
-        }
-
-        [Theory]
-        [InlineData("Please type some Description!", null)]
-        [InlineData("Please type some Description!", "")]
-        public void DomainExceptionMustBeReturnedWhenTheDescriptionIsNullOrEmpty(string result, string input)
-        {
             var domainTask = new DomainTask
             {
-                Title = "Any",
+                Title = string.Empty,
                 Progress = Progress.ToDo,
-                Description = input
+                Description = "Any"
             };
 
             var ex = Assert.Throws<DomainException>(() => domainTask.IsValid());
@@ -53,26 +42,56 @@ namespace TaskOrganizer.UnitTest.DomainUnitTest
             Assert.Equal(ex.Message,result);
         }
 
-        [Theory]
-        [InlineData("Description test", "Description test")]
-        public void DomainExceptionMustNotBeReturnedWhenTheDescriptionIsPassed(string result, string input)
+        [Fact]
+        public void DomainExceptionMustNotBeReturnedWhenTheTitleIsPassed()
         {
+            var result = "Title test";
+
             var domainTask = new DomainTask();
 
-            domainTask.Description = input;
+            domainTask.Title = "Title test";
+
+            Assert.Equal(domainTask.Title,result);
+        }
+
+        [Fact]
+        public void DomainExceptionMustBeReturnedWhenTheDescriptionIsNullOrEmpty()
+        {
+            var result = "Please type some Description!";
+
+            var domainTask = new DomainTask
+            {
+                Title = "Any",
+                Progress = Progress.ToDo,
+                Description = string.Empty
+            };
+
+            var ex = Assert.Throws<DomainException>(() => domainTask.IsValid());
+
+            Assert.Equal(ex.Message,result);
+        }
+
+        [Fact]
+        public void DomainExceptionMustNotBeReturnedWhenTheDescriptionIsPassed()
+        {
+            var result = "Description test";
+            
+            var domainTask = new DomainTask();
+
+            domainTask.Description = "Description test";
 
             Assert.Equal(domainTask.Description,result);
         }
 
-        [Theory]
-        [InlineData("The progress not set, please inform some Progress!", 0)]
-        public void DomainExceptionMustBeReturnedWhenTheProgressIsNotValid(string result, int input)
+        [Fact]
+        public void DomainExceptionMustBeReturnedWhenTheProgressIsNotValid()
         {
+            var result = "The progress not set, please inform some Progress!";
             
             var domainTask = new DomainTask
             {
                 Title = "Test",
-                Progress = (Progress)input,
+                Progress = 0,
                 Description = "Any"
             };
 

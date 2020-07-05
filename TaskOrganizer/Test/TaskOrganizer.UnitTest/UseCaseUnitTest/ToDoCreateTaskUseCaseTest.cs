@@ -26,12 +26,8 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
         {
             var errorMessage = "The Progress must be ToDo.";
 
-            var domainTask = new DomainTask
-            {
-                Title = "Test",
-                Description = "Test",
-                Progress = Progress.InProgress
-            };
+            var domainTask = MockNewDomainTask();
+            domainTask.Progress = Progress.InProgress;
 
             var ex = Assert.Throws<UseCaseException>(() => _toDoCreateTaskUseCase.CreateNewTask(domainTask));
             Assert.Equal(ex.Message, errorMessage);
@@ -40,12 +36,7 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
         [Fact]
         public void IfThereIsNotEstimatedDateFilledAssumeTheCurrentDatePlusThirty()
         {
-            var domainTask = new DomainTask
-            {
-                Title = "Test",
-                Description = "Test",
-                Progress = Progress.ToDo
-            };
+            var domainTask = MockNewDomainTask();
 
             _toDoCreateTaskUseCase.CreateNewTask(domainTask);
 
@@ -57,13 +48,8 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
         {
             var dateTest = DateTime.Now.Date.AddDays(10);
 
-            var domainTask = new DomainTask
-            {
-                Title = "Test",
-                Description = "Test",
-                Progress = Progress.ToDo, 
-                EstimatedDate = dateTest
-            };
+            var domainTask = MockNewDomainTask();
+            domainTask.EstimatedDate = dateTest;
             
             _toDoCreateTaskUseCase.CreateNewTask(domainTask);
 
@@ -75,12 +61,7 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
         {
             int result = default;
 
-            var domainTask = new DomainTask
-            {
-                Title = "Test",
-                Description = "Test",
-                Progress = Progress.ToDo, 
-            };
+            var domainTask = MockNewDomainTask();
 
             _taskWriteDeleteOnlyRepository
                 .Setup(x => x.Add(It.IsAny<DomainTask>()))
@@ -99,6 +80,16 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
         {
             domainTask.TaskNumber = 1;
             return domainTask;
+        }
+
+        private DomainTask MockNewDomainTask()
+        {
+            return new DomainTask
+            {
+                Title = "Test",
+                Description = "Test",
+                Progress = Progress.ToDo, 
+            };
         }
 
         #endregion

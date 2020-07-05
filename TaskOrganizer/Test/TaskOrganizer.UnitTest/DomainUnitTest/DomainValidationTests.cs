@@ -100,15 +100,14 @@ namespace TaskOrganizer.UnitTest.DomainUnitTest
             Assert.Equal(ex.Message, result);
         }
 
-        [Theory]
-        [InlineData(Progress.ToDo, Progress.ToDo)]
-        public void DomainExceptionMustNotBeReturnedWhenTheProgressIsPassed(Progress result, Progress input)
+        [Fact]
+        public void DomainExceptionMustNotBeReturnedWhenTheProgressIsPassed()
         {
             var domainTask = new DomainTask();
 
-            domainTask.Progress = input;
+            domainTask.Progress = Progress.ToDo;
 
-            Assert.Equal(domainTask.Progress,result);
+            Assert.Equal(domainTask.Progress,Progress.ToDo);
         }
        
     }

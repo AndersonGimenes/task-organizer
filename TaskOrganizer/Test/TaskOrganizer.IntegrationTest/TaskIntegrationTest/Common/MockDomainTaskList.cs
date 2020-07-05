@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using TaskOrganizer.Domain.Entities;
 using TaskOrganizer.Domain.Enum;
 using TaskOrganizer.Repository.Entities;
 
@@ -57,6 +56,7 @@ namespace TaskOrganizer.IntegrationTest.UseCaseIntegrationTest.Common
                     StartDate = null
                 }
             };
+
         }
     }
 }

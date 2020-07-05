@@ -51,6 +51,7 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
             var errorMessage = "The Progress must be ToDo.";
 
             var domainTask = MockUpdateDomainTask();
+            domainTask.Progress = Progress.InProgress;
 
             var ex = Assert.Throws<UseCaseException>(() => _toDoUpdateTaskUseCase.UpdateTask(domainTask));
             Assert.Equal(ex.Message, errorMessage);

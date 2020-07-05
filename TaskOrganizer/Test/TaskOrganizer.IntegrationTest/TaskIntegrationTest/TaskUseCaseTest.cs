@@ -1,4 +1,3 @@
-using System.Linq;
 using TaskOrganizer.Domain.ContractUseCase.Task;
 using TaskOrganizer.IntegrationTest.UseCaseIntegrationTest;
 using TaskOrganizer.IntegrationTest.UseCaseIntegrationTest.Common;
@@ -20,10 +19,14 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         {
             using (var context = DataBaseInMemory.ReturnContext())
             {
-                if(context.RepositoryTasks.ToList().Count.Equals(0))
+                try
                 {
                     context.RepositoryTasks.AddRange(MockRepositoryTask.MockDataRepositoryTask());
                     context.SaveChanges();
+                }
+                catch
+                {
+                    
                 }
             }                      
                         

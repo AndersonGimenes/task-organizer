@@ -23,10 +23,14 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         {
             using (var context = DataBaseInMemory.ReturnContext())
             {
-                if(context.RepositoryTasks.ToList().Count.Equals(0))
+                try
                 {
                     context.RepositoryTasks.AddRange(MockRepositoryTask.MockDataRepositoryTask());
                     context.SaveChanges();
+                }
+                catch
+                {
+                   
                 }
             }
             

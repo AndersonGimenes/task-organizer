@@ -41,7 +41,7 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         [Fact]
         public void WhenReceiveAValidTaskShouldBeDeleted()
         {
-            var result = "Sequence contains no elements.";
+            var result = "Sequence contains no elements";
 
             var domainTask = new DomainTask
             {

@@ -56,7 +56,6 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
             Assert.Equal(ex.Message, errorMessage);
         }
         
-        // validate domainTaskDto when null (must throw a RegisterNotFoundException)
         [Fact]
         public void WhenNotExistsATaskInDataBaseShouldBeThrowARegisterNotFoundException()
         {
@@ -73,7 +72,6 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
 
         }
 
-        // validate createDate to don't update when the date is different
         [Fact]
         public void WhenTheCreateDateIsNotEqualTheCreateDatePersistedShouldBeThrowAUseCaseException()
         {

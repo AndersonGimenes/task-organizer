@@ -103,11 +103,13 @@ namespace TaskOrganizer.UnitTest.DomainUnitTest
         [Fact]
         public void DomainExceptionMustNotBeReturnedWhenTheProgressIsPassed()
         {
+            var result = Progress.ToDo;
+
             var domainTask = new DomainTask();
 
             domainTask.Progress = Progress.ToDo;
 
-            Assert.Equal(domainTask.Progress,Progress.ToDo);
+            Assert.Equal(domainTask.Progress, result);
         }
        
     }

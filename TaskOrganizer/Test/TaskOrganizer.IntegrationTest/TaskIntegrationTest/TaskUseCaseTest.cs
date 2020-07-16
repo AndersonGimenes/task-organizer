@@ -1,4 +1,5 @@
 using TaskOrganizer.Domain.ContractUseCase.Task;
+using TaskOrganizer.IntegrationTest.TaskIntegrationTest.Common;
 using TaskOrganizer.IntegrationTest.UseCaseIntegrationTest;
 using TaskOrganizer.IntegrationTest.UseCaseIntegrationTest.Common;
 using TaskOrganizer.Repository;
@@ -17,18 +18,7 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
               
         public TaskUseCaseTest()
         {
-            using (var context = DataBaseInMemory.ReturnContext())
-            {
-                try
-                {
-                    context.RepositoryTasks.AddRange(MockRepositoryTask.MockDataRepositoryTask());
-                    context.SaveChanges();
-                }
-                catch
-                {
-                    
-                }
-            }                      
+            InsertMockDataBaseInMemory.InsertMock();               
                         
             _context = DataBaseInMemory.ReturnContext();
             _taskReadOnlyRepository = new TaskReadOnlyRepository(_context);

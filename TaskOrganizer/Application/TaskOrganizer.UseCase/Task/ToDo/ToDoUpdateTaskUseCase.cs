@@ -31,7 +31,7 @@ namespace TaskOrganizer.UseCase.Task.ToDo
             if(domainTaskDto is null)
                 throw new RegisterNotFoundException(UseCaseMessage.registerNotFound);
 
-            // verify if createDate to doesn't update
+            // verify createDate to doesn't update
             if(domainTaskDto.CreateDate != domainTask.CreateDate)
                 throw new UseCaseException.UseCaseException(string.Format(UseCaseMessage.fieldNotUpdate, nameof(domainTask.CreateDate)));
 

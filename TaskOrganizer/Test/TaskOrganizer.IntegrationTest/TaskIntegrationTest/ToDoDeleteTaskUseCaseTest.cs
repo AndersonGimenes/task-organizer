@@ -3,6 +3,7 @@ using System.Linq;
 using TaskOrganizer.Domain.ContractUseCase.Task.ToDo;
 using TaskOrganizer.Domain.Entities;
 using TaskOrganizer.Domain.Enum;
+using TaskOrganizer.IntegrationTest.TaskIntegrationTest.Common;
 using TaskOrganizer.IntegrationTest.UseCaseIntegrationTest;
 using TaskOrganizer.IntegrationTest.UseCaseIntegrationTest.Common;
 using TaskOrganizer.Repository;
@@ -22,14 +23,7 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
 
         public ToDoDeleteTaskUseCaseTest()
         {
-            using (var context = DataBaseInMemory.ReturnContext())
-            {
-                if(context.RepositoryTasks.ToList().Count.Equals(0))
-                {
-                    context.RepositoryTasks.AddRange(MockRepositoryTask.MockDataRepositoryTask());
-                    context.SaveChanges();
-                }
-            }
+            InsertMockDataBaseInMemory.InsertMock();
 
             _context = DataBaseInMemory.ReturnContext();
             _taskWriteDeleteOnlyRepository = new TaskWriteDeleteOnlyRepository(_context);

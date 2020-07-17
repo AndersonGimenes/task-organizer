@@ -18,6 +18,8 @@ using TaskOrganizer.Domain.ContractUseCase.Task.ToDo;
 using TaskOrganizer.UseCase.Task.ToDo;
 using TaskOrganizer.Domain.ContractUseCase.Task.InProgress;
 using TaskOrganizer.UseCase.Task.InProgress;
+using TaskOrganizer.Domain.ContractUseCase.Task.Done;
+using TaskOrganizer.UseCase.Task.Done;
 
 namespace TaskOrganizer.Api
 {
@@ -45,6 +47,7 @@ namespace TaskOrganizer.Api
             services.AddTransient<IToDoUpdateTaskUseCase, ToDoUpdateTaskUseCase>();
             services.AddTransient<IToDoDeleteTaskUseCase, ToDoDeleteTaskUseCase>();
             services.AddTransient<IInProgressUseCase, InProgressUseCase>();
+            services.AddTransient<IDoneUseCase, DoneUseCase>();
 
             // [TODO]
             // After refactor remove this services

@@ -149,13 +149,9 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
         public void IfProgressIsDifferentThanInProgressThenShouldBeThrowANewUseCaseException()
         {
             var domainTask = ReturnNewDomainTask(1, DateTime.Now.Date, Progress.ToDo);
-            var domainTaskDto = ReturnDomainTaskMock(1 , DateTime.Now.Date);
-
-            _taskReadOnlyRepositoryMock
-                .Setup(x  => x.Get(It.IsAny<int>()))
-                .Returns(domainTaskDto);
-            
+                   
             var ex = Assert.Throws<UseCaseException>(() => _inProgressUseCase.UpdateTask(domainTask));
+            
             Assert.Equal("The Progress must be InProgress.", ex.Message);
         }
 

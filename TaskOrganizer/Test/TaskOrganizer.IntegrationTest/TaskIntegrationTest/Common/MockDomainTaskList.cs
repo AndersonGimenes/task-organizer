@@ -49,11 +49,33 @@ namespace TaskOrganizer.IntegrationTest.UseCaseIntegrationTest.Common
                     TaskId = 40,
                     EstimatedDate = DateTime.Now.Date.AddDays(20),
                     CreateDate = DateTime.Now.Date,
-                    Title = "Test title three", 
-                    Description = "Test description three", 
+                    Title = "Test title forty", 
+                    Description = "Test description forty", 
                     ProgressId = (int)Progress.ToDo,
                     EndDate = null,
                     StartDate = null
+                },
+                new RepositoryTask
+                {
+                    TaskId = 100,
+                    EstimatedDate = DateTime.Now.Date.AddDays(20),
+                    CreateDate = DateTime.Now.Date.AddDays(-8),
+                    Title = "Test title one hundred", 
+                    Description = "Test description one hundred", 
+                    ProgressId = (int)Progress.ToDo,
+                    EndDate = null,
+                    StartDate = null
+                },
+                new RepositoryTask
+                {
+                    TaskId = 200,
+                    EstimatedDate = DateTime.Now.Date.AddDays(20),
+                    CreateDate = DateTime.Now.Date.AddDays(-8),
+                    Title = "Test title two hundred", 
+                    Description = "Test description two hundred", 
+                    ProgressId = (int)Progress.InProgress,
+                    EndDate = null,
+                    StartDate = DateTime.Now.Date.AddDays(-5)
                 }
             };
 

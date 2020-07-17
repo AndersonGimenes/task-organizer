@@ -76,6 +76,17 @@ namespace TaskOrganizer.IntegrationTest.UseCaseIntegrationTest.Common
                     ProgressId = (int)Progress.InProgress,
                     EndDate = null,
                     StartDate = DateTime.Now.Date.AddDays(-5)
+                },
+                new RepositoryTask
+                {
+                    TaskId = 300,
+                    EstimatedDate = DateTime.Now.Date.AddDays(20),
+                    CreateDate = DateTime.Now.Date.AddDays(-8),
+                    Title = "Test title three hundred", 
+                    Description = "Test description three hundred", 
+                    ProgressId = (int)Progress.InProgress,
+                    EndDate = null,
+                    StartDate = DateTime.Now.Date.AddDays(-5)
                 }
             };
 

@@ -6,6 +6,6 @@ namespace TaskOrganizer.UseCase.ContractRepository
     public interface ITaskReadOnlyRepository
     {
         DomainTask Get(int id);
-        IList<DomainTask> GetAll(); 
+        List<DomainTask> GetAll(); 
     }
 }

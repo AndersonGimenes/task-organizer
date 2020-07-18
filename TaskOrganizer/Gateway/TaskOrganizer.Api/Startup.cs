@@ -1,21 +1,24 @@
-using System.Security.Cryptography.X509Certificates;
 using System;
 using AutoMapper;
-using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TaskOrganizer.Api.Models;
-using TaskOrganizer.Api.Validation;
-using TaskOrganizer.Domain.ContractUseCase;
 using TaskOrganizer.Repository;
 using TaskOrganizer.Repository.Context;
-using TaskOrganizer.UseCase;
 using TaskOrganizer.UseCase.ContractRepository;
 using TaskOrganizer.Api.Mapping;
+using TaskOrganizer.Domain.ContractUseCase.Task;
+using TaskOrganizer.UseCase.Task;
+using TaskOrganizer.Domain.ContractUseCase.Task.ToDo;
+using TaskOrganizer.UseCase.Task.ToDo;
+using TaskOrganizer.Domain.ContractUseCase.Task.InProgress;
+using TaskOrganizer.UseCase.Task.InProgress;
+using TaskOrganizer.Domain.ContractUseCase.Task.Done;
+using TaskOrganizer.UseCase.Task.Done;
+using TaskOrganizer.Repository.Mapping;
 
 namespace TaskOrganizer.Api
 {
@@ -38,9 +41,12 @@ namespace TaskOrganizer.Api
             services.AddTransient<ITaskWriteDeleteOnlyRepository, TaskWriteDeleteOnlyRepository>();
             
             // UseCase
-            services.AddTransient<IGetTasksUseCase, GetTasksUseCase>();
-            services.AddTransient<IRegisterTaskUseCase, RegisterTaskUseCase>();
-            services.AddTransient<IDeleteTaskUseCase, DeleteTaskUseCase>();
+            services.AddTransient<ITaskUseCase, TaskUseCase>();
+            services.AddTransient<IToDoCreateTaskUseCase, ToDoCreateTaskUseCase>();
+            services.AddTransient<IToDoUpdateTaskUseCase, ToDoUpdateTaskUseCase>();
+            services.AddTransient<IToDoDeleteTaskUseCase, ToDoDeleteTaskUseCase>();
+            services.AddTransient<IInProgressUseCase, InProgressUseCase>();
+            services.AddTransient<IDoneUseCase, DoneUseCase>();
 
             // Database configuration
             services.AddDbContext<TaskOrganizerContext>(
@@ -48,13 +54,23 @@ namespace TaskOrganizer.Api
             );
 
             //Mapper configuration
-            var mappingConfiguration = new MapperConfiguration(x => 
+            var cfgApi = new MapperConfiguration(x => 
             { 
-                x.AddProfile(new MappingProfile());
+                x.AddProfile(new MappingProfileApi());
             });
 
-            var mapper = mappingConfiguration.CreateMapper();
-            services.AddSingleton(mapper);
+            var mapperApi = cfgApi.CreateMapper();
+            services.AddSingleton(mapperApi);
+
+            // [TODO]
+            // put repository mapper instace here
+            var cfgRepository = new MapperConfiguration(x =>
+            {
+                x.AddProfile(new MappingProfileRepository());
+            });
+
+            var mapperRepository = cfgRepository.CreateMapper();
+            services.AddSingleton(mapperRepository);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

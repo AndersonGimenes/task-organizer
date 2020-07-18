@@ -4,9 +4,9 @@ using TaskOrganizer.Repository.Entities;
 
 namespace TaskOrganizer.Repository.Mapping
 {
-    public class MappingProfile : Profile
+    public class MappingProfileRepository : Profile
     {
-        public MappingProfile()
+        public MappingProfileRepository()
         {
             CreateMap<DomainTask, RepositoryTask>()
                 .ForMember(dest => dest.TaskId, opt => opt.MapFrom(x => x.TaskNumber))

@@ -2,7 +2,6 @@ using AutoMapper;
 using TaskOrganizer.Domain.Entities;
 using TaskOrganizer.Repository.Context;
 using TaskOrganizer.Repository.Entities;
-using TaskOrganizer.Repository.Mapping;
 using TaskOrganizer.UseCase.ContractRepository;
 
 namespace TaskOrganizer.Repository
@@ -12,10 +11,10 @@ namespace TaskOrganizer.Repository
         private readonly TaskOrganizerContext _context;
         private readonly IMapper _mapper;
 
-        public TaskWriteDeleteOnlyRepository(TaskOrganizerContext context)
+        public TaskWriteDeleteOnlyRepository(TaskOrganizerContext context, IMapper mapper)
         {
             _context = context;
-            _mapper = CreateMapper.CreateMapperProfile();
+            _mapper = mapper;
         }
 
         public DomainTask Add(DomainTask domainTask)

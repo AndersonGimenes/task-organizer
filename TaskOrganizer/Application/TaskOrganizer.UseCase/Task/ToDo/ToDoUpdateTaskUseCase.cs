@@ -4,7 +4,6 @@ using TaskOrganizer.Domain.Entities;
 using TaskOrganizer.Domain.Enum;
 using TaskOrganizer.UseCase.ContractRepository;
 using TaskOrganizer.UseCase.Task.Extension;
-using TaskOrganizer.UseCase.UseCaseException;
 
 namespace TaskOrganizer.UseCase.Task.ToDo
 {
@@ -28,9 +27,6 @@ namespace TaskOrganizer.UseCase.Task.ToDo
             
             var domainTaskDto = _taskReadOnlyRepository.Get(domainTask.TaskNumber);
             
-            if(domainTaskDto is null)
-                throw new RegisterNotFoundException(UseCaseMessage.registerNotFound);
-
             // verify createDate to doesn't update
             if(domainTaskDto.CreateDate != domainTask.CreateDate)
                 throw new UseCaseException.UseCaseException(string.Format(UseCaseMessage.fieldNotUpdate, nameof(domainTask.CreateDate)));

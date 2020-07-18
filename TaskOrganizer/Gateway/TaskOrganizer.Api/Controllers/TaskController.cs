@@ -27,7 +27,7 @@ namespace TaskOrganizer.Api.Controllers
             {
                 var domainTasks = _taskUseCase.GetAll();
 
-                var taskModelList = _mapper.Map<List<TaskResponse>>(domainTasks);
+                var taskModelList = _mapper.Map<List<GetTaskResponse>>(domainTasks);
 
                 return Ok(taskModelList);
             }
@@ -44,7 +44,7 @@ namespace TaskOrganizer.Api.Controllers
             {
                 var domainTask = _taskUseCase.Get(taskNumber);
 
-                var taskModel = _mapper.Map<TaskResponse>(domainTask);
+                var taskModel = _mapper.Map<GetTaskResponse>(domainTask);
 
                 return Ok(taskModel);
 

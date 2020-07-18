@@ -1,11 +1,12 @@
 namespace TaskOrganizer.Api.Models.Response
 {
-    public class ToDoTaskResponse
+    public class GetTaskResponse
     {
-        public ToDoTaskResponse()
+        public GetTaskResponse()
         {
             TaskResponse = new TaskBase();
         }
+        
         public TaskBase TaskResponse { get; set; }
     }
 }

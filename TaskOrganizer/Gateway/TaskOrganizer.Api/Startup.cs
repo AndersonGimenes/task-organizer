@@ -54,23 +54,14 @@ namespace TaskOrganizer.Api
             );
 
             //Mapper configuration
-            var cfgApi = new MapperConfiguration(x => 
+            var cfg = new MapperConfiguration(x => 
             { 
                 x.AddProfile(new MappingProfileApi());
-            });
-
-            var mapperApi = cfgApi.CreateMapper();
-            services.AddSingleton(mapperApi);
-
-            // [TODO]
-            // put repository mapper instace here
-            var cfgRepository = new MapperConfiguration(x =>
-            {
                 x.AddProfile(new MappingProfileRepository());
             });
+            var mapper = cfg.CreateMapper();
+            services.AddSingleton(mapper);
 
-            var mapperRepository = cfgRepository.CreateMapper();
-            services.AddSingleton(mapperRepository);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -43,9 +43,6 @@ namespace TaskOrganizer.UseCase.Task.Done
         {
             string propertyName = string.Empty; 
 
-            if(domainTaskDto is null)
-                throw new RegisterNotFoundException(UseCaseMessage.registerNotFound);
-
             if(domainTask.EndDate != null)
                 propertyName = nameof(domainTask.EndDate);
 

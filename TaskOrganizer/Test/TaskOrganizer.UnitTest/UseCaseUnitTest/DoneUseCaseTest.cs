@@ -55,11 +55,11 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
 
             _taskReadOnlyRepositoryMock
                 .Setup(x  => x.Get(It.IsAny<int>()))
-                .Returns((DomainTask)null);
+                .Throws(new InvalidOperationException("Sequence contains no elements."));
 
-            var ex = Assert.Throws<RegisterNotFoundException>(() => _doneUseCase.UpdateProgressTask(domainTask));
+            var ex = Assert.Throws<InvalidOperationException>(() => _doneUseCase.UpdateProgressTask(domainTask));
             
-            Assert.Equal("Register not found.", ex.Message);
+            Assert.Equal("Sequence contains no elements.", ex.Message);
         }
 
         [Fact]

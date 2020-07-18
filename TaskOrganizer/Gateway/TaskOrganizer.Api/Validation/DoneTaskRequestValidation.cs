@@ -10,9 +10,9 @@ namespace TaskOrganizer.Api.Validation
     {
         public DoneTaskRequestValidation()
         {
-            RuleFor(x => x.TaskBase.EndDate)
+            RuleFor(x => x.TaskRequest.EndDate)
                 .Empty()
-                .WithMessage( x => string.Format(RequestMessage.fieldCanNotRecord, "Done", nameof(x.TaskBase.EndDate)));
+                .WithMessage( x => string.Format(RequestMessage.fieldCanNotRecord, "Done", nameof(x.TaskRequest.EndDate)));
         }
 
         public void ValidateDone(DoneTaskRequest request)

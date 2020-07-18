@@ -68,7 +68,7 @@ namespace TaskOrganizer.Api.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            catch(Exception ex) when (ex is RegisterNotFoundException)
+            catch(RegisterNotFoundException ex)
             {
                 return NotFound(ex.Message);
             }

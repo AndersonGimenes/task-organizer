@@ -39,6 +39,10 @@ namespace TaskOrganizer.Api.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch(RegisterNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
             catch(Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -59,9 +63,13 @@ namespace TaskOrganizer.Api.Controllers
                 
                 return Ok();
             }
-            catch(Exception ex) when (ex is InvalidOperationException || ex is ArgumentException || ex is DomainException || ex is UseCaseException || ex is RegisterNotFoundException)
+            catch(Exception ex) when (ex is InvalidOperationException || ex is ArgumentException || ex is DomainException || ex is UseCaseException)
             {
                 return BadRequest(ex.Message);
+            }
+            catch(RegisterNotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
             catch(Exception ex)
             {

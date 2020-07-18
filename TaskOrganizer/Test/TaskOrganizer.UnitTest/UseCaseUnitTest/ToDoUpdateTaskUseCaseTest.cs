@@ -48,36 +48,30 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
         [Fact]
         public void AUseCaseExceptionShouldBeThrownIfProgressIsNotToDo()
         {
-            var errorMessage = "The Progress must be ToDo.";
-
             var domainTask = MockUpdateDomainTask();
             domainTask.Progress = Progress.InProgress;
 
             var ex = Assert.Throws<UseCaseException>(() => _toDoUpdateTaskUseCase.UpdateTask(domainTask));
-            Assert.Equal(ex.Message, errorMessage);
+            Assert.Equal("The Progress must be ToDo.", ex.Message);
         }
         
         [Fact]
         public void WhenNotExistsATaskInDataBaseShouldBeThrowARegisterNotFoundException()
         {
-            var errorMessage = "Register not found.";
-
             var domainTask = MockUpdateDomainTask();
 
             _mockTaskReadOnlyRepository
                 .Setup(x => x.Get(It.IsAny<int>()))
-                .Returns((DomainTask)null);
+                .Throws(new InvalidOperationException("Sequence contains no elements."));
 
-            var ex = Assert.Throws<RegisterNotFoundException>(() => _toDoUpdateTaskUseCase.UpdateTask(domainTask));
-            Assert.Equal(ex.Message, errorMessage);
+            var ex = Assert.Throws<InvalidOperationException>(() => _toDoUpdateTaskUseCase.UpdateTask(domainTask));
+            Assert.Equal("Sequence contains no elements.", ex.Message);
 
         }
 
         [Fact]
         public void WhenTheCreateDateIsNotEqualTheCreateDatePersistedShouldBeThrowAUseCaseException()
         {
-            var errorMessage = "The CreateDate can't be update!";
-
             var domainTask = MockUpdateDomainTask();
             domainTask.CreateDate = DateTime.Now.Date.AddDays(10);
 
@@ -88,7 +82,7 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
                 .Returns(domainTaskDto);
 
             var ex = Assert.Throws<UseCaseException>(() => _toDoUpdateTaskUseCase.UpdateTask(domainTask));
-            Assert.Equal(ex.Message, errorMessage);
+            Assert.Equal("The CreateDate can't be update!", ex.Message);
         }
 
         #region [ Auxiliary Methods ]

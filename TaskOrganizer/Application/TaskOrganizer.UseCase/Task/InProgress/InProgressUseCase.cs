@@ -45,7 +45,7 @@ namespace TaskOrganizer.UseCase.Task.InProgress
 
             var domainTaskDto = _taskReadOnlyRepository.Get(domainTask.TaskNumber);
             
-            InProgressValidate(domainTaskDto, domainTask);
+            InProgressValidate(domainTask, domainTaskDto);
 	        
             _taskWriteDeleteOnlyRepository.Update(domainTask);
         }
@@ -54,9 +54,6 @@ namespace TaskOrganizer.UseCase.Task.InProgress
         private void InProgressValidate(DomainTask domainTask, DomainTask domainTaskDto)
         {
             string propertyName = string.Empty; 
-
-            if(domainTaskDto is null)
-                throw new RegisterNotFoundException(UseCaseMessage.registerNotFound);
 
             if(domainTask.StartDate != null && domainTaskDto.StartDate != domainTask.StartDate)
                 propertyName = nameof(domainTask.StartDate);

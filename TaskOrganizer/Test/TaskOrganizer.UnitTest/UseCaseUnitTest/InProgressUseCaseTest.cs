@@ -39,19 +39,19 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
             Assert.Equal("The StartDate can't be update!", ex.Message);
         }
 
-        [Fact]
-        public void IfNotExistsTheTaskInDataBaseThenShouldBeThrowARegisterNotFoundException()
-        {
-            var domainTask = ReturnNewDomainTask(2, null, Progress.ToDo);
+        // [Fact]
+        // public void IfNotExistsTheTaskInDataBaseThenShouldBeThrowARegisterNotFoundException()
+        // {
+        //     var domainTask = ReturnNewDomainTask(2, null, Progress.ToDo);
 
-            _taskReadOnlyRepositoryMock
-                .Setup(x  => x.Get(It.IsAny<int>()))
-                .Returns((DomainTask)null);
+        //     _taskReadOnlyRepositoryMock
+        //         .Setup(x  => x.Get(It.IsAny<int>()))
+        //         .Returns((DomainTask)null);
 
-            var ex = Assert.Throws<RegisterNotFoundException>(() => _inProgressUseCase.UpdateProgressTask(domainTask));
+        //     var ex = Assert.Throws<RegisterNotFoundException>(() => _inProgressUseCase.UpdateProgressTask(domainTask));
             
-            Assert.Equal("Register not found.", ex.Message);
-        }
+        //     Assert.Equal("Register not found.", ex.Message);
+        // }
 
         [Fact]
         public void WhenDomainTaskIsValidAndExistsInDataBaseShouldBeUpdateTheProgressToInProgressAndStartDateToDateTimeNow()

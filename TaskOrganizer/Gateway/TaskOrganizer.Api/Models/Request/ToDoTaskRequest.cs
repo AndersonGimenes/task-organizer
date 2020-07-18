@@ -6,9 +6,9 @@ namespace TaskOrganizer.Api.Models.Request
     {
         public ToDoTaskRequest()
         {
-            TaskBase = new TaskBase();
+            TaskRequest = new TaskBase();
         }
-        public TaskBase TaskBase { get; set; } 
+        public TaskBase TaskRequest { get; set; } 
 
         public void IsValid()
         {

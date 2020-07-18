@@ -10,12 +10,12 @@ namespace TaskOrganizer.Api.Validation
     {
         public ToDoTaskRequestValidation()
         {
-            RuleFor(x => x.TaskBase.StartDate)
+            RuleFor(x => x.TaskRequest.StartDate)
                 .Empty()
-                .WithMessage(x => string.Format(RequestMessage.fieldCanNotRecord, "ToDo", nameof(x.TaskBase.StartDate)));
-            RuleFor(x => x.TaskBase.EndDate)
+                .WithMessage(x => string.Format(RequestMessage.fieldCanNotRecord, "ToDo", nameof(x.TaskRequest.StartDate)));
+            RuleFor(x => x.TaskRequest.EndDate)
                 .Empty()
-                .WithMessage(x => string.Format(RequestMessage.fieldCanNotRecord, "ToDo", nameof(x.TaskBase.EndDate)));
+                .WithMessage(x => string.Format(RequestMessage.fieldCanNotRecord, "ToDo", nameof(x.TaskRequest.EndDate)));
         }
 
         public void ValidateToDo(ToDoTaskRequest request)

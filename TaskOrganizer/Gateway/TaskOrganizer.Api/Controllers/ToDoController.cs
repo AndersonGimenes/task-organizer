@@ -68,10 +68,6 @@ namespace TaskOrganizer.Api.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            catch(RegisterNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
             catch(Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -88,10 +84,6 @@ namespace TaskOrganizer.Api.Controllers
                 _toDoDeleteTaskUseCase.Delete(domainTask);
                 
                 return NoContent();
-            }
-            catch(RegisterNotFoundException ex)
-            {
-                return NotFound(ex.Message);
             }
             catch(Exception ex)
             {

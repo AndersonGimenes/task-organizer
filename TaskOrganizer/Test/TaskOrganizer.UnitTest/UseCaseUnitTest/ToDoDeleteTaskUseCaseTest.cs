@@ -52,22 +52,18 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
         [Fact]
         public void WhenNotExistsATaskInDataBaseShouldBeThrowARegisterNotFoundException()
         {
-            var errorMessage = "Register not found.";
-
             _mockTaskReadOnlyRepository
                 .Setup(x => x.Get(It.IsAny<int>()))
-                .Returns((DomainTask)null);
+                .Throws(new InvalidOperationException("Sequence contains no elements."));
 
-            var ex = Assert.Throws<RegisterNotFoundException>(() => _toDoDeleteTaskUseCase.Delete(new DomainTask()));
-            Assert.Equal(ex.Message, errorMessage);
+            var ex = Assert.Throws<InvalidOperationException>(() => _toDoDeleteTaskUseCase.Delete(new DomainTask()));
+            Assert.Equal("Sequence contains no elements.", ex.Message);
 
         }
 
         [Fact]
         public void WhenTheProgressIsNotToDoTheTaskCannotBeDeleted()
         {
-            var errorMessage = "Register can't delete when your progress is differente Progress.";
-
             var domainTaskDto = new DomainTask
             {
                 TaskNumber = 1,
@@ -83,7 +79,7 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
                 .Returns(domainTaskDto);
 
             var ex = Assert.Throws<UseCaseException>(() => _toDoDeleteTaskUseCase.Delete(new DomainTask()));
-            Assert.Equal(ex.Message, errorMessage);
+            Assert.Equal("Register can't delete when your progress is differente Progress.", ex.Message);
 
         }
 

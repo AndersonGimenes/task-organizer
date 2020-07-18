@@ -22,9 +22,6 @@ namespace TaskOrganizer.UseCase.Task.ToDo
         {
             var domainTaskDto = _taskReadOnlyRepository.Get(domainTask.TaskNumber);
             
-            if(domainTaskDto is null)
-                throw new RegisterNotFoundException(UseCaseMessage.registerNotFound);
-
             if(!domainTaskDto.Progress.Equals(Progress.ToDo))
                 throw new UseCaseException.UseCaseException(string.Format(UseCaseMessage.registerCannotDelete, nameof(domainTaskDto.Progress)));
 

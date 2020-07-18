@@ -34,7 +34,7 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
                 .Setup(x  => x.Get(It.IsAny<int>()))
                 .Returns(ReturnDomainTaskMock(2, null));
 
-            var ex = Assert.Throws<UseCaseException>(() => _inProgressUseCase.UpdateChangeTask(domainTask));
+            var ex = Assert.Throws<UseCaseException>(() => _inProgressUseCase.UpdateProgressTask(domainTask));
             
             Assert.Equal("The StartDate can't be update!", ex.Message);
         }
@@ -48,7 +48,7 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
                 .Setup(x  => x.Get(It.IsAny<int>()))
                 .Returns((DomainTask)null);
 
-            var ex = Assert.Throws<RegisterNotFoundException>(() => _inProgressUseCase.UpdateChangeTask(domainTask));
+            var ex = Assert.Throws<RegisterNotFoundException>(() => _inProgressUseCase.UpdateProgressTask(domainTask));
             
             Assert.Equal("Register not found.", ex.Message);
         }
@@ -62,7 +62,7 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
                 .Setup(x  => x.Get(It.IsAny<int>()))
                 .Returns(ReturnDomainTaskMock(1, null));
 
-            _inProgressUseCase.UpdateChangeTask(domainTask);
+            _inProgressUseCase.UpdateProgressTask(domainTask);
 
             Assert.Equal(DateTime.Now.Date, domainTask.StartDate);
             Assert.Equal(Progress.InProgress, domainTask.Progress);
@@ -78,7 +78,7 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
                 .Setup(x  => x.Get(It.IsAny<int>()))
                 .Returns(domainTaskDto);
             
-            var ex = Assert.Throws<UseCaseException>(() => _inProgressUseCase.UpdateChangeTask(domainTask));
+            var ex = Assert.Throws<UseCaseException>(() => _inProgressUseCase.UpdateProgressTask(domainTask));
             Assert.Equal("The Progress must be ToDo.", ex.Message);
         }
 

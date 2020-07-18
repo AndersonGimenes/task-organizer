@@ -1,4 +1,5 @@
 using System;
+using AutoMapper;
 using TaskOrganizer.Domain.ContractUseCase.Task.Done;
 using TaskOrganizer.Domain.Entities;
 using TaskOrganizer.Domain.Enum;
@@ -18,15 +19,17 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         private readonly ITaskWriteDeleteOnlyRepository _taskWriteDeleteOnlyRepository;
         private readonly TaskReadOnlyRepository _taskReadOnlyRepository;
         private readonly IDoneUseCase _doneUseCase;
+        private readonly IMapper _mapper;
 
         public DoneUseCaseTest()
         {
-
+            _mapper = CreateMapper.CreateMapperProfile();
+            
             InsertMockDataBaseInMemory.InsertMock();
 
             _context = DataBaseInMemory.ReturnContext();   
-            _taskWriteDeleteOnlyRepository = new TaskWriteDeleteOnlyRepository(_context);
-            _taskReadOnlyRepository = new TaskReadOnlyRepository(_context);
+            _taskWriteDeleteOnlyRepository = new TaskWriteDeleteOnlyRepository(_context, _mapper);
+            _taskReadOnlyRepository = new TaskReadOnlyRepository(_context, _mapper);
 
             _doneUseCase = new DoneUseCase(_taskReadOnlyRepository, _taskWriteDeleteOnlyRepository); 
         }
@@ -36,7 +39,7 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         {
             var domainTask = ReturnNewDomainTask(300);
 
-            _doneUseCase.UpdateChangeTask(domainTask);
+            _doneUseCase.UpdateProgressTask(domainTask);
 
             var domainTaskDto = _taskReadOnlyRepository.Get(domainTask.TaskNumber);
 

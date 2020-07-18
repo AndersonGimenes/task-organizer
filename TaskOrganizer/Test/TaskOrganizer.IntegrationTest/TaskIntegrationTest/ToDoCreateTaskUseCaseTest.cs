@@ -1,8 +1,10 @@
 using System;
 using System.Linq;
+using AutoMapper;
 using TaskOrganizer.Domain.ContractUseCase.Task.ToDo;
 using TaskOrganizer.Domain.Entities;
 using TaskOrganizer.Domain.Enum;
+using TaskOrganizer.IntegrationTest.TaskIntegrationTest.Common;
 using TaskOrganizer.IntegrationTest.UseCaseIntegrationTest;
 using TaskOrganizer.Repository;
 using TaskOrganizer.Repository.Context;
@@ -15,13 +17,16 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
     public class ToDoCreateTaskUseCaseTest
     {
         private readonly IToDoCreateTaskUseCase _toDoCreateTaskUseCase;
+        private readonly IMapper _mapper;
         private readonly TaskOrganizerContext _context;
         private readonly ITaskWriteDeleteOnlyRepository _taskWriteDeleteOnlyRepository;
 
         public ToDoCreateTaskUseCaseTest()
         {
+            _mapper = CreateMapper.CreateMapperProfile();
+
             _context = DataBaseInMemory.ReturnContext();
-            _taskWriteDeleteOnlyRepository = new TaskWriteDeleteOnlyRepository(_context);            
+            _taskWriteDeleteOnlyRepository = new TaskWriteDeleteOnlyRepository(_context, _mapper);            
 
             _toDoCreateTaskUseCase = new ToDoCreateTaskUseCase(_taskWriteDeleteOnlyRepository);
         }

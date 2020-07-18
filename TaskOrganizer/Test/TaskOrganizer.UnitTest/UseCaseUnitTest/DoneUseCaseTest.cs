@@ -28,7 +28,7 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
         {
             var domaintask = ReturnNewDomainTask(1, Progress.ToDo);
 
-            var ex = Assert.Throws<UseCaseException>(() => _doneUseCase.UpdateChangeTask(domaintask));
+            var ex = Assert.Throws<UseCaseException>(() => _doneUseCase.UpdateProgressTask(domaintask));
 
             Assert.Equal("The Progress must be InProgress.", ex.Message);
         }
@@ -43,7 +43,7 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
                 .Setup(x  => x.Get(It.IsAny<int>()))
                 .Returns(ReturnDomainTaskMock(1));
 
-            var ex = Assert.Throws<UseCaseException>(() => _doneUseCase.UpdateChangeTask(domainTask));
+            var ex = Assert.Throws<UseCaseException>(() => _doneUseCase.UpdateProgressTask(domainTask));
             
             Assert.Equal("The EndDate can't be update!", ex.Message);
         }
@@ -57,7 +57,7 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
                 .Setup(x  => x.Get(It.IsAny<int>()))
                 .Returns((DomainTask)null);
 
-            var ex = Assert.Throws<RegisterNotFoundException>(() => _doneUseCase.UpdateChangeTask(domainTask));
+            var ex = Assert.Throws<RegisterNotFoundException>(() => _doneUseCase.UpdateProgressTask(domainTask));
             
             Assert.Equal("Register not found.", ex.Message);
         }
@@ -73,7 +73,7 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
                 .Setup(x  => x.Get(It.IsAny<int>()))
                 .Returns(domainTaskDto);
             
-            var ex = Assert.Throws<UseCaseException>(() => _doneUseCase.UpdateChangeTask(domainTask));
+            var ex = Assert.Throws<UseCaseException>(() => _doneUseCase.UpdateProgressTask(domainTask));
             Assert.Equal("The StartDate can't be update!", ex.Message);
         }
 
@@ -88,7 +88,7 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
                 .Setup(x  => x.Get(It.IsAny<int>()))
                 .Returns(domainTaskDto);
             
-            var ex = Assert.Throws<UseCaseException>(() => _doneUseCase.UpdateChangeTask(domainTask));
+            var ex = Assert.Throws<UseCaseException>(() => _doneUseCase.UpdateProgressTask(domainTask));
             Assert.Equal("The CreateDate can't be update!", ex.Message);
         }
 
@@ -103,7 +103,7 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
                 .Setup(x  => x.Get(It.IsAny<int>()))
                 .Returns(domainTaskDto);
             
-            var ex = Assert.Throws<UseCaseException>(() => _doneUseCase.UpdateChangeTask(domainTask));
+            var ex = Assert.Throws<UseCaseException>(() => _doneUseCase.UpdateProgressTask(domainTask));
             Assert.Equal("The EstimatedDate can't be update!", ex.Message);
         }
 
@@ -118,7 +118,7 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
                 .Setup(x  => x.Get(It.IsAny<int>()))
                 .Returns(domainTaskDto);
             
-            var ex = Assert.Throws<UseCaseException>(() => _doneUseCase.UpdateChangeTask(domainTask));
+            var ex = Assert.Throws<UseCaseException>(() => _doneUseCase.UpdateProgressTask(domainTask));
             Assert.Equal("The Title can't be update!", ex.Message);
         }
 
@@ -133,7 +133,7 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
                 .Setup(x  => x.Get(It.IsAny<int>()))
                 .Returns(domainTaskDto);
             
-            var ex = Assert.Throws<UseCaseException>(() => _doneUseCase.UpdateChangeTask(domainTask));
+            var ex = Assert.Throws<UseCaseException>(() => _doneUseCase.UpdateProgressTask(domainTask));
             Assert.Equal("The Description can't be update!", ex.Message);
         }
 
@@ -146,7 +146,7 @@ namespace TaskOrganizer.UnitTest.UseCaseUnitTest
                 .Setup(x  => x.Get(It.IsAny<int>()))
                 .Returns(ReturnDomainTaskMock(1));
 
-            _doneUseCase.UpdateChangeTask(domainTask);
+            _doneUseCase.UpdateProgressTask(domainTask);
 
             Assert.Equal(DateTime.Now.Date, domainTask.EndDate);
             Assert.Equal(Progress.Done, domainTask.Progress);

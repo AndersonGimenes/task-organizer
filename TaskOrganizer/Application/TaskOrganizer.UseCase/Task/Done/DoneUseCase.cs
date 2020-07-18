@@ -19,7 +19,7 @@ namespace TaskOrganizer.UseCase.Task.Done
             _taskReadOnlyRepository = taskReadOnlyRepository;
             _taskWriteDeleteOnlyRepository = taskWriteDeleteOnlyRepository;
         }
-        public void UpdateChangeTask(DomainTask domainTask)
+        public void UpdateProgressTask(DomainTask domainTask)
         {
             domainTask.IsValid();
             

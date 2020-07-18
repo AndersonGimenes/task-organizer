@@ -1,4 +1,5 @@
 using System;
+using AutoMapper;
 using TaskOrganizer.Domain.ContractUseCase.Task.InProgress;
 using TaskOrganizer.Domain.Entities;
 using TaskOrganizer.Domain.Enum;
@@ -18,15 +19,18 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         private readonly ITaskWriteDeleteOnlyRepository _taskWriteDeleteOnlyRepository;
         private readonly TaskReadOnlyRepository _taskReadOnlyRepository;
         private readonly IInProgressUseCase _inProgressUseCase;
+        private readonly IMapper _mapper;
 
         public InProgressUseCaseTest()
         {
 
+            _mapper = CreateMapper.CreateMapperProfile();
+
             InsertMockDataBaseInMemory.InsertMock();
 
             _context = DataBaseInMemory.ReturnContext();   
-            _taskWriteDeleteOnlyRepository = new TaskWriteDeleteOnlyRepository(_context);
-            _taskReadOnlyRepository = new TaskReadOnlyRepository(_context);
+            _taskWriteDeleteOnlyRepository = new TaskWriteDeleteOnlyRepository(_context, _mapper);
+            _taskReadOnlyRepository = new TaskReadOnlyRepository(_context, _mapper);
 
             _inProgressUseCase = new InProgressUseCase(_taskReadOnlyRepository, _taskWriteDeleteOnlyRepository); 
         }
@@ -36,7 +40,7 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         {
             var domainTask = ReturnNewDomainTask(100, null, Progress.ToDo, "Test title one hundred");
 
-            _inProgressUseCase.UpdateChangeTask(domainTask);
+            _inProgressUseCase.UpdateProgressTask(domainTask);
 
             var domainTaskDto = _taskReadOnlyRepository.Get(domainTask.TaskNumber);
 

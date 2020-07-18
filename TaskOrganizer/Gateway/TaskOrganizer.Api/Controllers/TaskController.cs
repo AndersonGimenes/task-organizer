@@ -2,8 +2,7 @@ using System;
 using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using TaskOrganizer.Api.Models;
-using TaskOrganizer.Domain.ContractUseCase;
+using TaskOrganizer.Api.Models.Response;
 using TaskOrganizer.Domain.ContractUseCase.Task;
 
 namespace TaskOrganizer.Api.Controllers
@@ -28,7 +27,7 @@ namespace TaskOrganizer.Api.Controllers
             {
                 var domainTasks = _taskUseCase.GetAll();
 
-                var taskModelList = _mapper.Map<List<TaskModel>>(domainTasks);
+                var taskModelList = _mapper.Map<List<TaskResponse>>(domainTasks);
 
                 return Ok(taskModelList);
             }
@@ -45,7 +44,7 @@ namespace TaskOrganizer.Api.Controllers
             {
                 var domainTask = _taskUseCase.Get(taskNumber);
 
-                var taskModel = _mapper.Map<TaskModel>(domainTask);
+                var taskModel = _mapper.Map<TaskResponse>(domainTask);
 
                 return Ok(taskModel);
 

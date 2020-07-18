@@ -1,10 +1,11 @@
 using System;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using TaskOrganizer.Api.Models;
-using TaskOrganizer.Domain.ContractUseCase;
+using TaskOrganizer.Api.Models.Request;
+using TaskOrganizer.Domain.ContractUseCase.Task.InProgress;
 using TaskOrganizer.Domain.DomainException;
 using TaskOrganizer.Domain.Entities;
+using TaskOrganizer.UseCase.UseCaseException;
 
 namespace TaskOrganizer.Api.Controllers
 {
@@ -12,51 +13,53 @@ namespace TaskOrganizer.Api.Controllers
     [Route("api/[controller]/task/")]
     public class InProgressController : ControllerBase
     {
-        private readonly IGetTasksUseCase _getTasksUseCase;
-        private readonly IRegisterTaskUseCase _registerTaskUseCase;
+        private readonly IInProgressUseCase _inProgressUseCase;
         private readonly IMapper _mapper;
 
-        public InProgressController(IGetTasksUseCase getTasksUseCase, IRegisterTaskUseCase registerTaskUseCase, IMapper mapper)
+        public InProgressController(IInProgressUseCase inProgressUseCase, IMapper mapper)
         {
-            _getTasksUseCase = getTasksUseCase;
-            _registerTaskUseCase = registerTaskUseCase;
+            _inProgressUseCase = inProgressUseCase;
             _mapper = mapper;
         }
 
-        [HttpGet("{taskNumber}")]
-        public IActionResult Get(int taskNumber)
+        [HttpPut(nameof(UpdateTask))]
+        public IActionResult UpdateTask([FromBody] InProgressTaskRequest request)
         {
             try
             {
-                var domainTask = _getTasksUseCase.Get(taskNumber);
-                var taskModel = _mapper.Map<TaskModel>(domainTask);
+                request.IsValid();
 
-                return Ok(taskModel);
-            }
-            catch(Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
-        }   
+                var domainTask = _mapper.Map<DomainTask>(request);
 
-        [HttpPut]
-        public IActionResult Update([FromBody] TaskModel taskModel)
-        {
-            try
-            {
-                taskModel.IsValid();
-
-                var domainTask = _mapper.Map<DomainTask>(taskModel);
-
-                _registerTaskUseCase.Register(domainTask);
+                _inProgressUseCase.UpdateTask(domainTask);
                 
                 return Ok();
             }
-            catch(ArgumentException ex)
+            catch(Exception ex) when (ex is InvalidOperationException || ex is ArgumentException || ex is DomainException || ex is UseCaseException)
             {
                 return BadRequest(ex.Message);
             }
-            catch(DomainException ex)
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+           
+        }
+
+        [HttpPut(nameof(UpdateProgressTask))]
+        public IActionResult UpdateProgressTask([FromBody] InProgressTaskRequest request)
+        {
+            try
+            {
+                request.IsValid();
+
+                var domainTask = _mapper.Map<DomainTask>(request);
+
+                _inProgressUseCase.UpdateProgressTask(domainTask);
+                
+                return Ok();
+            }
+            catch(Exception ex) when (ex is InvalidOperationException || ex is ArgumentException || ex is DomainException || ex is UseCaseException || ex is RegisterNotFoundException)
             {
                 return BadRequest(ex.Message);
             }

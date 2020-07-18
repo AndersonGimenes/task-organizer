@@ -20,7 +20,7 @@ namespace TaskOrganizer.UseCase.Task.InProgress
             _taskWriteDeleteOnlyRepository = taskWriteDeleteOnlyRepository;
         }
 
-        public void UpdateChangeTask(DomainTask domainTask)
+        public void UpdateProgressTask(DomainTask domainTask)
         {    
             domainTask.IsValid();
 

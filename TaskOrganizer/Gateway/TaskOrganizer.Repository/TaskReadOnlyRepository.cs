@@ -5,7 +5,6 @@ using TaskOrganizer.UseCase.ContractRepository;
 using System.Linq;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using TaskOrganizer.Repository.Mapping;
 
 namespace TaskOrganizer.Repository
 {
@@ -14,10 +13,10 @@ namespace TaskOrganizer.Repository
         private readonly TaskOrganizerContext _context;
         private readonly IMapper _mapper;
 
-        public TaskReadOnlyRepository(TaskOrganizerContext context)
+        public TaskReadOnlyRepository(TaskOrganizerContext context, IMapper mapper)
         {
             _context = context;
-            _mapper = CreateMapper.CreateMapperProfile();
+            _mapper = mapper;
         }
 
         public DomainTask Get(int id)

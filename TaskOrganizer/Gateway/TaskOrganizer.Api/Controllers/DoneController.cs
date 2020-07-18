@@ -1,10 +1,11 @@
 using System;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using TaskOrganizer.Api.Models;
-using TaskOrganizer.Domain.ContractUseCase;
+using TaskOrganizer.Api.Models.Request;
+using TaskOrganizer.Domain.ContractUseCase.Task.Done;
 using TaskOrganizer.Domain.DomainException;
 using TaskOrganizer.Domain.Entities;
+using TaskOrganizer.UseCase.UseCaseException;
 
 namespace TaskOrganizer.Api.Controllers
 {
@@ -12,50 +13,29 @@ namespace TaskOrganizer.Api.Controllers
     [Route("api/[Controller]/task")]
     public class DoneController : ControllerBase
     {
-        private readonly IGetTasksUseCase _getTasksUseCase;
-        private readonly IRegisterTaskUseCase _registerTaskUseCase;
+        private readonly IDoneUseCase _doneUseCase;
         private readonly IMapper _mapper;
 
-        public DoneController(IGetTasksUseCase getTasksUseCase, IRegisterTaskUseCase registerTaskUseCase, IMapper mapper)
+        public DoneController(IDoneUseCase doneUseCase, IMapper mapper)
         {
-            _getTasksUseCase = getTasksUseCase;
-            _registerTaskUseCase = registerTaskUseCase;
+            _doneUseCase = doneUseCase;
             _mapper = mapper;
         }
 
-        [HttpGet("{taskNumber}")]
-        public IActionResult Get(int taskNumber)
-        {
-            try
-            {
-                var domainTask = _getTasksUseCase.Get(taskNumber);
-
-                var taskModel = _mapper.Map<TaskModel>(domainTask);
-                
-                return Ok(taskModel);
-            }
-            catch(Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
-        }   
-
         [HttpPut]
-        public IActionResult Update([FromBody] TaskModel taskModel)
+        public IActionResult Update([FromBody] DoneTaskRequest request)
         {
             try
             {
-                var domainTask = _mapper.Map<DomainTask>(taskModel);
+                request.IsValid();
 
-                _registerTaskUseCase.Register(domainTask);
+                var domainTask = _mapper.Map<DomainTask>(request);
+
+                _doneUseCase.UpdateProgressTask(domainTask);
 
                 return Ok();
             }
-            catch(ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch(DomainException ex)
+            catch(Exception ex) when (ex is InvalidOperationException || ex is ArgumentException || ex is DomainException || ex is UseCaseException || ex is RegisterNotFoundException)
             {
                 return BadRequest(ex.Message);
             }

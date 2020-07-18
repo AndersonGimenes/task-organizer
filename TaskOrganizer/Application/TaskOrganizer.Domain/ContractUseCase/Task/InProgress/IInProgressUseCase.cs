@@ -5,6 +5,6 @@ namespace TaskOrganizer.Domain.ContractUseCase.Task.InProgress
     public interface IInProgressUseCase 
     {
         void UpdateTask(DomainTask domainTask);
-        void UpdateChangeTask(DomainTask domainTask);
+        void UpdateProgressTask(DomainTask domainTask);
     }
 }

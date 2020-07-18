@@ -3,7 +3,7 @@ using TaskOrganizer.Api.Validation;
 
 namespace TaskOrganizer.Api.Models
 {
-    public class TaskModel
+    public class TaskBase
     {        
         public int TaskNumber { get; set; }
         public string Title { get; set; }
@@ -14,15 +14,5 @@ namespace TaskOrganizer.Api.Models
         public DateTime? StartDate { get; set;}
         public DateTime? EndDate { get; set;}
 
-        public void IsValid()
-        {
-            var validation = new TaskModelValidator();
-            
-            if(this.Progress.Equals("ToDo"))
-                validation.ValidateToDo(this);
-            
-            if(this.Progress.Equals("InProgress"))
-                validation.ValidateInProgress(this, nameof(EndDate));
-        }
     }
 }

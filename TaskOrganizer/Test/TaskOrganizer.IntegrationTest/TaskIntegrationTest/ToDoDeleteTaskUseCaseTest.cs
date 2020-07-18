@@ -1,11 +1,10 @@
 using System;
-using System.Linq;
+using AutoMapper;
 using TaskOrganizer.Domain.ContractUseCase.Task.ToDo;
 using TaskOrganizer.Domain.Entities;
 using TaskOrganizer.Domain.Enum;
 using TaskOrganizer.IntegrationTest.TaskIntegrationTest.Common;
 using TaskOrganizer.IntegrationTest.UseCaseIntegrationTest;
-using TaskOrganizer.IntegrationTest.UseCaseIntegrationTest.Common;
 using TaskOrganizer.Repository;
 using TaskOrganizer.Repository.Context;
 using TaskOrganizer.UseCase.ContractRepository;
@@ -20,14 +19,18 @@ namespace TaskOrganizer.IntegrationTest.TaskIntegrationTest
         private readonly TaskOrganizerContext _context;
         private readonly ITaskWriteDeleteOnlyRepository _taskWriteDeleteOnlyRepository;
         private readonly ITaskReadOnlyRepository _taskReadOnlyRepository;
+        private readonly IMapper _mapper;
 
         public ToDoDeleteTaskUseCaseTest()
         {
+
+            _mapper = CreateMapper.CreateMapperProfile();
+
             InsertMockDataBaseInMemory.InsertMock();
 
             _context = DataBaseInMemory.ReturnContext();
-            _taskWriteDeleteOnlyRepository = new TaskWriteDeleteOnlyRepository(_context);
-            _taskReadOnlyRepository = new TaskReadOnlyRepository(_context);
+            _taskWriteDeleteOnlyRepository = new TaskWriteDeleteOnlyRepository(_context, _mapper);
+            _taskReadOnlyRepository = new TaskReadOnlyRepository(_context, _mapper);
             
             _toDoDeleteTaskUseCase = new ToDoDeleteTaskUseCase(_taskReadOnlyRepository, _taskWriteDeleteOnlyRepository);
         }

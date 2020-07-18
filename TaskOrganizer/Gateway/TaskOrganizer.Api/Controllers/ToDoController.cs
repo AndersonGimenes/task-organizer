@@ -1,7 +1,8 @@
 using System;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using TaskOrganizer.Api.Models;
+using TaskOrganizer.Api.Models.Request;
+using TaskOrganizer.Api.Models.Response;
 using TaskOrganizer.Domain.ContractUseCase.Task.ToDo;
 using TaskOrganizer.Domain.DomainException;
 using TaskOrganizer.Domain.Entities;
@@ -28,17 +29,17 @@ namespace TaskOrganizer.Api.Controllers
         }
     
         [HttpPost]
-        public IActionResult CreateTask([FromBody] ToDoModel toDoModel)
+        public IActionResult CreateTask([FromBody] ToDoTaskRequest request)
         {
             try
             {
-                toDoModel.IsValid();
+                request.IsValid();
 
-                var domainTask = _mapper.Map<DomainTask>(toDoModel);
+                var domainTask = _mapper.Map<DomainTask>(request);
 
-                toDoModel = _mapper.Map<ToDoModel>(_toDoCreateTaskUseCase.CreateNewTask(domainTask));
+                var response = _mapper.Map<ToDoTaskResponse>(_toDoCreateTaskUseCase.CreateNewTask(domainTask));
 
-                return Created(string.Empty, toDoModel);
+                return Created(string.Empty, response);
             }
             catch(Exception ex) when (ex is InvalidOperationException || ex is ArgumentException || ex is DomainException || ex is UseCaseException)
             {
@@ -51,13 +52,13 @@ namespace TaskOrganizer.Api.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateTask([FromBody] ToDoModel toDoModel)
+        public IActionResult UpdateTask([FromBody] ToDoTaskRequest request)
         {
             try
             {
-                toDoModel.IsValid();
+                request.IsValid();
 
-                var domainTask = _mapper.Map<DomainTask>(toDoModel);
+                var domainTask = _mapper.Map<DomainTask>(request);
 
                 _toDoUpdateTaskUseCase.UpdateTask(domainTask);
 
@@ -78,11 +79,11 @@ namespace TaskOrganizer.Api.Controllers
         }
 
         [HttpDelete]
-        public IActionResult DeleteTask([FromBody] ToDoModel toDoModel)
+        public IActionResult DeleteTask([FromBody] ToDoTaskRequest request)
         {
             try
             {
-                var domainTask = _mapper.Map<DomainTask>(toDoModel);
+                var domainTask = _mapper.Map<DomainTask>(request);
 
                 _toDoDeleteTaskUseCase.Delete(domainTask);
                 
